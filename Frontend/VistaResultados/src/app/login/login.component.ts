@@ -1,7 +1,6 @@
-import { Component, inject, OnDestroy, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-
-import { ToastService } from '../toast/toast.service';
+import { Toast, ToastService } from '../toast/toast.service';
 import { ToastsContainer } from '../toast/toast.component';
 
 @Component({
@@ -12,27 +11,26 @@ import { ToastsContainer } from '../toast/toast.component';
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnDestroy {
-  toastService = inject(ToastService);
+  constructor(private readonly toastService: ToastService) {}
 
-  showStandard(template: TemplateRef<any>) {
-    this.toastService.show({ template });
-  }
+  toast: Toast;
 
-  showSuccess(template: TemplateRef<any>) {
-    this.toastService.show({
-      template,
-      classname: 'bg-success text-light',
-    });
-  }
-
-  showDanger(template: TemplateRef<any>) {
-    this.toastService.show({
-      template,
-      classname: 'bg-danger text-light',
-    });
-  }
+  @ViewChild('successTpl') successTpl!: TemplateRef<any>;
+  @ViewChild('errorTpl') errorTpl!: TemplateRef<any>;
 
   ngOnDestroy(): void {
     this.toastService.clear();
+  }
+
+  mover() {
+    this.toastService.success({
+      template: this.successTpl,
+    });
+  }
+
+  mover2() {
+    this.toastService.error({
+      template: this.errorTpl,
+    });
   }
 }

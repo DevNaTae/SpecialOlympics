@@ -10,8 +10,11 @@ export interface Toast {
 export class ToastService {
   toasts: Toast[] = [];
 
-  show(toast: Toast) {
-    this.toasts.push(toast);
+  success(toast: Toast) {
+    this.toasts.push({ classname: 'bg-success text-light', ...toast });
+  }
+  error(toast: Toast) {
+    this.toasts.push({ classname: 'bg-danger text-light', ...toast });
   }
 
   remove(toast: Toast) {
