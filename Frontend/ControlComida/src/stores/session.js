@@ -9,10 +9,12 @@ export const C_session = defineStore('session',{
     ),
     actions:{
         async init_session(formdata){
+
+        },
+        async logout(){
             try {
-                const data = await $fetched('url',{
+                const data = await fetch('http://127.0.0.1:8000/logout',{
                     method:'POST',
-                    body:formData,
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
@@ -21,14 +23,7 @@ export const C_session = defineStore('session',{
                 })
                 return true
             } catch (error) {
-                return false
-            }
-        },
-        async logout(){
-            try {
-                
-            } catch (error) {
-                
+                return true
             }
         }
     },

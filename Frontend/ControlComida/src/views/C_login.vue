@@ -32,20 +32,20 @@ const ShowError = () =>{
     })
 }
 const form_session= ref({
-    user:'',
+    email:'',
     password:''
 })
 const sesion_function = async()=>{
     ShowLoading();
     const session_verif = await P_session.init_session(form_session.value)
-    setTimeout(() => {
-        if(session_verif == true){
-            ShowSuccess();
-            router.push({name: 'C_status'});
-        }else{
-            ShowError();
-        }
-    }, 3000);
+    // setTimeout(() => {
+    //     if(session_verif == true){
+    //         ShowSuccess();
+    //         router.push({name: 'C_status'});
+    //     }else{
+    //         ShowError();
+    //     }
+    // }, 3000);
 
 
 }
@@ -71,7 +71,7 @@ const sesion_function = async()=>{
                     </div>
                     <div class="col-5 col-lg-1 ">
                         <div class="d-flex justify-content-center">
-                            <img class="logo_resolution" src="../assets/imgs/olimpiadas_R.png" alt="Descripción de la imagen">
+                            <img class="logo_resolution" src="../assets/imgs/olimpiadas_O.png" alt="Descripción de la imagen">
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@ const sesion_function = async()=>{
                             <h2>Credenciales:</h2>
                             <form @submit.prevent="sesion_function">
                                 <div class="form-floating mb-3">
-                                    <input type="email" v-model="form_session.user" class="form-control"  placeholder="name@example.com">
+                                    <input type="email" v-model="form_session.email" class="form-control"  placeholder="name@example.com">
                                     <label for="floatingInput">Usuario</label>
                                 </div>
                                 <div class="form-floating">
@@ -109,8 +109,6 @@ const sesion_function = async()=>{
   align-items: center;
   min-height: 80vh;
 }
-
-
 
 .logo_resolution{
     width: 100px;
