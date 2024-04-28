@@ -12,16 +12,10 @@ class UserController extends Controller
     {
         // Validación básica de datos
         $request->validate([
-            'identifier' => 'required', // Nuevo campo 'identifier' que puede ser un correo electrónico o nombre de usuario
+            'email' => 'required', // Nuevo campo 'identifier' que puede ser un correo electrónico o nombre de usuario
             'password' => 'required',
         ]);
-
-        $credentials = $request->only('password');
-
-        // Verificar si el campo 'identifier' es un correo electrónico o nombre de usuario
-        $field = filter_var($request->identifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
-        $credentials[$field] = $request->identifier;
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($request->all())) {
             // Obtener el usuario autenticado
             $user = Auth::user();
             $token = $user->createToken('token-name')->plainTextToken;
