@@ -6,14 +6,14 @@ use App\Models\User;
 use Illuminate\Console\Command;
 use Spatie\Permission\Models\Role;
 
-class CreateUserDefault extends Command
+class CreateRoundsman extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'create:admin';
+    protected $signature = 'create:roundsman';
 
     /**
      * The console command description.
@@ -27,15 +27,14 @@ class CreateUserDefault extends Command
      */
     public function handle()
     {
-        $new_user = ['name'=>'Administrador',
-                    'email'=>'admin_so@uleam.edu.ec',
-                    'password'=>bcrypt('UleamFacci2024')];
-        $AdminRole = Role::where('name', 'Administrador')->first();
+        $new_roundsman = ['name'=>'Repartidor',
+        'email'=>'voluntario@uleam.edu.ec',
+        'password'=>bcrypt('SomosFacci')];
         $user = new User();
-        $user->fill($new_user);
+        $user->fill($new_roundsman);
         $user->save();
+        $roundsmanRole = Role::where('name', 'Repartidor')->first();
 
-        $user->assignRole($AdminRole);
-        $this->info("Se ha creado el usuario $user->name");
+        $user->assignRole($roundsmanRole);
     }
 }

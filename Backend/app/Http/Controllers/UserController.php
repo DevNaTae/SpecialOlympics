@@ -23,7 +23,7 @@ class UserController extends Controller
                 $cookie = cookie('cookie_token', $token, 60 * 24);
             // Obtener el número de notificaciones del usuario
             // Retornar una respuesta JSON con éxito y el usuario
-            return response()->json(['user'=> $user], 200)->withCookie(($cookie));
+            return response()->json(['user'=> $user->getSessionDetails()], 200)->withCookie(($cookie));
             } else {
                 // La autenticación ha fallado
                 return response(['success'=>false, 'message'=>'Credenciales invalidas'], 401);
@@ -41,4 +41,9 @@ class UserController extends Controller
         return response(['message' => 'Cerró Sesión'], 200)->withCookie($cookie);
     }
 
+    public function get_session()
+    {
+        $user = auth()->user()->getSessionDetails();
+            return response()->json(['success'=>true,'user'=>$user]);
+    }
 }

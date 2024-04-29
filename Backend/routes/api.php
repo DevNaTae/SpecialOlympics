@@ -23,5 +23,10 @@ Route::post('/login',[UserController::class, 'login'])->middleware('guest:sanctu
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::post('/logout',[UserController::class,'logout']);
-    // Route::post('/scan-qr',[]);
+    Route::get('/get_session',[UserController::class,'get_session']);
+});
+
+//Ruta solo para repartidor
+Route::middleware('auth:sanctum','role:Repartidor')->group(function(){
+    Route::post('/{}',[UserController::class,'logout']);
 });
