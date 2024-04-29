@@ -23,6 +23,8 @@ const router = createRouter({
   ]
 });
 
+//Ronny si llegas a hacer el trabajo y te arroja un error 500
+//comenta esto y una ves que termines lo vuelves a descomentar
 router.beforeEach(async (to, from, next) => {
   const session = C_session();
   
