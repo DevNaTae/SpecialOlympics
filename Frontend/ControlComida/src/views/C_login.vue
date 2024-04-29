@@ -38,22 +38,19 @@ const form_session= ref({
 const sesion_function = async()=>{
     ShowLoading();
     const session_verif = await P_session.init_session(form_session.value)
-    // setTimeout(() => {
-    //     if(session_verif == true){
-    //         ShowSuccess();
-    //         router.push({name: 'C_status'});
-    //     }else{
-    //         ShowError();
-    //     }
-    // }, 3000);
+    setTimeout(() => {
+         if(session_verif == true){
+             ShowSuccess();
+             router.push({name: 'C_status'});
+         }else{
+             ShowError();
+        }
+    }, 3000);
 
 
 }
 </script>
 <template>
-<RouterLink to="/status" >{{  P_session.prueba }}</RouterLink>
-
-
 <div class="center-container" >
     <div class="container-fluid font_serie">
                 <div class="row justify-content-center mb-2">
