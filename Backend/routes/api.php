@@ -23,4 +23,5 @@ Route::post('/login',[UserController::class, 'login'])->middleware('guest:sanctu
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::post('/logout',[UserController::class,'logout']);
+    // Route::post('/scan-qr',[]);
 });
