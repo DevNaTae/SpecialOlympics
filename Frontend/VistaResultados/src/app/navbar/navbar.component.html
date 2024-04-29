@@ -1,27 +1,71 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary mb-3">
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="index">Responsive navbar</a>
-
-    <button
-      class="navbar-toggler"
-      type="button"
-      (click)="isMenuCollapsed = !isMenuCollapsed"
-    >
-      &#9776;
-    </button>
-
-    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" routerLink="login" (click)="isMenuCollapsed = true">Features</a>
+<!--Sidebar-->
+<nav class="d-flex flex-column align-items-center mx-3 mt-4 text-white">
+  <!--Logo-->
+  <a
+    routerLink="index"
+    class="d-flex align-items-center pb-3 mb-md-0 text-white text-decoration-none"
+  >
+    <span class="titulo d-none d-sm-inline">Special Olympics</span>
+  </a>
+  <!--Menu-->
+  <ul
+    class="nav nav-pills flex-column mb-0 align-items-center align-items-sm-start"
+    id="menu"
+  >
+    <!--Item - 1-->
+    <li class="nav-item">
+      <a routerLink="login" class="nav-link align-middle px-0">
+        <fa-icon class="fs-5" [icon]="sport"></fa-icon>
+        <span class="ms-1 d-none d-sm-inline">Deportes</span>
+      </a>
+    </li>
+    <!--Item - 2-->
+    <li class="nav-item">
+      <a href="#" class="nav-link align-middle px-0">
+        <fa-icon class="fs-5" [icon]="people"></fa-icon>
+        <span class="ms-1 d-none d-sm-inline">Atletas</span>
+      </a>
+    </li>
+    <!--Item - 3-->
+    <li>
+      <a href="#" class="nav-link px-0 align-middle">
+        <fa-icon class="fs-5" [icon]="location"></fa-icon>
+        <span class="ms-1 d-none d-sm-inline">Lugares</span></a
+      >
+    </li>
+    <!-- Submenu - 1
+    <li>
+      <a
+        href="#submenu2"
+        data-bs-toggle="collapse"
+        class="nav-link px-0 align-middle"
+      >
+        <i class="fs-4 bi-bootstrap"></i>
+        <span class="ms-1 d-none d-sm-inline">Bootstrap</span></a
+      >
+      <ul
+        class="collapse nav flex-column ms-1"
+        id="submenu2"
+        data-bs-parent="#menu"
+      >
+        <li class="w-100">
+          <a href="#" class="nav-link px-0">
+            <span class="d-none d-sm-inline">Item</span> 1</a
+          >
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="register" (click)="isMenuCollapsed = true">Examples</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="profile" (click)="isMenuCollapsed = true">Profile</a>
+        <li>
+          <a href="#" class="nav-link px-0">
+            <span class="d-none d-sm-inline">Item</span> 2</a
+          >
         </li>
       </ul>
-    </div>
-  </div>
+    </li>
+    -->
+    <li>
+      <a href="#" class="nav-link px-0 align-middle">
+        <fa-icon class="fs-5" [icon]="events"></fa-icon>
+        <span class="ms-1 d-none d-sm-inline">Eventos</span>
+      </a>
+    </li>
+  </ul>
 </nav>

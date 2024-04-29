@@ -1,0 +1,27 @@
+.titulo {
+  font-weight: 700;
+  font-style: normal;
+  color: var(--color-white-smoke);
+  text-shadow: #00000044 1px 1px 5px;
+}
+
+span,
+li > a,
+fa-icon {
+  color: var(--color-white-smoke);
+  opacity: 0.85;
+  font-weight: 400;
+  text-shadow: #00000044 1px 1px 5px;
+}
+
+fa-icon {
+  margin-right: 5px;
+}
+
+span:hover,
+li > a:hover,
+fa-icon:hover {
+  color: var(--color-white-smoke);
+  opacity: 1.5;
+  transform: scale(1.01);
+}

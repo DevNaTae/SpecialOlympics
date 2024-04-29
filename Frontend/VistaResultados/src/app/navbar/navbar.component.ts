@@ -1,14 +1,26 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faBasketballBall,
+  faCalendar,
+  faLocationDot,
+  faPersonSnowboarding,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [NgbCollapseModule, RouterLink],
+  imports: [RouterLink, FontAwesomeModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css',
+  styleUrls: [
+    './navbar.component.css',
+    '/node_modules/bootstrap/dist/css/bootstrap.min.css',
+  ],
 })
 export class NavbarComponent {
-  isMenuCollapsed = true;
+  sport = faBasketballBall;
+  people = faPersonSnowboarding;
+  location = faLocationDot;
+  events = faCalendar;
 }

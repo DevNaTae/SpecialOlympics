@@ -1,0 +1,8 @@
+.sideb {
+  background-color: var(--color-celestial-blue);
+}
+
+.ai {
+  display: flex;
+  flex-direction: row;
+}

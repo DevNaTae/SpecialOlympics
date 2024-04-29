@@ -4,7 +4,7 @@ import C_footer from '@/components/C_Footer.vue'
 </script>
 <template>
     <div class="body_vue">
-        <div class="content_vue">
+        <div class="content_vue ">
             <C_Page_Interfaz></C_Page_Interfaz>
         </div>
         <footer class="footer_vue">
