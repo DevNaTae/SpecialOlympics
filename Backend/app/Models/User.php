@@ -52,4 +52,6 @@ class User extends Authenticatable
             'role' => $this->getRoleNames()->first(),
         ];
     }
+
+
 }

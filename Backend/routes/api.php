@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\EatsController;
+use App\Http\Controllers\SportmanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login',[UserController::class, 'login'])->middleware('guest:sanctum');
 
+Route::get('/data_qr',[UserController::class,'dataqr']);
 Route::middleware('auth:sanctum')->group(function(){
     Route::post('/logout',[UserController::class,'logout']);
     Route::get('/get_session',[UserController::class,'get_session']);
@@ -28,5 +31,9 @@ Route::middleware('auth:sanctum')->group(function(){
 
 //Ruta solo para repartidor
 Route::middleware('auth:sanctum','role:Repartidor')->group(function(){
-    Route::post('/{}',[UserController::class,'logout']);
+    Route::post('/sportman/{deportista}',[EatsController::class,'index']);
+});
+
+Route::middleware('auth:sanctum','role:Administrador')->prefix('dashboard')->group(function(){
+    Route::resource('sportman', SportmanController::class);
 });

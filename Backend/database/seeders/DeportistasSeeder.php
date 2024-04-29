@@ -13,6 +13,6 @@ class DeportistasSeeder extends Seeder
     public function run()
     {
         // Crear 50 deportistas utilizando el factory
-        \App\Models\Deportista::factory()->count(20)->create();
+        \App\Models\Deportista::factory()->count(5)->create();
     }
 }

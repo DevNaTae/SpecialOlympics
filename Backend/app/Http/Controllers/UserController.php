@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deportista;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -45,5 +47,31 @@ class UserController extends Controller
     {
         $user = auth()->user()->getSessionDetails();
             return response()->json(['success'=>true,'user'=>$user]);
+    }
+
+    public function dataqr()
+    {
+         // Obtener todos los deportistas
+    $deportistas = Deportista::all();
+
+    // Iterar a través de cada deportista para agregar su QR code
+    foreach ($deportistas as $deportista) {
+        // Comprobar si existe el archivo QR para este deportista
+        $filePath = 'public/qrcodes/' . $deportista->cedula . '.png'; // Ruta al archivo QR
+
+        if (Storage::exists($filePath)) {
+            // Leer el contenido del archivo QR
+            $qrCodeContents = Storage::get($filePath);
+
+            // Asignar el QR code al deportista
+            $deportista->qrcode = $qrCodeContents;
+        } else {
+            // En caso de que no se encuentre el archivo QR, asignar null o un mensaje de error
+            $deportista->qrcode = null;
+        }
+    }
+
+    // Retornar los deportistas con sus respectivos QR codes en formato JSON
+    return response()->json(['deportistas' => $deportistas]);
     }
 }

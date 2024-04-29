@@ -17,17 +17,12 @@ class Deportista extends Model
 
         static::creating(function ($deportista) {
              // Generar el código QR
-             $cdl = $deportista->cedula;
-             $qrCode = QrCode::size(300)->generate($cdl);
-
+            $cdl = $deportista->cedula;
+            $qrCode = QrCode::size(300)->generate($cdl);
              // Guardar el código QR en el almacenamiento (storage)
-             $fileName = $cdl ; // Nombre del archivo basado en la cédula
-             Storage::put('public/qrcodes/' . $fileName, $qrCode);
-
-
-
+            $fileName = $cdl.'.png' ; // Nombre del archivo basado en la cédula
+            Storage::put('public/qrcodes/' . $fileName, $qrCode);
         });
-
         static::updating(function ($deportista) {
 
         });
@@ -52,5 +47,25 @@ class Deportista extends Model
     public function provincia()
     {
         return $this->belongsTo(Provincia::class, 'provincia_id', 'provincia_id');
+    }
+
+
+    /**
+     * Obtener los almuerzos asociados al deportista.
+     */
+    public function almuerzos()
+    {
+        return $this->hasMany(Almuerzo::class);
+    }
+
+
+    public function getAuthIdentifierName()
+    {
+        return 'cedula';
+    }
+
+    public function qr()
+    {
+        return $this->Storage::get(filePath: 'public/qrcodes/' . $this->cedula);
     }
 }
