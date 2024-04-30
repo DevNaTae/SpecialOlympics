@@ -1,6 +1,8 @@
 <script setup>
 import C_header from './C_Header.vue'
 import C_Time from './C_Time.vue';
+import { C_session } from '@/stores/session';
+const p_session = C_session();
 </script>
 <template>
         <div class="body_extend">
@@ -8,7 +10,7 @@ import C_Time from './C_Time.vue';
             <C_header></C_header>
           </div>
           <div class="container-fluid  ontent_style ">
-              <div >
+              <div class="mt-2">
                 <C_Time></C_Time>
               </div>
               <div class="centered_qr justify-content-center">
@@ -18,6 +20,15 @@ import C_Time from './C_Time.vue';
               </div>
           </div>
         </div>
+        <!-- <div class="border_r">
+          <div v-for="deportes in p_session.deportistas">
+            <div v-for="tarea in deportes">
+              <div v-html="tarea.qrcode">
+
+              </div>
+            </div>
+          </div>
+        </div> -->
 </template>
 <style>
 .content_style{

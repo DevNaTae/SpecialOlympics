@@ -14,6 +14,8 @@ const ShowLoading = () => {
       title:'Procesando....',
       html: '<div class="spinner-border text-primary mt-2 mb-2"></div>',
       showConfirmButton: false,
+      allowOutsideClick: false, 
+
     });
 };
 const ShowSuccess = ()=>{
