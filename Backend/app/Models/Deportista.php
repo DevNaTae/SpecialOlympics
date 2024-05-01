@@ -46,7 +46,7 @@ class Deportista extends Model
      */
     public function provincia()
     {
-        return $this->belongsTo(Provincia::class, 'provincia_id', 'provincia_id');
+        return $this->belongsTo(Provincia::class, 'provincia_id');
     }
 
 
@@ -67,5 +67,9 @@ class Deportista extends Model
     public function qr()
     {
         return $this->Storage::get(filePath: 'public/qrcodes/' . $this->cedula);
+    }
+    public function Deporte()
+    {
+        return $this->hasMany(Deporte::class);
     }
 }

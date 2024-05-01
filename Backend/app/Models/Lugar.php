@@ -13,4 +13,9 @@ class Lugar extends Model
     protected $primaryKey = 'lugar_id';
 
     protected $fillable = ['nombre', 'descripcion'];
+
+    public function actividadDeportiva()
+    {
+        return $this->belongsToMany(ActividadDeportiva::class);
+    }
 }
