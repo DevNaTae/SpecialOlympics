@@ -47,7 +47,7 @@ class TestAtletasAl extends Command
                 'apellido' => $deportistaData['apellido'],
                 'edad' => rand(18, 40), // Edad aleatoria entre 18 y 40 años
                 'genero' => rand(0, 1) ? 'M' : 'F', // Género aleatorio
-                'url_imagen' => $deportistaData['nombre'].$deportistaData['nombre'].'jpg', // URL de imagen de ejemplo
+                'url_imagen' => $deportistaData['nombre'].$deportistaData['nombre'].'.jpg', // URL de imagen de ejemplo
             ]);
         }
 

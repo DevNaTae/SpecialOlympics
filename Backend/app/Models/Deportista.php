@@ -38,7 +38,8 @@ class Deportista extends Model
         'nombre',
         'apellido',
         'edad',
-        'genero'
+        'genero',
+        'url_imagen'
     ];
 
     /**
