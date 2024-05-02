@@ -1,6 +1,6 @@
 import './assets/css/borders.css'
 import './assets/css/main_v.css'
-import './assets/plugins/qrCode.min.js'
+// import './assets/plugins/qrCode.min.js'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

@@ -77,7 +77,7 @@ const sesion_function = async()=>{
                 <div class="row justify-content-center border_blu">
                     <div class="col-10 col-xl-4">
                         <div class="base_session">
-                            <h2>Administracion de Comida</h2>
+                            <h2 class="text-center">Administracion</h2>
                             <h2>Credenciales:</h2>
                             <form @submit.prevent="sesion_function">
                                 <div class="form-floating mb-3">

@@ -4,6 +4,10 @@ import C_Time from './C_Time.vue';
 import { C_session } from '@/stores/session';
 const p_session = C_session();
 import C_scaner from './C_scaner.vue';
+
+const datos = async ()=>{
+  await p_session.data_qr();
+}
 </script>
 <template>
         <div class="body_extend">
@@ -21,10 +25,11 @@ import C_scaner from './C_scaner.vue';
               </div>
           </div>
         </div>
-        <!-- <div class="border_r">
+        <!-- <button @click="datos">llamar</button>
+        <div class="border_r">
           <div v-for="deportes in p_session.deportistas">
             <div v-for="tarea in deportes">
-              <div v-html="tarea.qrcode">
+              <div v-html="tarea.qrcode" class="mt-5 mb-5">
 
               </div>
             </div>
