@@ -22,6 +22,7 @@ return new class extends Migration
                 ->onDelete('restrict');
             $table->string('nombre');
             $table->string('apellido');
+            $table->string('url_imagen');
             $table->integer('edad');
             $table->enum('genero',['M','F']);
             $table->timestamps();
