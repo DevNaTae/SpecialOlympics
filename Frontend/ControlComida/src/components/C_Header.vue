@@ -42,7 +42,7 @@ const data_qr = async()=>{
                 <img src="../assets/imgs/Uleam.png" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
             </a>
             <div class="d-flex">
-                <button v-if="!P_session.user == 'Administrador'" @click="logout" class=" navbar-toggler" type="button" >
+                <button v-if="P_session.user == 'Repartidor'" @click="logout" class=" navbar-toggler" type="button" >
                     <i class="bi bi-door-open-fill"></i>
                 </button>
                 <div v-if="P_session.user == 'Administrador'" class="btn-group">
@@ -62,7 +62,7 @@ const data_qr = async()=>{
                         </a></li>
                         <li><a class="dropdown-item" >
                             <RouterLink :to="{name: 'C_SportmanState'}" class="text_none">
-                                Estado de los deportistas
+                                Estado del personal
                             </RouterLink>
                         </a></li>
                         <li><a class="dropdown-item" >
@@ -80,7 +80,7 @@ const data_qr = async()=>{
     <a class="edit_boton ">
         {{ P_session.user }}
         <i v-if="P_session.user === 'Administrador'" class="bi bi-person-fill-gear" style="font-size: 1.5rem;"></i>
-        <i v-else class="bi bi-person-circle" style="font-size: 2rem;"></i>
+        <i  class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
     </a>
 </template>
 <style scoped>

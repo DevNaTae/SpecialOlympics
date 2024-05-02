@@ -75,7 +75,6 @@ export const C_session = defineStore('session',{
                     },
                     credentials:'include',
                 })
-                
                 const jsonData = await response.json();
                 this.deportistas = jsonData
                 console.log(jsonData);

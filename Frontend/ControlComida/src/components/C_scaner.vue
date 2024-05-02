@@ -1,52 +1,125 @@
 <script setup>
+import { ref } from 'vue';
+import jsQR from 'jsqr';
+import { C_print_upload } from '@/stores/Print_Credentials';
+const C_scan = C_print_upload();
+const isCameraOn = ref(false);
+const video = ref(null);
+const canvas = ref(null);
+let canScan = true;
+const prueba_img = ref(null);
+import Swal from 'sweetalert2'
+const ShowLoading = () => {
+  // Dentro de la función ShowLoading, creamos una instancia de SweetAlert2 y la almacenamos en la variable loadingAlert.
+  const loadingAlert = Swal.fire({
+    title: 'Scanneando Qr',
+    html: '<div class="spinner-border text-primary mt-2 mb-2"></div>',
+    showConfirmButton: false,
+    allowOutsideClick: false, 
+  });
+
+  // Definimos una función interna llamada CloseLoading que cerrará la instancia de SweetAlert2.
+  const CloseLoading = () => {
+    Swal.close(); // Cerramos la instancia de SweetAlert2
+  };
+
+  // Devolvemos la función CloseLoading para que pueda ser utilizada fuera de la función ShowLoading.
+  return CloseLoading;
+};
+const ShowSuccess = ()=>{
+    Swal.fire({
+        icon: "success",
+        title:'scaneado',
+        timer: 3000,
+
+    })
+}
+const ShowError = () =>{
+    Swal.fire({
+        icon:'error',
+        title: 'error al scannear',
+        timer: 3000,
+    })
+}
+
+
+const toggleCamera = async () => {
+  if (!isCameraOn.value) {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.value.srcObject = stream;
+      isCameraOn.value = true;
+      scanQRCode();
+    } catch (error) {
+      console.error('Error al acceder a la cámara:', error);
+    }
+  } else {
+    const stream = video.value.srcObject;
+    const tracks = stream.getTracks();
+    tracks.forEach(track => track.stop());
+    video.value.srcObject = null;
+    isCameraOn.value = false;
+  }
+};
+
+const scanQRCode = () => {
+  if (!canScan) return;
+
+  const videoEl = video.value;
+  const canvasEl = canvas.value;
+
+  const context = canvasEl.getContext('2d');
+  const { width, height } = videoEl.getBoundingClientRect();
+  canvasEl.width = width;
+  canvasEl.height = height;
+
+  const drawInterval = setInterval(async () => {
+    if (videoEl.readyState === videoEl.HAVE_ENOUGH_DATA) {
+      context.drawImage(videoEl, 0, 0, width, height);
+      const imageData = context.getImageData(0, 0, width, height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+      if (code) {
+       
+        canScan = false;
+        setTimeout(() => {
+          canScan = true;
+        }, 5000); // Pausa de 5 segundos
+        clearInterval(drawInterval);
+        const closeLoadingAlert = ShowLoading();
+        const data = await C_scan.get_qr(code.data);
+        prueba_img.value = C_scan.deportista.deportista.url_imagen;
+        if(data=== true){
+          ShowSuccess()
+        }else{
+          ShowError()
+        }
+      }
+    }
+  }, 100);
+};
+
 
 </script>
 
 <template>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background: #c9ae45; border-color: #c9ae45;">
-    SCANER
-</button>
-
-
-  <!-- MODAL -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">ESCANER</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-
-          <!-- CUADRO SCANER -->
-  <div class="row justify-content-center mt-5">
-    <div class="col-sm-4 shadow p-3"  style="width:100%">
-      <h5 class="text-center">Escanear codigo QR</h5>
-      <div class="row text-center">
-        <a id="btn-scan-qr" href="#">
-          <img src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg" class="img-fluid text-center" width="175">
-        </a>
-        <canvas hidden="" id="qr-canvas" class="img-fluid"></canvas>
-        </div>
-        <div class="row mx-5 my-3">
-        <button class="btn btn-success btn-sm rounded-3 mb-2" onclick="encenderCamara()" style="background: orange;">Encender camara</button>
-        <button class="btn btn-danger btn-sm rounded-3" onclick="cerrarCamara()">Detener camara</button>
-      </div>
+  <div>
+    <div class="d-flex justify-content-center mb-3">
+      <button @click="toggleCamera" class="btn btn-dark">{{ isCameraOn ? 'Apagar cámara' : 'Encender cámara' }}</button>
     </div>
+    <video ref="video" autoplay></video>
+    <canvas ref="canvas" style="display: none;"></canvas>
   </div>
-  <audio id="audioScaner" src="assets/sonido.mp3"></audio> 
-  <!-- <script src="assets/js/index.js"></script> -->
-<!-- TERMINA CUADRO SCANER -->
-
-        </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
-        <button type="button" class="btn btn-primary" style="background: orange;">CONTINUAR</button>
-      </div>
-    </div>
+  <div class="border_r">
+    <img :src="`http://127.0.0.1:8000/storage/${prueba_img}`"> 
   </div>
-</div>
-<!-- TERMINA MODAL -->
-
-
 </template>
+
+
+
+<style scoped>
+/* Estilos opcionales para el componente */
+video {
+  width: 100%;
+  max-width: 400px;
+}
+</style>

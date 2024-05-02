@@ -6,9 +6,20 @@ const P_print_upload = C_print_upload()
 </script>
 <template>
 <div class="body_vue">
-        <div class="content_vue ">
+        <div class="content_vue">
             <C_Header></C_Header>
-            esto es el excel
+            <div class="mt-5 centered_qr justify-content-center">
+              <div class="my-auto">
+                <div class="mb-3">
+                  <label for="formFile" class="form-label">Subir archivo .xls o .xlsx</label>
+                  <input class="form-control" type="file" id="formFile">
+                </div>
+                <div class="d-flex justify-content-around">
+                  <button  class="btn btn-success">subir</button>
+                  <button class="btn btn-danger" >Cancelar</button>
+                </div>
+              </div>
+            </div>
         </div>
         <footer class="footer_vue">
             <C_footer></C_footer>
