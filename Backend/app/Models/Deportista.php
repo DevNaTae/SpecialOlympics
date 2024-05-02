@@ -60,11 +60,9 @@ class Deportista extends Model
     }
 
 
-    public function getAuthIdentifierName()
-    {
-        return 'cedula';
-    }
-
+    /**
+     * Obtener la URL de la imagen del deportista.
+     */
     public function qr()
     {
         return $this->Storage::get(filePath: 'public/qrcodes/' . $this->cedula);
@@ -72,5 +70,10 @@ class Deportista extends Model
     public function Deporte()
     {
         return $this->hasMany(Deporte::class);
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'cedula'; // Utiliza 'cedula' como la clave de ruta en lugar de 'id'
     }
 }

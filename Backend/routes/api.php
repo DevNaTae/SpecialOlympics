@@ -33,8 +33,8 @@ Route::middleware('auth:sanctum')->group(function(){
 });
 
 //Ruta solo para repartidor
-Route::middleware('auth:sanctum','role:Repartidor')->group(function(){
-    Route::post('/eats/{deportista}',[EatsController::class,'index']);
+Route::middleware(['auth:sanctum','role:Repartidor'])->group(function(){
+    Route::get('/eats/{deportista}',[EatsController::class,'index']);
 });
 
 Route::middleware('auth:sanctum','role:Administrador')->prefix('dashboard')->group(function(){
