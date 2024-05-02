@@ -3,6 +3,7 @@ import C_header from './C_Header.vue'
 import C_Time from './C_Time.vue';
 import { C_session } from '@/stores/session';
 const p_session = C_session();
+import C_scaner from './C_scaner.vue';
 </script>
 <template>
         <div class="body_extend">
@@ -15,7 +16,7 @@ const p_session = C_session();
               </div>
               <div class="centered_qr justify-content-center">
                     <div class="my-auto">
-                      aqui va lo que debes setear Ronny
+                      <C_scaner></C_scaner>
                     </div>
               </div>
           </div>
