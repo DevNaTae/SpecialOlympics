@@ -80,7 +80,7 @@ const data_qr = async()=>{
     <a class="edit_boton ">
         {{ P_session.user }}
         <i v-if="P_session.user === 'Administrador'" class="bi bi-person-fill-gear" style="font-size: 1.5rem;"></i>
-        <i  class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
+        <i v-if="P_session.user === 'Repartidor'" class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
     </a>
 </template>
 <style scoped>

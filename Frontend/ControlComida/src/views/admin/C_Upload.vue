@@ -8,6 +8,7 @@ const P_print_upload = C_print_upload()
 <div class="body_vue">
         <div class="content_vue">
             <C_Header></C_Header>
+            <!-- <h2>deben mostrarse aqui las 24 provincias</h2> -->
             <div class="mt-5 centered_qr justify-content-center">
               <div class="my-auto">
                 <div class="mb-3">

@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import C_PrintCredentials from '../views/admin/C_PrintCredentials.vue'
 import C_SportmanState from '../views/admin/C_SportmanState.vue'
 import C_upload from '../views/admin/C_Upload.vue';
+import C_CreateCredentials from '@/views/admin/C_CreateCredentials.vue';
 const router = createRouter({
   history: createWebHistory('/Control&Security/'), // Establece '/Control&Security' como la base de la historia
   routes: [
@@ -44,6 +45,12 @@ const router = createRouter({
       component: C_upload,
       meta: { requiresAuth: true } // Marca la ruta como requiere autenticación
 
+    },
+    {
+      path: '/admin/CreateCredentials',
+      name: 'C_CreateCredentials',
+      component: C_CreateCredentials,
+      meta: { requiresAuth: true }
     }
   ]
 });

@@ -20,7 +20,7 @@ const datos = async ()=>{
               </div>
               <div class="centered_qr justify-content-center">
                     <div class="my-auto">
-                      <C_scaner></C_scaner>
+                      <C_scaner v-if="p_session.user !== 'Administrador'"></C_scaner>
                     </div>
               </div>
           </div>
