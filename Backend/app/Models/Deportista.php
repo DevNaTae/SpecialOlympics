@@ -39,8 +39,19 @@ class Deportista extends Model
         'apellido',
         'edad',
         'genero',
-        'url_imagen'
+        'fecha_nacimiento',
+        'url_imagen',
+        'activo',
     ];
+    protected $formato = 'Y-m-d';
+    protected $casts = [
+        'fecha_nacimiento' => 'date',
+        'activo' => 'boolean',
+    ];
+
+    // protected $appends = ['qr'];
+
+
 
     /**
      * Obtener la provincia asociada al deportista.

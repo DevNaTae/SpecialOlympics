@@ -13,13 +13,18 @@ return new class extends Migration
     {
         Schema::create('almuerzos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('deportista_id');
+            $table->unsignedBigInteger('deportista_id')->nullable();
             $table->date('fecha');
             $table->time('hora_inicio');
             $table->time('hora_fin');
             $table->boolean('completado')->default(false);
+            $table->unsignedBigInteger('invitado_id')->nullable();
             $table->timestamps();
 
+            $table->foreign('invitado_id')
+                ->references('invitado_id')
+                ->on('invitados')
+                ->onDelete('cascade');
             $table->foreign('deportista_id')
                 ->references('id')
                 ->on('deportistas')

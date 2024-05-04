@@ -33,7 +33,7 @@ class CreateRoundsman extends Command
         $user = new User();
         $user->fill($new_roundsman);
         $user->save();
-        $roundsmanRole = Role::where('name', 'Repartidor')->first();
+        $roundsmanRole = Role::where('name', 'Voluntario')->first();
 
         $user->assignRole($roundsmanRole);
     }
