@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EatsController;
+use App\Http\Controllers\FilesController;
 use App\Http\Controllers\SportmanController;
 use App\Http\Controllers\SportController;
 use App\Http\Controllers\SportActivitiesController;
@@ -33,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function(){
 });
 
 //Ruta solo para repartidor
-Route::middleware(['auth:sanctum','role:Repartidor'])->group(function(){
+Route::middleware(['auth:sanctum','role:Voluntario'])->group(function(){
     Route::get('/eats/{deportista}',[EatsController::class,'index']);
 });
 
@@ -54,6 +55,9 @@ Route::middleware('auth:sanctum','role:Administrador')->prefix('dashboard')->gro
     route::post('/store_lugar', [LocateController::class, 'store']);
     route::delete('/delete_lugar/{lugar}', [LocateController::class, 'delete']);
     route::put('/update_lugar/{lugar}', [LocateController::class, 'update']);
+
+    //Rutas para archivos
+    Route::post('/deportista_import',[FilesController::class,'deportistaImport']);
 });
 
 
