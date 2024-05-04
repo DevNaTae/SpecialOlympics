@@ -9,6 +9,7 @@ const P_print_upload = C_print_upload()
         <div class="content_vue">
             <C_Header></C_Header>
             <!-- <h2>deben mostrarse aqui las 24 provincias</h2> -->
+            <!-- hacer un modal grande con las 24 provincias en un scroll bar de posiciones de 4 a 4 con sus iconos o solo los nombre -->
             <div class="mt-5 centered_qr justify-content-center">
               <div class="my-auto">
                 <div class="mb-3">
