@@ -1,15 +1,19 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from './navbar/navbar.component';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { AfterViewInit, Component } from '@angular/core';
+import $ from 'jquery';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  imports: [RouterOutlet, NavbarComponent, NgbCollapseModule],
+  styleUrl: './app.component.css',
 })
-export class AppComponent {
-  isMenuCollapsed = true;
+export class AppComponent implements AfterViewInit {
+  ngAfterViewInit() {
+    this.loadScript();
+  }
+
+  loadScript() {
+    $(window).on('load', function () {
+      $('.loadding-page').delay(1000).fadeOut(200);
+    });
+  }
 }

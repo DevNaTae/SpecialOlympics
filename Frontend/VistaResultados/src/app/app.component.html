@@ -1,8 +1,61 @@
-<div class="ai flex-nowrap" style="height: 100%">
-  <div class="navbar align-items-start sidebar sideb accordion p-0 navbar-dark">
-    <app-navbar></app-navbar>
-  </div>
-  <div class="col-md-9">
-    <router-outlet></router-outlet>
+<div class="loadding-page">
+  <div class="cssload-box-loading"></div>
+</div>
+<div class="container-fluid">
+  <div class="row flex-nowrap">
+    <div
+      class="sideb col-auto col-md-3 col-xl-2 px-sm-2 px-0 h-100 position-sticky top-0"
+    >
+      <div
+        class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-3 text-white min-vh-100"
+      >
+        <address
+          class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+        >
+          <a
+            routerLink="index"
+            class="fs-5 d-none d-sm-inline text-decoration-none text-white"
+            >Inicio</a
+          >
+        </address>
+        <ul
+          class="lh-lg nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+          id="menu"
+        >
+          <li class="nav-item" routerLink="sport" routerLinkActive="activo">
+            <a class="nav-link align-middle px-0" routerLink="sport">
+              <i class="fs-5 fa-solid fa-basketball pe-1"></i>
+              <span class="ms-1 d-none d-sm-inline">Deportes</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLink="athlete" routerLinkActive="activo">
+            <a class="nav-link px-0 align-middle" routerLink="athlete">
+              <i class="fs-5 fa-solid fa-person-snowboarding pe-1"></i>
+              <span class="ms-1 d-none d-sm-inline">Atletas</span></a
+            >
+          </li>
+          <li class="nav-item" routerLink="place" routerLinkActive="activo">
+            <a class="nav-link px-0 align-middle" routerLink="place">
+              <i class="fs-5 fa-solid fa-location-dot pe-1"></i>
+              <span class="ms-1 d-none d-sm-inline">Lugares</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLink="calendar" routerLinkActive="activo">
+            <a class="nav-link px-0 align-middle" routerLink="calendar">
+              <i class="fs-5 fa-solid fa-calendar pe-1"></i>
+              <span class="ms-1 d-none d-sm-inline">Calendario</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link px-0 align-middle">
+              <i class="fs-5 fa-solid fa-location-dot pe-1"></i>
+              <span class="ms-1 d-none d-sm-inline">Lugares</span>
+            </a>
+          </li>
+        </ul>
+        <hr />
+      </div>
+    </div>
+    <div class="col p-0"><router-outlet></router-outlet></div>
   </div>
 </div>
