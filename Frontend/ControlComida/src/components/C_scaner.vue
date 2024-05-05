@@ -1,4 +1,5 @@
 <script setup>
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue';
 import jsQR from 'jsqr';
 import { C_print_upload } from '@/stores/Print_Credentials';
@@ -7,6 +8,9 @@ const isCameraOn = ref(false);
 const video = ref(null);
 const canvas = ref(null);
 let canScan = true;
+const router = useRouter()
+const route = useRoute()
+
 const prueba_img = ref(null);
 import Swal from 'sweetalert2'
 const ShowLoading = () => {
@@ -41,8 +45,6 @@ const ShowError = () =>{
         timer: 3000,
     })
 }
-
-
 const toggleCamera = async () => {
   if (!isCameraOn.value) {
     try {
@@ -85,10 +87,19 @@ const scanQRCode = () => {
           canScan = true;
         }, 5000); // Pausa de 5 segundos
         clearInterval(drawInterval);
+        //aqui va la nota
         const closeLoadingAlert = ShowLoading();
         const data = await C_scan.get_qr(code.data);
-        prueba_img.value = C_scan.deportista.deportista.url_imagen;
+        //prueba_img.value = C_scan.deportista.deportista.url_imagen;
         if(data=== true){
+          toggleCamera();
+          router.push(
+            {
+              name:'C_food_state', 
+              params:{f_num:C_scan.deportista.deportista.cedula},
+              query:{Datos_deportista: JSON.stringify(C_scan.deportista)}
+            }
+          )
           ShowSuccess()
         }else{
           ShowError()
