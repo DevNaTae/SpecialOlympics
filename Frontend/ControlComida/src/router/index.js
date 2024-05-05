@@ -8,6 +8,8 @@ import C_PrintCredentials from '../views/admin/C_PrintCredentials.vue'
 import C_SportmanState from '../views/admin/C_SportmanState.vue'
 import C_upload from '../views/admin/C_Upload.vue';
 import C_CreateCredentials from '@/views/admin/C_CreateCredentials.vue';
+//opciones para voluntarios
+import C_food_data from '@/views/admin/C_food_data.vue';
 const router = createRouter({
   history: createWebHistory('/Control&Security/'), // Establece '/Control&Security' como la base de la historia
   routes: [
@@ -51,6 +53,14 @@ const router = createRouter({
       name: 'C_CreateCredentials',
       component: C_CreateCredentials,
       meta: { requiresAuth: true }
+    },
+    {
+      path:'/volunteer/food_state/:f_num',
+      name:'C_food_state',
+      component: C_food_data,
+      meta: { requiresAuth: true }
+
+
     }
   ]
 });
@@ -71,7 +81,14 @@ router.beforeEach(async (to, from, next) => {
         next('/');
         return;
       }
-    } else {
+    } else if(to.path.startsWith('/volunteer/')){
+      await session.get_session();
+      if (!session.verif || session.user !== 'Voluntario') {
+        next('/');
+        loadingAlert.close();
+        return;
+      }
+    } else   {
       // Si la ruta no es una ruta /admin/, verifica si la sesión está verificada
       if (!session.verif) {
         next('/');
