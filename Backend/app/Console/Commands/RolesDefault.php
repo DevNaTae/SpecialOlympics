@@ -25,7 +25,7 @@ class RolesDefault extends Command
      */
     public function handle()
     {
-        $roles = ['Administrador','Repartidor'];
+        $roles = ['Administrador','Voluntario'];
 
         foreach ($roles as $roleName) {
             Role::firstOrCreate(['name' => $roleName]);

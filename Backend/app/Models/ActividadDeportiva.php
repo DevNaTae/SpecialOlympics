@@ -13,10 +13,14 @@ class ActividadDeportiva extends Model
 
     protected $primaryKey = 'actividad_id';
 
-    protected $fillable = ['deporte_id', 'actividad', 'description'];
+    protected $fillable = ['deporte_id', 'actividad', 'descripcion'];
 
     public function deporte()
     {
         return $this->belongsTo(Deporte::class, 'deporte_id');
+    }
+    public function lugar()
+    {
+        return $this->belongsToMany(Lugar::class);
     }
 }

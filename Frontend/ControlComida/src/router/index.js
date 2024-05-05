@@ -2,7 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { C_session } from '@/stores/session';
 import C_login from '../views/C_login.vue'
 import C_status from '../views/C_status.vue'
-
+import Swal from 'sweetalert2';
+//opciones admin
+import C_PrintCredentials from '../views/admin/C_PrintCredentials.vue'
+import C_SportmanState from '../views/admin/C_SportmanState.vue'
+import C_upload from '../views/admin/C_Upload.vue';
+import C_CreateCredentials from '@/views/admin/C_CreateCredentials.vue';
 const router = createRouter({
   history: createWebHistory('/Control&Security/'), // Establece '/Control&Security' como la base de la historia
   routes: [
@@ -19,6 +24,33 @@ const router = createRouter({
       component: C_status,
       meta: { requiresAuth: true } // Marca la ruta como requiere autenticación
 
+    },
+    {
+      path: '/admin/PrintCredentials',
+      name: 'C_printCredentials',
+      component: C_PrintCredentials,
+      meta: { requiresAuth: true } // Marca la ruta como requiere autenticación
+
+    },
+    {
+      path: '/admin/SportmanState',
+      name: 'C_SportmanState',
+      component: C_SportmanState,
+      meta: { requiresAuth: true } // Marca la ruta como requiere autenticación
+
+    },
+    {
+      path: '/admin/Upload',
+      name: 'C_Upload',
+      component: C_upload,
+      meta: { requiresAuth: true } // Marca la ruta como requiere autenticación
+
+    },
+    {
+      path: '/admin/CreateCredentials',
+      name: 'C_CreateCredentials',
+      component: C_CreateCredentials,
+      meta: { requiresAuth: true }
     }
   ]
 });
@@ -27,34 +59,58 @@ const router = createRouter({
 //comenta esto y una ves que termines lo vuelves a descomentar
 router.beforeEach(async (to, from, next) => {
   const session = C_session();
-  
-  // Si la sesión no está verificada y la ruta es diferente de '/', redirigir al login
-  if (!session.verif && to.path !== '/') {
-    next('/');
-    return; // Importante: asegúrate de salir de la función aquí para evitar llamadas adicionales a next()
+  const loadingAlert = ShowLoading();
+
+  // Si la ruta requiere autenticación, verifica el rol del usuario
+  if (to.meta.requiresAuth) {
+    // console.log('entre al auth')
+    // Si la ruta es una ruta /admin/, verifica si el usuario tiene el rol de administrador
+    if (to.path.startsWith('/admin/')) {
+      await session.get_session();
+      if (!session.verif || session.user !== 'Administrador') {
+        next('/');
+        return;
+      }
+    } else {
+      // Si la ruta no es una ruta /admin/, verifica si la sesión está verificada
+      if (!session.verif) {
+        next('/');
+        return;
+      }
+    }
   }
 
   // Si la sesión no está verificada y la ruta es '/', intentar obtener la sesión
   if (!session.verif && to.path === '/') {
+    // console.log('entre al auth_2')
     try {
       await session.get_session();
       if (session.verif) {
-        next('/status'); // Si la sesión está verificada después de obtenerla, redirigir al status
+        loadingAlert.close();
+        next('/status');
       } else {
-        next(); // Si la sesión sigue sin estar verificada, permitir la navegación a la ruta de login
+        loadingAlert.close();
+        next();
       }
     } catch (error) {
       console.error('Error al obtener la sesión:', error);
       next('/');
     }
-    return; // Asegúrate de salir de la función aquí para evitar llamadas adicionales a next()
+    return;
   }
 
-  // Si la sesión está verificada, permitir la navegación
+  loadingAlert.close();
   next();
-
 });
+const ShowLoading = () => {
+  return Swal.fire({
+    title: 'Cargando Ruta',
+    html: '<div class="spinner-border text-primary mt-2 mb-2"></div>',
+    showConfirmButton: false,
+    showCancelButton: false, // Muestra el botón de "Cancelar"
+    allowOutsideClick: false, 
 
-
+  });
+};
 
 export default router;

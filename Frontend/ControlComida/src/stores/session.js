@@ -6,7 +6,8 @@ export const C_session = defineStore('session',{
             prueba:'hola',
             url:'',
             user:[],
-            verif:false
+            verif:false,
+            deportistas:''
         }
     ),
     actions:{
@@ -49,14 +50,34 @@ export const C_session = defineStore('session',{
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
+                        'Accept': 'application/json',
                     },
                     credentials:'include',
                 })
-                console.log(response);
+                const jsonData = await response.json();
                 if(response.status== 200){
                     this.verif = true;
                 }
+                console.log(jsonData.user.role);
+                this.user = jsonData.user.role;
+            } catch (error) {
                 
+            }
+        },
+        async data_qr(){
+            try {
+                const response = await fetch ('http://127.0.0.1:8000/api/data_qr',{
+                    method:'GET',
+                    headers:{
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json',
+                    },
+                    credentials:'include',
+                })
+                const jsonData = await response.json();
+                this.deportistas = jsonData
+                console.log(jsonData);
             } catch (error) {
                 
             }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('deportistas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('cedula')->unique();
-            $table->unsignedBigInteger('numero_deportista')->unique();
+            $table->unsignedBigInteger('numero_deportista')->unique()->nullable();
             $table->unsignedInteger('provincia_id');
             $table->foreign('provincia_id')
                 ->references('provincia_id')
@@ -24,6 +24,10 @@ return new class extends Migration
             $table->string('apellido');
             $table->integer('edad');
             $table->enum('genero',['M','F']);
+            $table->date('fecha_nacimiento');
+            $table->string('url_imagen');
+            $table->boolean('activo')->default(true);
+            $table->string('lugar_hospedaje')->nullable();
             $table->timestamps();
         });
     }

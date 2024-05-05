@@ -8,9 +8,10 @@ const P_session = C_session();
 const ShowLoading = () => {
   // Dentro de la función ShowLoading, creamos una instancia de SweetAlert2 y la almacenamos en la variable loadingAlert.
   const loadingAlert = Swal.fire({
-    title: 'Procesando....',
+    title: 'Cerrando Sesión',
     html: '<div class="spinner-border text-primary mt-2 mb-2"></div>',
     showConfirmButton: false,
+    allowOutsideClick: false, 
   });
 
   // Definimos una función interna llamada CloseLoading que cerrará la instancia de SweetAlert2.
@@ -30,7 +31,9 @@ const logout = async()=>{
     }
 
 }
-
+const data_qr = async()=>{
+    await P_session.data_qr();
+}
 </script>
 <template>
     <nav class="navbar bg-body-tertiary ">
@@ -39,16 +42,59 @@ const logout = async()=>{
                 <img src="../assets/imgs/Uleam.png" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
             </a>
             <div class="d-flex">
-                <button @click="logout" class=" navbar-toggler" type="button" >
+                <button v-if="P_session.user == 'Repartidor'" @click="logout" class=" navbar-toggler" type="button" >
                     <i class="bi bi-door-open-fill"></i>
                 </button>
-                <button class="ms-3 navbar-toggler" type="button">
-                    <i class="bi bi-download"></i>
-                </button>
+                <div v-if="P_session.user == 'Administrador'" class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-gear-fill"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item " >
+                            <RouterLink :to="{ name:'C_Upload' }" class="text_none">
+                                Subir excel
+                            </RouterLink>
+                        </a></li>
+                        <li><a class="dropdown-item" >
+                            <RouterLink :to="{ name:'C_printCredentials'}" class="text_none">
+                                Imprimir credenciales
+                            </RouterLink>
+                        </a></li>
+                        <li><a class="dropdown-item" >
+                            <RouterLink :to="{name: 'C_SportmanState'}" class="text_none">
+                                Estado del personal
+                            </RouterLink>
+                        </a></li>
+                        <li><a class="dropdown-item" >
+                            <RouterLink :to="{name: 'C_status'}" class="text_none">
+                                Status
+                            </RouterLink>
+                        </a></li>
+                        <li><a class="dropdown-item" @click="logout">Cerrar Sesión</a></li>
+                    </ul>
+                </div>
             </div>
+
         </div>
     </nav>
+    <a class="edit_boton ">
+        {{ P_session.user }}
+        <i v-if="P_session.user === 'Administrador'" class="bi bi-person-fill-gear" style="font-size: 1.5rem;"></i>
+        <i v-if="P_session.user === 'Repartidor'" class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
+    </a>
 </template>
-<style>
-
+<style scoped>
+.text_none{
+    text-decoration: none;
+    color: black;
+}
+.edit_boton{
+  
+    text-decoration: none;
+    color: black;
+    background: greenyellow;
+    padding: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
 </style>
