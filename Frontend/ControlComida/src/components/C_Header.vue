@@ -42,7 +42,7 @@ const data_qr = async()=>{
                 <img src="../assets/imgs/Uleam.png" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
             </a>
             <div class="d-flex">
-                <button v-if="P_session.user == 'Repartidor'" @click="logout" class=" navbar-toggler" type="button" >
+                <button v-if="P_session.user == 'Voluntario'" @click="logout" class=" navbar-toggler" type="button" >
                     <i class="bi bi-door-open-fill"></i>
                 </button>
                 <div v-if="P_session.user == 'Administrador'" class="btn-group">
@@ -80,7 +80,7 @@ const data_qr = async()=>{
     <a class="edit_boton ">
         {{ P_session.user }}
         <i v-if="P_session.user === 'Administrador'" class="bi bi-person-fill-gear" style="font-size: 1.5rem;"></i>
-        <i v-if="P_session.user === 'Repartidor'" class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
+        <i v-if="P_session.user === 'Voluntario'" class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
     </a>
 </template>
 <style scoped>
