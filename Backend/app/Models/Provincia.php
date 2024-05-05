@@ -13,4 +13,6 @@ class Provincia extends Model
     protected $primaryKey = 'provincia_id';
 
     protected $fillable = ['provincia'];
+
+    protected $hidden = ['created_at','updated_at'];
 }

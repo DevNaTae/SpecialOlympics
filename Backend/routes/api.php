@@ -42,7 +42,7 @@ Route::middleware(['auth:sanctum','role:Voluntario'])->group(function(){
     Route::get('eats/{deportista}',[EatsController::class,'index']);
     Route::post('eats',[EatsController::class,'store']);
     Route::put('eats/{eats}',[EatsController::class,'update']);
-    Route::post('eats_mark/{deportista}',[EatsController::class,'mark']);
+    Route::post('eats_mark/{almuerzo}',[EatsController::class,'mark']);
 });
 
 Route::middleware(['auth:sanctum','role:Administrador'])->prefix('dashboard')->group(function(){

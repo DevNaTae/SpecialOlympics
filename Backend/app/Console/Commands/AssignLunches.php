@@ -35,7 +35,7 @@ class AssignLunches extends Command
 
         foreach ($deportistas as $deportista) {
             $horaInicio = '12:00:00'; // Hora de inicio del almuerzo (ejemplo: 12:00 PM)
-            $horaFin = '13:00:00'; // Hora de fin del almuerzo (ejemplo: 1:00 PM)
+            $horaFin = '20:00:00'; // Hora de fin del almuerzo (ejemplo: 1:00 PM)
 
             // Crear un registro de almuerzo para el deportista y la fecha actual
             Almuerzo::create([

@@ -32,19 +32,19 @@ class EatsController extends Controller
     public function mark(Almuerzo $almuerzo)
     {
         try{
-            $now = now();
-            $fechaAlmuerzo = Carbon::parse($almuerzo->fecha);
-            $horaInicio = Carbon::parse($almuerzo->hora_inicio);
-            $horaFin = Carbon::parse($almuerzo->hora_fin);
-
-            if (!$fechaAlmuerzo->isToday() || !$now->between($horaInicio, $horaFin)) {
+            $horaInicio = Carbon::createFromFormat('H:i:s', $almuerzo->hora_inicio);
+            $horaFin = Carbon::createFromFormat('H:i:s', $almuerzo->hora_fin);
+            // Obtener la fecha y hora actual en la zona horaria del servidor
+            $now = Carbon::now();
+            // Verificar si la fecha del almuerzo es hoy y la hora actual está dentro del rango permitido
+            if ($now->isSameDay($almuerzo->fecha) && $now->between($horaInicio, $horaFin)) {
                 return response()->json(['message' => 'No se puede marcar el almuerzo fuera de la fecha y hora programada'], 422);
             }
 
             $almuerzo->update(['completado'=>1]);
             return response()->json(['message'=>'Almuerzo marcado como completado']);
         }catch(\Exception $e){
-            return response()->json(['message' => 'Error al marcar el almuerzo como completado'], 500);
+            return response()->json(['message' => 'Error al marcar el almuerzo como completado','e'=>$e->getMessage()], 500);
         }
     }
     // {
