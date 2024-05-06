@@ -5,10 +5,12 @@ namespace App\Imports;
 use App\Models\Deportista;
 use App\Models\Provincia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation
 {
@@ -26,7 +28,13 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts, Wit
         $name = $nameParts[1];
         $cedula = $row['cedula'];
         $fechaNacimiento = Carbon::createFromFormat('d/m/Y', $row['dob'])->format('Y-m-d');
-        $deportista = new Deportista([
+
+        $qrCode = QrCode::size(300)->generate($cedula);
+             // Guardar el código QR en el almacenamiento (storage)
+            $fileName = $cedula ; // Nombre del archivo basado en la cédula
+            Storage::put('public/qrcodes/' . $fileName, $qrCode);
+
+        return new Deportista([
             'nombre' => $name,
             'cedula' => $cedula,
             'apellido' => $apellido,
@@ -36,10 +44,6 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts, Wit
             'url_imagen' => "$apellido$name $cedula.jpg",
             'provincia_id' => $provincia_id->provincia_id,
         ]);
-
-        // Guardar el deportista
-        $deportista->save();
-        return $deportista;
     }
 
     public function rules(): array

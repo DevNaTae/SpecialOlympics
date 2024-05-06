@@ -20,7 +20,7 @@ class Deportista extends Model
             $cdl = $deportista->cedula;
             $qrCode = QrCode::size(300)->generate($cdl);
              // Guardar el código QR en el almacenamiento (storage)
-            $fileName = $cdl.'.png' ; // Nombre del archivo basado en la cédula
+            $fileName = $cdl; // Nombre del archivo basado en la cédula
             Storage::put('public/qrcodes/' . $fileName, $qrCode);
         });
         static::updating(function ($deportista) {
