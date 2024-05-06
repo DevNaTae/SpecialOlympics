@@ -8,8 +8,9 @@ use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts
+class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation
 {
 
     /**
@@ -37,6 +38,17 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts
         ]);
     }
 
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|regex:/^[a-zA-Z\s]*$/',
+            'cedula' => 'required|numeric|unique:deportistas,cedula',
+            'dob' => 'required|date_format:d/m/Y',
+            'gen' => 'required|in:M,F',
+            'age' => 'required|numeric',
+            'provincia' => 'required|exists:provincias,provincia',
+        ];
+    }
     public function batchSize(): int
     {
         return 1000;
