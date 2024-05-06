@@ -120,9 +120,7 @@ const scanQRCode = () => {
     <video ref="video" autoplay></video>
     <canvas ref="canvas" style="display: none;"></canvas>
   </div>
-  <div class="border_r">
-    <img :src="`http://127.0.0.1:8000/storage/${prueba_img}`"> 
-  </div>
+
 </template>
 
 

@@ -30,7 +30,7 @@ const food_petition = async () => {
     });
     try {
       // Realizar la petición a la API y esperar a que se resuelva
-      const data = await C_credentriasl.food_promise(food_setting.cedula);
+      const data = await C_credentriasl.food_promise(food_setting.almuerzo_id);
       loadingAlert.close();
       // Verificar el resultado de la petición
       if (data == true) {
@@ -41,8 +41,7 @@ const food_petition = async () => {
              showConfirmButton: false // No mostrar el botón de confirmación mientras se está cargando 
         });
         setTimeout(() => {
-            // router.push({ name: 'C_status' });
-            console.log('estado')
+            router.push({ name: 'C_status' });
         }, 2000);
       } else {
         console.log(data);
@@ -66,6 +65,7 @@ const food_setting = reactive({
     cedula:'',
     hora_inicio:'',
     hora_fin:'',
+    almuerzo_id:'',
 })
 
 onMounted(() => {
@@ -80,14 +80,13 @@ onMounted(() => {
   food_setting.activo = dataArray.value.deportista.activo;
   food_setting.completo =dataArray.value.deportista.almuerzos[0].completado;
   food_setting.cedula = dataArray.value.deportista.cedula;
-  console.log(dataArray.value.deportista.hora_inicio)
-  console.log(dataArray.value.deportista.hora_fin)
+  ///
+  food_setting.almuerzo_id = dataArray.value.deportista.almuerzos[0].id
   food_setting.hora_inicio = dataArray.value.deportista.almuerzos[0].hora_inicio ;
   food_setting.hora_fin = dataArray.value.deportista.almuerzos[0].hora_fin;
 });
 </script>
 <template>
-
     <div class="body_vue">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid justify-content-end">
@@ -135,15 +134,15 @@ onMounted(() => {
                             <div>
                                 <div>
                                 <h2 class="mb-4">Horarios de comida:</h2>
-
+                                <p>{{ food_setting.hora_inicio }} -- {{ food_setting.hora_fin }} </p>
                                 <div class="d-flex justify-content-between">
                                     <p>
                                         Almuerzo:
                                     </p>
                                     <button v-if="food_setting.completo == false" @click="food_petition" class="btn btn-success mb-2" >
-                                        No a comido
+                                        No ha comido
                                     </button>
-                                    <button v-else  class="btn btn-warning">
+                                    <button v-else  class="btn btn-warning mb-2">
                                         Ya comio
                                     </button>
                                 </div>
