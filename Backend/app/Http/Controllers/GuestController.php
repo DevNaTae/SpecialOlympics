@@ -19,8 +19,8 @@ class GuestController extends Controller
         // Método store: Almacena un recurso (en este caso, un invitado)
         try {
             $request->validate([
-                'provincia_id' => 'required',
-                'tipo_invitado_id' => 'required|',
+                'provincia_id' => 'nullable',
+                'tipo_invitado_id' => 'required',
                 'nombre' => 'required|unique:invitados,nombre'
             ]);
             Invitado::create($request->all());
@@ -73,5 +73,4 @@ class GuestController extends Controller
             return response()->json(['error' => 'Ha ocurrido un error al actualizar el invitado' . $errorMessage], 500);
         }
     }
-
 }

@@ -26,7 +26,7 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts, Wit
         $name = $nameParts[1];
         $cedula = $row['cedula'];
         $fechaNacimiento = Carbon::createFromFormat('d/m/Y', $row['dob'])->format('Y-m-d');
-        return new Deportista([
+        $deportista = new Deportista([
             'nombre' => $name,
             'cedula' => $cedula,
             'apellido' => $apellido,
@@ -36,17 +36,20 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts, Wit
             'url_imagen' => "$apellido$name $cedula.jpg",
             'provincia_id' => $provincia_id->provincia_id,
         ]);
+
+        // Guardar el deportista
+        $deportista->save();
+        return $deportista;
     }
 
     public function rules(): array
     {
         return [
-            'name' => 'required|regex:/^[a-zA-Z\s]*$/',
+            'name' => 'required|regex:/^[a-zA-Z,_\s]*$/',
             'cedula' => 'required|numeric|unique:deportistas,cedula',
             'dob' => 'required|date_format:d/m/Y',
             'gen' => 'required|in:M,F',
             'age' => 'required|numeric',
-            'provincia' => 'required|exists:provincias,provincia',
         ];
     }
     public function batchSize(): int
