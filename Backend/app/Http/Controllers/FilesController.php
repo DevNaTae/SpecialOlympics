@@ -11,11 +11,14 @@ class FilesController extends Controller
 {
     public function deportistaImport(Request $request)
     {
-        $request->validate([
-            'excelLoad' => 'required|mimes:xlsx,xls',
-            'provincia_id' => 'required|exists:provincias,provincia_id',
-        ]);
-        Excel::import(new DeportistaImport,$request->file('excelLoad'),null, \Maatwebsite\Excel\Excel::XLSX, $request->provincia_id);
-        return response()->json(['success'=>true,'message'=>'Deportistas importados correctamente']);
+        try{
+            $request->validate([
+                'excelLoad' => 'required|mimes:xlsx,xls',
+            ]);
+            Excel::import(new DeportistaImport,$request->file('excelLoad'),null, \Maatwebsite\Excel\Excel::XLSX, $request->provincia_id);
+            return response()->json(['success'=>true,'message'=>'Deportistas importados correctamente']);
+        }catch(\Exception $e){
+            return response()->json(['success'=>false,'message'=>$e->getMessage()]);
+        }
     }
 }
