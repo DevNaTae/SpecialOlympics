@@ -5,7 +5,8 @@ export const C_print_upload = defineStore('print_upload',{
     state: ()=>(
         {
             prueba:'hola_2',
-            deportista:''
+            deportista:'',
+            provincias:''
         }
     ),
     actions:{
@@ -57,6 +58,30 @@ export const C_print_upload = defineStore('print_upload',{
                 return false
             }
 
+        },
+        async get_provincia(){
+            try {
+                const response = await fetch (`http://127.0.0.1:8000/api/dashboard/get_provincia`,{
+                    method:'GET',
+                    headers:{
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json',
+                    },
+                    credentials:'include',
+                })
+                //console.log(response.message);
+                const jsonData = await response.json();
+                console.log(jsonData);
+                this.provincias = jsonData
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async upload_xls(data){
+            console.log(data)
+            return false
+            return true
         }
     },
 })
