@@ -8,8 +8,14 @@ import C_PrintCredentials from '../views/admin/C_PrintCredentials.vue'
 import C_SportmanState from '../views/admin/C_SportmanState.vue'
 import C_upload from '../views/admin/C_Upload.vue';
 import C_CreateCredentials from '@/views/admin/C_CreateCredentials.vue';
+//actividades de los cruds
+import C_deportes from '@/views/admin/actividades/C_deportes.vue';
+import C_actividades_deportivas from '@/views/admin/actividades/C_actividades_deportivas.vue';
+import C_lugares from '@/views/admin/actividades/C_lugares.vue';
+import C_tiposInvitados from '@/views/admin/actividades/C_tiposInvitados.vue';
 //opciones para voluntarios
 import C_food_data from '@/views/admin/C_food_data.vue';
+
 const router = createRouter({
   history: createWebHistory('/Control&Security/'), // Establece '/Control&Security' como la base de la historia
   routes: [
@@ -60,6 +66,35 @@ const router = createRouter({
       component: C_food_data,
       meta: { requiresAuth: true }
 
+
+    },
+    //actividades deportivas
+    {
+      path: '/admin/actividades/deportes',
+      name: 'C_deportes',
+      component: C_deportes,
+      meta: { requiresAuth: true }
+
+    },
+    {
+      path:'/admin/actividades/actividades_deportivas',
+      name: 'C_actividades_deportivas',
+      component:C_actividades_deportivas,
+      meta: { requiresAuth: true }
+
+    },
+    {
+      path:'/admin/actividades/lugares',
+      name:'C_lugares',
+      component: C_lugares,
+      meta: { requiresAuth: true }
+
+    },
+    {
+      path:'/admin/actividades/tipos_de_invitados',
+      name:'C_tiposInvitados',
+      component: C_tiposInvitados,
+      meta: { requiresAuth: true }
 
     }
   ]

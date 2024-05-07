@@ -1,5 +1,5 @@
 <script setup>
-import { C_Sportman } from '@/stores/SportmanState';
+import { C_Sportman } from '@/stores/CRUDS/Estado_personal';
 import { reactive, onMounted } from 'vue';
 import { ref } from 'vue';
 import { defineProps } from 'vue';

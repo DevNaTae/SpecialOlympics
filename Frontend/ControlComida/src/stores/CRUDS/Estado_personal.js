@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-export const C_Sportman = defineStore('Sportman',{
+export const C_Sportman = defineStore('Estado_personal',{
     state: ()=>(
         {
             prueba:'hola_1',

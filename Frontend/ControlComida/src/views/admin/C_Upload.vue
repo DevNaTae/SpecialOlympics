@@ -8,7 +8,8 @@ const provincia_seleccionada = ref('');
 const selectedFile = ref(null);
 const isExcelFile = ref(false);
 const P_print_upload = C_print_upload()
-const provincias = ref('')
+const provincias = ref('');
+
 const ShowLoading = () => {
     Swal.fire({
       title:'Procesando....',
@@ -49,19 +50,50 @@ const handleFileUpload = (event) => {
 const subir_doc = async()=>{
   // console.log(selectedFile.value)
   // console.log(provincia_seleccionada.value)
+  const formData = new FormData();
+  formData.append('excelLoad', selectedFile.value);
   ShowLoading()
-
-  const data = await P_print_upload.upload_xls(selectedFile.value)
+  const data = await P_print_upload.upload_xls(formData)
   if(data == true){
     ShowSuccess();
   }else{
     ShowError();
   }
 }
+
+import axios  from 'axios';
+const fileInput = ref(null);
+const submitForm = () => {
+  const file = fileInput.value.files[0];
+  console.log(file);
+  const formData = new FormData();
+  formData.append('excelLoad', file);
+
+  axios.post('http://127.0.0.1:8000/api/dashboard/deportista_import', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    withCredentials: true,
+
+  })
+  .then(response => {
+    // Manejar la respuesta del servidor si es necesario
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    // Manejar errores de red u otros errores
+  });
+};
 </script>
 <template>
-
-<div class="body_vue">
+ <div hidden>
+    <h2>Subir Archivo</h2>
+    <form @submit.prevent="submitForm">
+      <input type="file" ref="fileInput" @change="handleFileChange">
+      <button type="submit">Subir Archivo</button>
+    </form>
+  </div>
+<div class="body_vue" >
         <div class="content_vue">
             <C_Header></C_Header>
             <!-- <h2>deben mostrarse aqui las 24 provincias</h2> -->
@@ -84,21 +116,23 @@ const subir_doc = async()=>{
                   </select>
 
                 </div>
-                <div class="mb-3">
-                  <label for="formFile" class="form-label">Subir archivo .xls o .xlsx</label>
-                  <input @change="handleFileUpload" class="form-control" type="file" id="formFile">
-                </div>
-                <div class="d-flex justify-content-around">
-                  <button @click="subir_doc" :disabled="!provincia_seleccionada || !selectedFile || !isExcelFile" class="btn btn-success">subir</button>
-                  <button class="btn btn-danger" >Cancelar</button>
-                </div>
+                <form @submit.prevent="subir_doc" enctype="multipart/form-data">
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Subir archivo .xls o .xlsx</label>
+                    <input @change="handleFileUpload" class="form-control" type="file" id="formFile">
+                  </div>
+                  <div class="d-flex justify-content-around">
+                    <button type="submit" :disabled="!provincia_seleccionada || !selectedFile || !isExcelFile" class="btn btn-success">subir</button>
+                    <button class="btn btn-danger" >Cancelar</button>
+                  </div>
+                </form>
               </div>
             </div>
         </div>
         <footer class="footer_vue">
             <C_footer></C_footer>
         </footer>
-    </div>
+  </div>
 </template>
 <style scoped>
 .body_vue{

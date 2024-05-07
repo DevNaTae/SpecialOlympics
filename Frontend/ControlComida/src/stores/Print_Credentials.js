@@ -79,9 +79,22 @@ export const C_print_upload = defineStore('print_upload',{
             }
         },
         async upload_xls(data){
-            console.log(data)
-            return false
-            return true
+            try {
+                console.log(data);
+                const response = await axios.post('http://127.0.0.1:8000/api/dashboard/deportista_import',data,{
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                    withCredentials: true,
+                })
+                console.log(response);
+                return true
+            } catch (error) {
+                console.log(error);
+                return false
+            }
+            // return false
+            // return true
         }
     },
 })
