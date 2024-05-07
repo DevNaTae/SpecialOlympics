@@ -26,7 +26,7 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts, Wit
         $provincia_id= Provincia::select('provincia_id')->where('provincia','LIKE',$row['provincia'])->first();
         $nameParts = explode(',',$row['name']);
         $apellido = ucwords(strtolower($nameParts[0]));
-        $name = $nameParts[1];
+        $name = strtr($nameParts[1],['_'=>' ']);
         $cedula = $row['cedula'];
         $fechaNacimiento = Carbon::createFromFormat('d/m/Y', $row['dob'])->format('Y-m-d');
 
