@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Deportista;
 use App\Models\Provincia;
+use App\Rules\CedulaEcuatoriana;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -25,7 +26,7 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts, Wit
         $provincia_id= Provincia::select('provincia_id')->where('provincia','LIKE',$row['provincia'])->first();
         $nameParts = explode(',',$row['name']);
         $apellido = ucwords(strtolower($nameParts[0]));
-        $name = $nameParts[1];
+        $name = strtr($nameParts[1],['_'=>' ']);
         $cedula = $row['cedula'];
         $fechaNacimiento = Carbon::createFromFormat('d/m/Y', $row['dob'])->format('Y-m-d');
 
@@ -50,7 +51,7 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts, Wit
     {
         return [
             'name' => 'required|regex:/^[a-zA-Z,_\s]*$/',
-            'cedula' => 'required|numeric|unique:deportistas,cedula',
+            'cedula' => ['required','string','size:10','unique:deportistas,cedula', new CedulaEcuatoriana],
             'dob' => 'required|date_format:d/m/Y',
             'gen' => 'required|in:M,F',
             'age' => 'required|numeric',

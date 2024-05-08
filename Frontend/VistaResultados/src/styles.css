@@ -14,8 +14,13 @@ body {
 
 :root {
   --color-brillant-rose: #f24ba7;
+  --color-brillant-rose-hover: #f02d99;
   --color-celestial-blue: #049dd9;
+  --color-celestial-blue-hover: #0482b4;
   --color-amber: #f2b705;
+  --color-amber-hover: #c89704;
   --color-davy-grey: #595959;
+  --color-davy-grey-hover: #474747;
   --color-white-smoke: #f2f2f2;
+  --color-white-smoke-hover: #e0e0e0;
 }

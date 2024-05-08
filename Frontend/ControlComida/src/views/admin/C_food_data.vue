@@ -87,6 +87,8 @@ onMounted(() => {
 });
 </script>
 <template>
+    {{ dataArray }}
+    {{ food_setting.url_image }}
     <div class="body_vue">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid justify-content-end">

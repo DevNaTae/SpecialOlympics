@@ -54,6 +54,7 @@ Route::middleware(['auth:sanctum','role:Administrador'])->prefix('dashboard')->g
     route::put('/update_deporte/{deporte}', [SportController::class, 'update']);
     //crudcito de actividades deportivas
     Route::get('/get_ad', [SportActivitiesController::class, 'index']);
+    Route::get('/get_ad_f/{deporte}', [SportActivitiesController::class, 'indexf']);
     route::post('/store_ad', [SportActivitiesController::class, 'store']);
     route::delete('/delete_ad/{actividad}', [SportActivitiesController::class, 'delete']);
     route::put('/update_ad/{actividad}', [SportActivitiesController::class, 'update']);

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('deportistas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('cedula')->unique();
+            $table->text('cedula')->unique();
             $table->unsignedBigInteger('numero_deportista')->unique()->nullable();
             $table->unsignedInteger('provincia_id');
             $table->foreign('provincia_id')
