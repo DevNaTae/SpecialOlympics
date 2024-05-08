@@ -16,7 +16,7 @@ const datos = async ()=>{
             <C_header></C_header>
           </div>
           <!-- hacer que en ves de que no haya nada mostrar 4 botones con las funciones de cada cosa -->
-          <div class="container-fluid  ontent_style " >
+          <div class="container-fluid  ontent_style ">
               <div class="mt-2">
                 <C_Time></C_Time>
               </div>
@@ -42,16 +42,6 @@ const datos = async ()=>{
 
 </template>
 <style>
-
-
-
-
-
-
-
-
-
-
 
 
 
