@@ -3,14 +3,41 @@ import { RouterModule, Routes } from '@angular/router';
 import { IndexComponent } from './index/index.component';
 import { SportComponent } from './sport/sport.component';
 import { AthleteComponent } from './athlete/athlete.component';
+import { PlaceComponent } from './place/place.component';
+import { CalendarComponent } from './calendar/calendar.component';
+import { AwardComponent } from './award/award.component';
+import { ResultComponent } from './result/result.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SportCategoryComponent } from './sport-category/sport-category.component';
+import { SportInfoComponent } from './sport-info/sport-info.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   { path: 'index', component: IndexComponent },
-  { path: 'sport', component: SportComponent },
-  { path: 'athlete', component: AthleteComponent },
-  { path: 'place', component: AthleteComponent },
-  { path: 'calendar', component: AthleteComponent },
+  {
+    path: 'sport',
+    children: [
+      { path: '', component: SportComponent },
+      {
+        path: ':id',
+        children: [
+          { path: '', component: SportCategoryComponent },
+          { path: ':id', component: SportInfoComponent },
+        ],
+      },
+    ],
+  },
+  {
+    path: 'athlete',
+    children: [
+      { path: '', component: AthleteComponent },
+      { path: ':id', component: ProfileComponent },
+    ],
+  },
+  { path: 'place', component: PlaceComponent },
+  { path: 'calendar', component: CalendarComponent },
+  { path: 'award', component: AwardComponent },
+  { path: 'result', component: ResultComponent },
   { path: '**', redirectTo: 'index' },
 ];
 

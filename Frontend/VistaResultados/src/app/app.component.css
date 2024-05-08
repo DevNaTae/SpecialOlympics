@@ -5,6 +5,16 @@ ul > li > a {
   color: var(--color-white-smoke);
 }
 
+.activo > a > i,
+.activo > a > span {
+  color: var(--color-amber);
+  transform: scale(1.2);
+}
+
+.activo > a > span {
+  font-weight: 400;
+}
+
 .activo::after {
   content: "";
   position: absolute;
