@@ -17,7 +17,10 @@ const status = reactive({
 })
 const emits = defineEmits(['dato-enviado']);
 
-
+const prueba = ()=>{
+  const objeto_modal = new Modal(document.getElementById('exampleModal'));
+  objeto_modal.show();
+}
 const send_id = (data)=>{
     console.log(data);
     data_id_table.value = data;
@@ -31,7 +34,7 @@ const send_id = (data)=>{
 <template>
     
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button"  class="btn btn-primary"  @click="prueba">
   tipos de credenciales
 </button>
 
