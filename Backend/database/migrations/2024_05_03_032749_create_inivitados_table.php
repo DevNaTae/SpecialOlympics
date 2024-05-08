@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('provincia_id')->nullable();
             $table->unsignedBigInteger('tipo_invitado_id');
             $table->string('nombre');
+            $table->boolean('activo')->default(true);
             $table->foreign('provincia_id')
                 ->references('provincia_id')
                 ->on('provincias')
