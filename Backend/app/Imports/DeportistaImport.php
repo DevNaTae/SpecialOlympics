@@ -4,12 +4,16 @@ namespace App\Imports;
 
 use App\Models\Deportista;
 use App\Models\Provincia;
+use App\Rules\CedulaEcuatoriana;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
-class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts
+class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation
 {
 
     /**
@@ -22,9 +26,15 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts
         $provincia_id= Provincia::select('provincia_id')->where('provincia','LIKE',$row['provincia'])->first();
         $nameParts = explode(',',$row['name']);
         $apellido = ucwords(strtolower($nameParts[0]));
-        $name = $nameParts[1];
+        $name = strtr($nameParts[1],['_'=>' ']);
         $cedula = $row['cedula'];
         $fechaNacimiento = Carbon::createFromFormat('d/m/Y', $row['dob'])->format('Y-m-d');
+
+        $qrCode = QrCode::size(300)->generate($cedula);
+             // Guardar el código QR en el almacenamiento (storage)
+            $fileName = $cedula ; // Nombre del archivo basado en la cédula
+            Storage::put('public/qrcodes/' . $fileName, $qrCode);
+
         return new Deportista([
             'nombre' => $name,
             'cedula' => $cedula,
@@ -37,6 +47,16 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts
         ]);
     }
 
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|regex:/^[a-zA-Z,_\s]*$/',
+            'cedula' => ['required','string','size:10','unique:deportistas,cedula', new CedulaEcuatoriana],
+            'dob' => 'required|date_format:d/m/Y',
+            'gen' => 'required|in:M,F',
+            'age' => 'required|numeric',
+        ];
+    }
     public function batchSize(): int
     {
         return 1000;

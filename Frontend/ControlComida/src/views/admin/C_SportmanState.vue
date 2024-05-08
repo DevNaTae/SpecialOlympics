@@ -1,12 +1,13 @@
 <script setup>
-import { C_Sportman } from '@/stores/SportmanState';
+
 import { reactive } from 'vue';
 import { ref } from 'vue';
 import C_Header from '../../components/C_Header.vue';
 import C_footer from '../../components/C_Footer.vue';
 import modal_state from '@/components/admin/modal_state.vue';
 import C_tables from '@/components/admin/C_tables.vue';
-const  P_sportman = C_Sportman()
+
+
 const datoRecibido = ref('atleta');
 const dato_send_table = (dato)=>{
   datoRecibido.value = dato
