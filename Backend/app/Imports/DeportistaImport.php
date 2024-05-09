@@ -54,7 +54,7 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'name' => 'required|regex:/^[a-zA-Z,_\s]*$/',
+            'name' => 'required|regex:/^[a-zA-ZñÑ,_\s]*$/',
             'cedula' => ['required','unique:deportistas,cedula'],
             'dob' => 'required|date_format:d/m/Y',
             'gen' => 'required|in:M,F',
