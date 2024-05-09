@@ -62,4 +62,20 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithValidation
         ];
     }
 
+    public function customValidationMessages()
+    {
+        return [
+            'name.required' => 'El nombre es requerido',
+            'name.regex' => 'El nombre solo puede contener letras',
+            'cedula.required' => 'La cédula es requerida',
+            'cedula.unique' => 'La cédula ya existe en la base de datos',
+            'dob.required' => 'La fecha de nacimiento es requerida',
+            'dob.date_format' => 'La fecha de nacimiento debe tener el formato dd/mm/yyyy',
+            'gen.required' => 'El género es requerido',
+            'gen.in' => 'El género debe ser M o F',
+            'age.required' => 'La edad es requerida',
+            'age.numeric' => 'La edad debe ser un número',
+        ];
+    }
+
 }
