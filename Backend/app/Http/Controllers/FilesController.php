@@ -21,4 +21,21 @@ class FilesController extends Controller
             return response()->json(['success'=>false,'message'=>$e->failures()],422);
         }
     }
+
+    public function deportistaImages(Provincia $provincia, Request $request)
+    {
+        try{
+            $request->validate([
+                'images' => 'required|array',
+                'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+            $name = $provincia->provincia;
+            foreach($request->file('images') as $image){
+                $image->store('public/images/'.$name);
+            }
+            return response()->json(['success'=>true,'message'=>'Imagenes subidas correctamente']);
+        }catch(\Exception $e){
+            return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
+        }
+    }
 }

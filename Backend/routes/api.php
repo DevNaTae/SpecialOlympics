@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DataPublicController;
 use App\Http\Controllers\EatsController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\SportmanController;
@@ -79,6 +80,8 @@ Route::middleware(['auth:sanctum','role:Administrador'])->prefix('dashboard')->g
     Route::get('/get_provincia', [ProvinceController::class, 'index']);
     //Rutas para archivos
     Route::post('/deportista_import',[FilesController::class,'deportistaImport']);
+    Route::post('/deportista_images/{provincia}',[FilesController::class,'deportistaImages']);
 });
 
-
+//Rutas publicas
+Route::get('/get_sportman',[DataPublicController::class,'get_sportman']);

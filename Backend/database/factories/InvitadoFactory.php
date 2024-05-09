@@ -21,7 +21,7 @@ class InvitadoFactory extends Factory
         return [
             'cedula' => $this->faker->unique()->text(10),
             'provincia_id' => $this->faker->numberBetween(1, 24),
-            'tipo_invitado_id' => 4,
+            'tipo_invitado_id' => $this->faker->numberBetween(1, 5),
             'nombre' => $this->faker->firstName(),
             'apellido' => $this->faker->lastName(),
             'edad' => $this->faker->numberBetween(18, 60),

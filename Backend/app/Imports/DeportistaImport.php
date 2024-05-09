@@ -42,7 +42,7 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithValidation
             'genero' => $row['gen'],
             'edad' => $row['age'],
             'fecha_nacimiento' => $fechaNacimiento,
-            'url_imagen' => "$apellido$name $cedula.jpg",
+            'url_imagen' => "images/$provincia_id->provincia_id/$apellido$name $cedula.jpg",
             'provincia_id' => $provincia_id->provincia_id,
         ]);
     }
