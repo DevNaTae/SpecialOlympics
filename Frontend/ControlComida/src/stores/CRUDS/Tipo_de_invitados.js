@@ -5,7 +5,7 @@ export const C_TiposInvitados = defineStore('TiposInvitados',{
     state: ()=>(
         {
             prueba:'hola_1',
-            TiposInvitados:null,
+            TiposInvitados:[],
         }
     ),
     actions:{
@@ -20,10 +20,9 @@ export const C_TiposInvitados = defineStore('TiposInvitados',{
                     },
                     credentials:'include',
                 })
-                console.log(response);
                 const jsonData = await response.json();
-                console.log(jsonData);
                 this.TiposInvitados = jsonData
+                return jsonData
             } catch (error) {
                 
             }
