@@ -46,6 +46,10 @@ class DeportistaImport implements ToModel, WithHeadingRow
             'provincia_id' => $provincia_id->provincia_id,
         ]);
     }
+    public function headingRow(): int
+    {
+        return 2;
+    }
 
     // public function rules(): array
     // {
