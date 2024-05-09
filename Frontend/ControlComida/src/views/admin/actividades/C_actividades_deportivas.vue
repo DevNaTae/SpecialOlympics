@@ -85,6 +85,14 @@ const submitForm = async () => {
         confirmButtonText: 'Entendido'
       });
       return;
+    }else if(!message.success){
+      await Swal.fire({
+        title: 'Error',
+        text: "Nombre en uso",
+        icon: 'error',
+        confirmButtonText: 'Entendido'
+      });
+      return;
     }else{
       await storeAD.get_ActividadesD();
       await Swal.fire({
@@ -118,6 +126,14 @@ async function editarActividad() {
       await Swal.fire({
         title: 'Error',
         text: message.error,
+        icon: 'error',
+        confirmButtonText: 'Entendido'
+      });
+      return;
+    }else if(!message.success){
+      await Swal.fire({
+        title: 'Error',
+        text: "Nombre en uso",
         icon: 'error',
         confirmButtonText: 'Entendido'
       });
@@ -236,7 +252,7 @@ async function eliminarActividad(actividad_id) {
                             <!-- Columna de iconos para cada actividad -->
                             <div class="col-12 mb-4" style="max-height: 400px; overflow-y: auto;">
                                 <div v-if="storeAD.actividadesDeportivas.length === 0" class="text-center">
-                                    <p>No hay actividades disponibles.</p>
+                                    <p>No hay ninguna activida deportiva creada.</p>
                                 </div>
                                 <div v-else>
                                     <div v-for="actividad in storeAD.actividadesDeportivas" :key="actividad.actividad_id" class="row align mb-3 border-bottom border-2" >
