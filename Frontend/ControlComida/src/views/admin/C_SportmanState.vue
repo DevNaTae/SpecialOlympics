@@ -8,24 +8,13 @@ import modal_state from '@/components/admin/modal_state.vue';
 import C_tables from '@/components/admin/C_tables.vue';
 
 
-const datoRecibido = ref('atleta');
-const dato_send_table = (dato)=>{
-  datoRecibido.value = dato
-  console.log(datoRecibido.value);
-}
 </script>
 <template>
 <div class="body_vue">
         <div class="content_vue ">
             <C_Header></C_Header>
-            esto es Sportman
-            <div class=" mt-5 container">
-              <modal_state @dato-enviado="dato_send_table"  ></modal_state>
-              <RouterLink :to="{name:'C_CreateCredentials'}">
-                <button class="ms-3 btn btn-dark">Crear Credencial</button>
-              </RouterLink>
-            </div>
-            <C_tables :dato-recibido="datoRecibido" ></C_tables>
+            
+            <C_tables ></C_tables>
         </div>
         <footer class="footer_vue">
             <C_footer></C_footer>
