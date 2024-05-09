@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
-class DeportistaImport implements ToModel, WithHeadingRow
+class DeportistaImport implements ToModel, WithHeadingRow, WithValidation
 {
 
     /**
