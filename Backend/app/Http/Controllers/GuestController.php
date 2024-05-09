@@ -26,15 +26,15 @@ class GuestController extends Controller
     }
     public function show($nombreCompleto)
     {
-        // Método show: Muestra un recurso (en este caso, un invitado) buscando por nombre completo en 'nombre' o 'apellido'
-        $guest = Invitado::where('nombre', 'like', "%$nombreCompleto%")
-                         ->orWhere('apellido', 'like', "%$nombreCompleto%")
-                         ->get();
+        // Método show: Muestra recursos (en este caso, invitados) que coincidan con el nombre completo en 'nombre' o 'apellido'
+        $guests = Invitado::where('nombre', 'like', "%$nombreCompleto%")
+                          ->orWhere('apellido', 'like', "%$nombreCompleto%")
+                          ->paginate(5);
     
-        if ($guest) {
-            return response()->json($guest);
+        if ($guests->isEmpty()) {
+            return response()->json(['error' => 'Invitados no encontrados'], 404);
         } else {
-            return response()->json(['error' => 'Invitado no encontrado'], 404);
+            return response()->json($guests);
         }
     }
     public function store(Request $request)
