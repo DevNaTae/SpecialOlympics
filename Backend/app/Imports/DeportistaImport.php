@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
-class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation
+class DeportistaImport implements ToModel, WithHeadingRow
 {
 
     /**
@@ -47,18 +47,15 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithBatchInserts, Wit
         ]);
     }
 
-    public function rules(): array
-    {
-        return [
-            'name' => 'required|regex:/^[a-zA-Z,_\s]*$/',
-            'cedula' => ['required','string','size:10','unique:deportistas,cedula', new CedulaEcuatoriana],
-            'dob' => 'required|date_format:d/m/Y',
-            'gen' => 'required|in:M,F',
-            'age' => 'required|numeric',
-        ];
-    }
-    public function batchSize(): int
-    {
-        return 1000;
-    }
+    // public function rules(): array
+    // {
+    //     return [
+    //         'name' => 'required|regex:/^[a-zA-Z,_\s]*$/',
+    //         'cedula' => ['required','numeric','min_digits:10', 'max_digits:10','unique:deportistas,cedula', new CedulaEcuatoriana],
+    //         'dob' => 'required|date_format:d/m/Y',
+    //         'gen' => 'required|in:M,F',
+    //         'age' => 'required|numeric',
+    //     ];
+    // }
+
 }
