@@ -5,6 +5,9 @@
   font-style: normal;
   font-weight: 300;
 }
+*::selection {
+  background-color: var(--color-amber);
+}
 
 html,
 body {

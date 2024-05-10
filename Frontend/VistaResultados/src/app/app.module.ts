@@ -13,6 +13,7 @@ import { ResultComponent } from './result/result.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SportInfoComponent } from './sport-info/sport-info.component';
 import { SportCategoryComponent } from './sport-category/sport-category.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { SportCategoryComponent } from './sport-category/sport-category.componen
     SportInfoComponent,
     SportCategoryComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })
