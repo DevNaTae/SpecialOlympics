@@ -160,7 +160,7 @@ onMounted(() => {
 </template>
 <style scoped>
 .img_food_state{
-    border-radius: 50%;
+    border-radius: 20%;
     width: 180px;
     height: 200px;
     padding: 0;

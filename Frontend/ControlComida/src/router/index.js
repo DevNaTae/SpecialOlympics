@@ -5,9 +5,11 @@ import C_status from '../views/C_status.vue'
 import Swal from 'sweetalert2';
 //opciones admin
 import C_PrintCredentials from '../views/admin/C_PrintCredentials.vue'
-import C_SportmanState from '../views/admin/C_SportmanState.vue'
+import C_SportmanState from '../views/admin/estado_personal/C_SportmanState.vue'
 import C_upload from '../views/admin/C_Upload.vue';
-import C_CreateCredentials from '@/views/admin/C_CreateCredentials.vue';
+import C_CreateCredentials from '@/views/admin/estado_personal/C_CreateCredentials.vue';
+//editar estado del personal
+import C_editcredentials from '@/views/admin/estado_personal/C_editcredentials.vue';
 //actividades de los cruds
 import C_deportes from '@/views/admin/actividades/C_deportes.vue';
 import C_actividades_deportivas from '@/views/admin/actividades/C_actividades_deportivas.vue';
@@ -15,6 +17,10 @@ import C_lugares from '@/views/admin/actividades/C_lugares.vue';
 import C_tiposInvitados from '@/views/admin/actividades/C_tiposInvitados.vue';
 //opciones para voluntarios
 import C_food_data from '@/views/admin/C_food_data.vue';
+//Atletas
+import C_Atletas from '@/views/admin/Atletas/C_Atletas.vue';
+import C_edit_Atletas from '@/views/admin/Atletas/C_edit_Atletas.vue';
+import C_CreateAtletas from '@/views/admin/Atletas/C_CreateAtletas.vue';
 
 const router = createRouter({
   history: createWebHistory('/Control&Security/'), // Establece '/Control&Security' como la base de la historia
@@ -96,7 +102,34 @@ const router = createRouter({
       component: C_tiposInvitados,
       meta: { requiresAuth: true }
 
-    }
+    },
+    {
+      path:'/admin/actividades/editar_credenciales/:f_num',
+      name: 'C_editcredentials',
+      component: C_editcredentials,
+      meta: { requiresAuth: true }
+
+    },
+    //atletas
+    {
+      path:'/admin/Atleta/GestionarAtletas',
+      name:'C_Atletas',
+      component:C_Atletas,
+      meta: { requiresAuth: true },
+    },
+    {
+      path:'/admin/GestionarAtletas/edit_atletlas/:f_num',
+      name:'C_edit_atletas',
+      component: C_edit_Atletas,
+      meta: { requiresAuth: true }
+    },
+    {
+      path:'/admin/GestionarAtletas/Create_Atletas',
+      name:'C_create_atletas',
+      component: C_CreateAtletas,
+      meta: { requiresAuth: true }
+    },
+    
   ]
 });
 

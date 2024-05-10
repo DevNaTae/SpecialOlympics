@@ -46,7 +46,7 @@ const tipoI_send = async()=>{
     }else{
       await P_invitados.get_TiposInvitados();
       await Swal.fire({
-        title: 'tipo de invitado creado Creado',
+        title: 'tipo de invitado creado',
         text: data.message,
         icon: 'success',
         confirmButtonText: 'Entendido'
@@ -89,8 +89,8 @@ const TInvitado_delete = async (id)=>{
     if (result.isConfirmed) {
       const closeLoadingAlert = ShowLoading();
       const message =  await P_invitados.dismiss_TiposInvitados(id);
-      
-      if(message.success == "false"){
+      console.log(message)
+      if(message.error){
         await Swal.fire({
           title: 'Error',
           text: message.error,
@@ -101,7 +101,7 @@ const TInvitado_delete = async (id)=>{
       }else{
         await P_invitados.get_TiposInvitados();
         await Swal.fire({
-          title: 'Lugar eliminado',
+          title: 'Tipo de invitado elimiado',
           text: message.message,
           icon: 'success',
           confirmButtonText: 'Entendido'
@@ -172,6 +172,7 @@ const edit_Invitado = async()=>{
               <div class="col-7">
                 <p class="text_deporte">
                   {{ T_invitados.tipo_invitado_nombre }}
+                  {{ T_invitados.tipo_invitado_id }}
                 </p>
               </div>
               <div class="col-5 align-self-center">
