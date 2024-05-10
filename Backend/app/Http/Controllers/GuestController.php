@@ -32,7 +32,7 @@ class GuestController extends Controller
                           ->paginate(5);
     
         if ($guests->isEmpty()) {
-            return response()->json(['error' => 'Invitados no encontrados'], 404);
+            return response()->json(['success'=>'false','error' => 'Invitados no encontrados'], 404);
         } else {
             return response()->json($guests);
         }
@@ -52,30 +52,43 @@ class GuestController extends Controller
 
             ]);
             Invitado::create($request->all());
-            return response()->json(['message' => 'Creado el invitado exitosamente'], 200);
+            return response()->json(['success'=>'true','message' => 'Creado el invitado exitosamente'], 200);
         }  catch (Exception $e) {
             // Captura el mensaje de error
             $errorMessage = $e->getMessage();
             // Retorna el mensaje de error en un JSON de respuesta
-            return response()->json(['error' => 'Ha ocurrido un error al crear el invitado' . $errorMessage], 500);
+            return response()->json(['success'=>'false','error' => 'Ha ocurrido un error al crear el invitado' . $errorMessage], 500);
         }
     }
     public function delete($id)
     {
-        // Método delete: Elimina un recurso (en este caso, un invitado)
         try {
+            // Buscar al invitado por su ID
             $guest = Invitado::find($id);
+    
             if ($guest) {
-                $guest->delete();
-                return response()->json(['message' => 'Invitado eliminado exitosamente'], 200);
+                // Verificar si el invitado ya está deshabilitado
+                if (!$guest->activo) {
+                    // Si ya está deshabilitado, se habilita cambiando el estado a true
+                    $guest->activo = true;
+                    $guest->save();
+                    // Devolver una respuesta JSON indicando el éxito de la operación
+                    return response()->json(['success' => true, 'message' => 'Invitado habilitado correctamente'], 200);
+                }
+                // Si no está deshabilitado, se deshabilita cambiando el estado a false
+                $guest->activo = false;
+                $guest->save();
+                // Devolver una respuesta JSON indicando el éxito de la operación
+                return response()->json(['success' => true, 'message' => 'Invitado deshabilitado correctamente'], 200);
             } else {
-                return response()->json(['error' => 'Invitado no encontrado'], 404);
+                // Devolver un mensaje de error si el invitado no se encuentra
+                return response()->json(['success' => false, 'error' => 'Invitado no encontrado'], 404);
             }
         } catch (Exception $e) {
-            // Captura el mensaje de error
+            // Capturar el mensaje de error
             $errorMessage = $e->getMessage();
-            // Retorna el mensaje de error en un JSON de respuesta
-            return response()->json(['error' => 'Ha ocurrido un error al eliminar el invitado' . $errorMessage], 500);
+            // Devolver un mensaje de error en caso de que ocurra una excepción
+            return response()->json(['success' => false, 'error' => 'Ha ocurrido un error al modificar el estado del invitado: ' . $errorMessage], 500);
         }
     }
     public function update(Request $request, $id)
@@ -95,15 +108,15 @@ class GuestController extends Controller
 
                 ]);
                 $guest->update($request->all());
-                return response()->json(['message' => 'Invitado actualizado exitosamente'], 200);
+                return response()->json(['success'=>'true','message' => 'Invitado actualizado exitosamente'], 200);
             } else {
-                return response()->json(['error' => 'Invitado no encontrado'], 404);
+                return response()->json(['success'=>'false','error' => 'Invitado no encontrado'], 404);
             }
         } catch (Exception $e) {
             // Captura el mensaje de error
             $errorMessage = $e->getMessage();
             // Retorna el mensaje de error en un JSON de respuesta
-            return response()->json(['error' => 'Ha ocurrido un error al actualizar el invitado' . $errorMessage], 500);
+            return response()->json(['success'=>'false','error' => 'Ha ocurrido un error al actualizar el invitado' . $errorMessage], 500);
         }
     }
 }
