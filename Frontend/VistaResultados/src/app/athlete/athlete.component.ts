@@ -1,57 +1,95 @@
 import { Component, OnInit } from '@angular/core';
 import { AthleteService } from '../service/athlete.service';
 import { Athlete } from '../model/athlete';
+import { tap, catchError, finalize } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-athlete',
   templateUrl: './athlete.component.html',
-  styleUrl: './athlete.component.css',
+  styleUrls: ['./athlete.component.css'],
 })
 export class AthleteComponent implements OnInit {
-  loading: boolean = false;
-  athletes: Athlete[] = [];
+  p = 1;
+  pageSize = 10;
+  loading = false;
+  athletes: Readonly<Athlete[]> = [];
+  searchText = '';
+
   constructor(private readonly athleteService: AthleteService) {}
 
   ngOnInit() {
-    this.get();
+    this.fetchAthletes();
   }
 
-  get() {
-    let ath: Athlete[] = JSON.parse(localStorage.getItem('athletes')!);
-    this.athletes = ath;
-    if (!JSON.stringify(ath).length || !ath) {
-      this.loading = true;
-      this.athleteService.get().subscribe({
-        next: (res: Athlete[]) => {
-          this.athletes = res;
-          localStorage.setItem('athletes', JSON.stringify(res));
-        },
-        error: (err) => {
-          console.error(err);
-          this.loading = false;
-        },
-        complete: () => {
-          this.loading = false;
-        },
-      });
-    } else {
-      ath = JSON.parse(localStorage.getItem('athletes')!);
-      this.athleteService.get().subscribe({
-        next: (res: Athlete[]) => {
-          if (JSON.stringify(res) !== JSON.stringify(ath)) {
-            this.loading = true;
-            localStorage.setItem('athletes', JSON.stringify(res));
-            this.athletes = res;
-          }
-        },
-        error: (err) => {
-          console.error(err);
-          this.loading = false;
-        },
-        complete: () => {
-          this.loading = false;
-        },
-      });
+  changeCant(cant: number) {
+    this.pageSize = cant;
+  }
+
+  filterAthletes() {
+    let filteredAthletes = this.athletes;
+    if (this.searchText.trim() !== '') {
+      this.p = 1;
+      return this.athletes.filter(
+        (athlete) =>
+          athlete.name!.toLowerCase().includes(this.searchText.toLowerCase()) ||
+          athlete.dni!.toString().includes(this.searchText)
+      );
     }
+    return filteredAthletes;
+  }
+
+  private fetchAthletes() {
+    const athletesFromStorage = this.getAthletesFromStorage();
+
+    if (athletesFromStorage) {
+      this.athletes = athletesFromStorage;
+      this.checkForUpdates();
+    } else {
+      this.loadAthletesFromService();
+    }
+  }
+
+  private getAthletesFromStorage(): Readonly<Athlete[]> | null {
+    const athletesJson = localStorage.getItem('athletes');
+    return athletesJson ? JSON.parse(athletesJson) : null;
+  }
+
+  private saveAthletesToStorage(athletes: Readonly<Athlete[]>) {
+    localStorage.setItem('athletes', JSON.stringify(athletes));
+  }
+
+  private loadAthletesFromService() {
+    this.loading = true;
+    this.athleteService
+      .get()
+      .pipe(
+        tap((athletes) => this.saveAthletesToStorage(athletes)),
+        catchError((err) => {
+          console.error(err);
+          return of([]);
+        }),
+        finalize(() => (this.loading = false))
+      )
+      .subscribe((athletes) => (this.athletes = athletes));
+  }
+
+  private checkForUpdates() {
+    this.athleteService
+      .get()
+      .pipe(
+        tap((athletes) => {
+          if (JSON.stringify(athletes) !== JSON.stringify(this.athletes)) {
+            this.saveAthletesToStorage(athletes);
+            this.athletes = athletes;
+          }
+        }),
+        catchError((err) => {
+          console.error(err);
+          return of(this.athletes);
+        }),
+        finalize(() => (this.loading = false))
+      )
+      .subscribe();
   }
 }

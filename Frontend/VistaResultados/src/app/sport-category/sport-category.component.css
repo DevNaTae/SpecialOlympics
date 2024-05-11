@@ -1,0 +1,31 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: var(--color-brillant-rose);
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.4rem;
+  box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+  cursor: pointer;
+}
+.card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+}
+
+.texto-color {
+  color: white;
+  font-size: 12px;
+}
+
+.section-title h2 {
+  display: inline;
+  font-weight: 700;
+  color: var(--color-davy-grey);
+  font-size: 25px;
+  padding-left: 15px;
+  border-left: 5px solid var(--color-brillant-rose);
+}

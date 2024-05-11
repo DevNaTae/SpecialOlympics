@@ -10,6 +10,7 @@ import { ResultComponent } from './result/result.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SportCategoryComponent } from './sport-category/sport-category.component';
 import { SportInfoComponent } from './sport-info/sport-info.component';
+import { UbicationComponent } from './ubication/ubication.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'index', pathMatch: 'full' },
@@ -34,7 +35,13 @@ const routes: Routes = [
       { path: ':id', component: ProfileComponent },
     ],
   },
-  { path: 'place', component: PlaceComponent },
+  {
+    path: 'place',
+    children: [
+      { path: '', component: PlaceComponent },
+      { path: ':id', component: UbicationComponent },
+    ],
+  },
   { path: 'calendar', component: CalendarComponent },
   { path: 'award', component: AwardComponent },
   { path: 'result', component: ResultComponent },

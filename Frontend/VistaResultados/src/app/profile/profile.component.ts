@@ -14,7 +14,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe((res: Athlete) => {
       this.athlete = res;
-      console.log(this.athlete);
     });
   }
 }

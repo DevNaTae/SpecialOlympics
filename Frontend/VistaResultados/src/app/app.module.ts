@@ -14,6 +14,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { SportInfoComponent } from './sport-info/sport-info.component';
 import { SportCategoryComponent } from './sport-category/sport-category.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
+import { UbicationComponent } from './ubication/ubication.component';
 
 @NgModule({
   declarations: [
@@ -28,8 +31,15 @@ import { HttpClientModule } from '@angular/common/http';
     ProfileComponent,
     SportInfoComponent,
     SportCategoryComponent,
+    UbicationComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    NgxPaginationModule,
+    FormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

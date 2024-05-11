@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 export class AthleteService {
   constructor(private readonly http: HttpClient) {}
 
-  private url = 'https://663b791ffee6744a6ea1c316.mockapi.io';
+  private url =
+    'https://specialolimpics--production-jistoria.sierranegra.cloud/api';
 
   get(): Observable<any> {
     return this.http.get<any>(`${this.url}/athlete`);

@@ -6,9 +6,32 @@
   height: 40px;
 }
 
+.botonT {
+  font-size: small;
+  border: none;
+}
+
+.pagination ::ng-deep {
+  display: flex;
+  padding: 0;
+  align-items: center;
+}
+
+.pagination ::ng-deep .ngx-pagination {
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination ::ng-deep .ngx-pagination .current {
+  background: var(--color-brillant-rose);
+  border-radius: 5px;
+}
+
 .boton:active {
   background-color: var(--color-amber-hover);
   color: white;
+  border-color: var(--color-brillant-rose-hover);
 }
 
 .ji + .botonS {
