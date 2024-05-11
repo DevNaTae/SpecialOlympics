@@ -22,7 +22,7 @@ export const C_print_upload = defineStore('print_upload',{
                     },
                     credentials:'include',
                 })
-                console.log(response.status)
+                // console.log(response.status)
                 if(response.status === 404){
                     return false
                 }

@@ -83,7 +83,7 @@ export const C_TiposInvitados = defineStore('TiposInvitados',{
                 const jsonData = await response.json();
                 return jsonData
             } catch (error) {
-                
+                return false
             }
         },
     },

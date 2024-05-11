@@ -50,6 +50,18 @@ import select_activities from './select_activities.vue';
                 </div>
             </div>
 
+            <div class="col-6 col-sm-4 mt-2  border_">
+                <div class="d-flex justify-content-center">
+                    <RouterLink :to="{ name:'C_Atletas'}">
+                        <button type="button" class="btn_hw btn btn-dark">
+                            <i class="icon-font bi bi-person-vcard-fill"></i>
+                            <div>
+                                Gestionar Atletas
+                            </div>
+                        </button>
+                    </RouterLink>
+                </div>
+            </div>
         </div>
     </div>
 </template>

@@ -32,7 +32,7 @@ import { RouterLink, useRoute, useRouter } from 'vue-router'
           <RouterLink :to="{name: 'C_deportes'}">
             <button class="container_base_butt" data-bs-dismiss="modal">
                   <img class="base_img_butt" src="../../assets/imgs/actividades/AD.png">
-                 <a class="title_butt btn btn-dark">Crear Deportes</a>
+                 <a class="title_butt btn btn-dark">Agregar Deportes</a>
             </button>
           </RouterLink>
         </div>
@@ -48,7 +48,7 @@ import { RouterLink, useRoute, useRouter } from 'vue-router'
           <RouterLink :to="{name:'C_tiposInvitados'}">
             <button class="container_base_butt" data-bs-dismiss="modal">
                   <img class="base_img_butt" src="../../assets/imgs/actividades/tiposdeinvitados.jpg">
-                  <a class="title_butt btn btn-dark">tipos de invitados</a>
+                  <a class="title_butt btn btn-dark">Tipos de invitados</a>
               </button>
           </RouterLink>
         </div>

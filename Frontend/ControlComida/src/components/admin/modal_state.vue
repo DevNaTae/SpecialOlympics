@@ -39,10 +39,7 @@ const first_id= async(id)=>{
   emit('tipoSeleccionado', id);
 
 }
-const send_id = (data)=>{
-    console.log(data);
-    Modal.getInstance(document.getElementById('exampleModal')).hide();
-}
+
 const seleted_type = async(data)=>{
   console.log(data);
   for (const key in tiposInvitados.value) {
