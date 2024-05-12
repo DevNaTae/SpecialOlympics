@@ -75,16 +75,16 @@
           [autoHide]="true"
         ></pagination-controls>
         <button
-          class="ms-4 botonT dropdown-toggle"
+          class="botonT dropdown-toggle"
           type="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
           Mostrando {{ pageSize }}
         </button>
-        <ul class="dropdown-menu">
-          <li *ngIf="pageSize != 10 && athletes.length >= 10">
-            <a class="dropdown-item" (click)="changeCant(10)">10</a>
+        <ul class="dropdown-menu dropdown-center">
+          <li *ngIf="pageSize != 5 && athletes.length >= 5">
+            <a class="dropdown-item" (click)="changeCant(5)">5</a>
           </li>
           <li *ngIf="pageSize != 20 && athletes.length >= 20">
             <a class="dropdown-item" (click)="changeCant(20)">20</a>
@@ -117,7 +117,7 @@
             let athlete of filterAthletes()
               | paginate : { itemsPerPage: pageSize, currentPage: p }
           "
-          style="font-size: small"
+          style="font-size: 13px"
         >
           <tr>
             <td>
@@ -126,6 +126,7 @@
                 alt=""
                 class="avatar-sm rounded-circle"
               /><a
+                style="font-weight: 500"
                 [routerLink]="['/athlete', athlete.id]"
                 [queryParams]="{
                       name: athlete.name,
@@ -166,9 +167,9 @@
         >
           Mostrando {{ pageSize }}
         </button>
-        <ul class="dropdown-menu">
-          <li *ngIf="pageSize != 10 && athletes.length >= 10">
-            <a class="dropdown-item" (click)="changeCant(10)">10</a>
+        <ul class="dropdown-menu dropdown-center">
+          <li *ngIf="pageSize != 5 && athletes.length >= 5">
+            <a class="dropdown-item" (click)="changeCant(5)">5</a>
           </li>
           <li *ngIf="pageSize != 20 && athletes.length >= 20">
             <a class="dropdown-item" (click)="changeCant(20)">20</a>

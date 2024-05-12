@@ -59,37 +59,6 @@ a {
   text-decoration: none;
 }
 
-.bg-1 {
-  background-color: #f94144;
-}
-.bg-2 {
-  background-color: #f3722c;
-}
-.bg-3 {
-  background-color: #f8961e;
-}
-.bg-4 {
-  background-color: #f9844a;
-}
-.bg-5 {
-  background-color: #f9c74f;
-}
-.bg-6 {
-  background-color: #90be6d;
-}
-.bg-7 {
-  background-color: #43aa8b;
-}
-.bg-8 {
-  background-color: #4d908e;
-}
-.bg-9 {
-  background-color: #577590;
-}
-.bg-10 {
-  background-color: #277da1;
-}
-
 .loadding-page {
   background: var(--color-white-smoke);
   overflow: hidden;

@@ -11,7 +11,7 @@ import { of } from 'rxjs';
 })
 export class AthleteComponent implements OnInit {
   p = 1;
-  pageSize = 10;
+  pageSize = 5;
   loading = false;
   athletes: Readonly<Athlete[]> = [];
   searchText = '';

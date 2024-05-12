@@ -1,0 +1,77 @@
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: var(--color-brillant-rose);
+  color: #fff;
+}
+
+.nav-pills .nav-link:hover {
+  background-color: var(--color-brillant-rose-hover);
+  color: #fff;
+  transition: background-color 0.4s ease;
+}
+
+.nav-pills .nav-link {
+  font-family: "Poppins", sans-serif;
+  color: var(--color-davy-grey);
+  font-weight: 600;
+  transition: background-color 0.4s ease;
+}
+
+.circulo {
+  background-color: var(--color-brillant-rose);
+}
+
+.boton {
+  background-color: var(--color-white-smoke);
+  color: var(--color-davy-grey);
+  font-weight: 600;
+  border: 1px solid var(--color-davy-grey);
+}
+
+.boton:hover {
+  background-color: var(--color-white-smoke-hover);
+  color: var(--color-davy-grey-hover);
+  border: 1px solid var(--color-davy-grey-hover);
+}
+
+.card {
+  box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+}
+
+.avatar-md {
+  height: 5rem;
+  width: 5rem;
+}
+
+.fs-19 {
+  font-size: 19px;
+}
+
+.primary-link {
+  color: #314047;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+a {
+  text-decoration: none;
+}
+
+.bookmark-post .favorite-icon a,
+.job-box.bookmark-post .favorite-icon a {
+  background-color: #da3746;
+  color: #fff;
+  border-color: danger;
+}
+
+.fs-14 {
+  font-size: 14px;
+}
+.bg-soft-secondary {
+  background-color: rgba(116, 120, 141, 0.15) !important;
+  color: #74788d !important;
+}
+
+.mt-1 {
+  margin-top: 0.25rem !important;
+}
