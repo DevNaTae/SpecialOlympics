@@ -5,13 +5,15 @@ export const C_Lugares = defineStore('Lugares',{
     state: ()=>(
         {
             prueba:'hola_1',
-            lugares:null
+            lugares:null,
+            url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
+
         }
     ),
     actions:{
         async get_Lugares(){
             try {
-                const response = await fetch (`http://127.0.0.1:8000/api/dashboard/get_lugar`,{
+                const response = await fetch (`${this.url}/api/dashboard/get_lugar`,{
                     method:'GET',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
@@ -31,7 +33,7 @@ export const C_Lugares = defineStore('Lugares',{
         async post_Lugares(formdata){
             console.log('llegue')
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/dashboard/store_lugar',{
+                const response = await fetch(`${this.url}/api/dashboard/store_lugar`,{
                     method:'POST',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
@@ -51,7 +53,7 @@ export const C_Lugares = defineStore('Lugares',{
         },
         async put_Lugares(formdata,id){
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/dashboard/update_lugar/${id}`,{
+                const response = await fetch(`${this.url}/api/dashboard/update_lugar/${id}`,{
                     method:'PUT',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
@@ -70,7 +72,7 @@ export const C_Lugares = defineStore('Lugares',{
         async dismiss_Lugares(id){
             console.log(id);
             try {
-                const response = await fetch (`http://127.0.0.1:8000/api/dashboard/delete_lugar/${id}`,{
+                const response = await fetch (`${this.url}/api/dashboard/delete_lugar/${id}`,{
                     method:'DELETE',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',

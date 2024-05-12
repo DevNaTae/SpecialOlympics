@@ -2,7 +2,8 @@
 import C_Header from '../../components/C_Header.vue';
 import C_footer from '../../components/C_Footer.vue';
 import { C_print_upload } from '@/stores/Print_Credentials'
-const P_print_upload = C_print_upload()</script>
+const P_print_upload = C_print_upload()
+</script>
 <template>
 <div class="body_vue">
         <div class="content_vue ">

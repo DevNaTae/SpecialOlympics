@@ -21,7 +21,8 @@ import C_food_data from '@/views/admin/C_food_data.vue';
 import C_Atletas from '@/views/admin/Atletas/C_Atletas.vue';
 import C_edit_Atletas from '@/views/admin/Atletas/C_edit_Atletas.vue';
 import C_CreateAtletas from '@/views/admin/Atletas/C_CreateAtletas.vue';
-
+//Resultados
+import C_Resultados from '@/views/admin/Resultados/C_Resultados.vue';
 const router = createRouter({
   history: createWebHistory('/Control&Security/'), // Establece '/Control&Security' como la base de la historia
   routes: [
@@ -129,7 +130,13 @@ const router = createRouter({
       component: C_CreateAtletas,
       meta: { requiresAuth: true }
     },
-    
+    {
+      path:'/admin/Resultados',
+      name:'C_Resultados',
+      component: C_Resultados,
+      meta: { requiresAuth: true }
+
+    }
   ]
 });
 
