@@ -12,7 +12,7 @@ const isExcelFile = ref(false);
 const P_print_upload = C_print_upload()
 const provincias = ref('');
 
-const tipo_selected= ref('');
+const tipo_selected= ref('jpg');
 const icono_selected = ref('');
 
 const iconos_tipo = reactive({
@@ -73,8 +73,7 @@ const handleFileUpload = (event) => {
 };
 
 const subir_doc = async()=>{
-  // console.log(selectedFile.value)
-  // console.log(provincia_seleccionada.value)
+
   const formData = new FormData();
   formData.append('excelLoad', selectedFile.value);
   ShowLoading()
@@ -87,31 +86,46 @@ const subir_doc = async()=>{
 }
 
 const fileNames = ref([]);
+const fileInputRef = ref(null);
+
 const handleFileChange = (event) => {
+  // fileNames.value = Array.from(event.target.files);
   const files = event.target.files;
-  if (files) {
-    // Recorrer los archivos seleccionados y agregar sus nombres al arreglo de nombres de archivos
-    for (let i = 0; i < files.length; i++) {
-      const fileName = files[i].name;
-      fileNames.value.push(fileName);
-    }
+  for (let i = 0; i < files.length; i++) {
+    fileNames.value.push(files[i]);
   }
 };
+
+import axios  from 'axios';
+
 const upload_img = async()=>{
-  console.log('Imágenes enviadas:', fileNames.value);
   const formData = new FormData();
-    // Agregar cada archivo al objeto FormData
-    for (let i = 0; i < fileNames.value.length; i++) {
-      const file = document.querySelector('input[type=file]').files[i];
-      formData.append('files[]', file);
-    }
+  fileNames.value.forEach((file) => {
+    // Agregar la imagen al FormData con una clave única
+    formData.append('images[]', file);
+  });
+  try {
+    const response = await axios.post(`https://specialolimpics--production-jistoria.sierranegra.cloud/api/dashboard/deportista_images/${provincia_seleccionada.value}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data' // Establecer el tipo de contenido como FormData
+      },
+      withCredentials: true,
+    });
+  } catch (error) {
+    console.error('Error al enviar las imágenes:', error);
+
+  }
+
+  //const data = P_print_upload.upload_imgs(formData,provincia_seleccionada.value);
+
 }
+
+
 const removeFile = (index) => {
   // Eliminar el archivo correspondiente del arreglo de nombres de archivos
   fileNames.value.splice(index, 1);
 };
 
-import axios  from 'axios';
 const fileInput = ref(null);
 
 </script>
@@ -160,7 +174,24 @@ const fileInput = ref(null);
                   <div class="row">
                     <div class="col-12 col-sm-12">
                       <div class="mb-3">
-                        <input class="form-control" type="file" id="formFile"  @change="handleFileChange" multiple>
+                        <!-- seleccionar tipo de provincia -->
+                        <div class="mb-3">
+                          Provincia Seleccionada
+                          <select 
+                          v-model="provincia_seleccionada" 
+                          class="form-select" 
+                          aria-label="Default select example"
+                          @change="provincia_sett"
+                          >
+                            <option v-for="datos in provincias"
+                            :value="datos.provincia_id"
+                            >
+                            {{ datos.provincia }}
+                            </option>
+                          </select>
+                        </div>
+                        <!-- solo acepte imagenes jpg -->
+                        <input class="form-control" type="file" id="formFile_img"  @change="handleFileChange" multiple>
                         <div class="ms-3 mt-2">
                           <button class="btn btn-primary" @click="upload_img">Enviar</button>
                         </div>

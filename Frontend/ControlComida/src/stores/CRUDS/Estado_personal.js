@@ -10,11 +10,12 @@ export const C_Sportman = defineStore('Estado_personal',{
             pagina_inicio:null,
             pagina_final:null,
             pagina_actual:null,
+            url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
         }
     ),
     actions:{
         async get_personal(){
-            const response = await fetch (`http://127.0.0.1:8000/api/dashboard/get_guest`,{
+            const response = await fetch (`${this.url}/api/dashboard/get_guest`,{
                 method:'GET',
                 headers:{
                     'X-Requested-With': 'XMLHttpRequest',
@@ -27,7 +28,7 @@ export const C_Sportman = defineStore('Estado_personal',{
             //console.log(jsonData);
         },
         async get_typeC(data,page=1){
-            const response = await fetch (`http://127.0.0.1:8000/api/dashboard/get_guestf/${data}?page=${page}`,{
+            const response = await fetch (`${this.url}/api/dashboard/get_guestf/${data}?page=${page}`,{
                 method:'GET',
                 headers:{
                     'X-Requested-With': 'XMLHttpRequest',
@@ -49,7 +50,7 @@ export const C_Sportman = defineStore('Estado_personal',{
         },
         async post_personal(formdata){
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/dashboard/store_guest',{
+                const response = await fetch(`${this.url}/api/dashboard/store_guest`,{
                     method:'POST',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
@@ -68,7 +69,7 @@ export const C_Sportman = defineStore('Estado_personal',{
         },
         async put_personal(formdata,id){
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/dashboard/update_guest/${id}`,{
+                const response = await fetch(`${this.url}/api/dashboard/update_guest/${id}`,{
                     method:'PUT',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
@@ -86,7 +87,7 @@ export const C_Sportman = defineStore('Estado_personal',{
         },
         async dismiss_personal(id){
             try {
-                const response = await fetch (`http://127.0.0.1:8000/api/dashboard/delete_guest/${id}`,{
+                const response = await fetch (`${this.url}/api/dashboard/delete_guest/${id}`,{
                     method:'DELETE',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
