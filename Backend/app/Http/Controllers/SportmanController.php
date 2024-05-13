@@ -18,11 +18,11 @@ class SportmanController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         try{
             // Llama al método paginate() del servicio de deportistas
-            $paginatedData = $this->sportmanService->paginate();
+            $paginatedData = $this->sportmanService->paginate($request->all());
             // Devuelve una respuesta JSON con los datos paginados
             return response()->json($paginatedData);
         }catch(\Exception $e){
@@ -39,8 +39,9 @@ class SportmanController extends Controller
     public function store(Request $request)
     {
         try{
+            $request->validate(['cedula'=>'required|unique:deportistas,cedula','nombre' =>'required|string','apellido' =>'required|string','edad' =>'required','genero' =>'required','provincia_id' =>'required|exists:provincias,provincia_id','deporte_id' =>'required|exists:deportes,deporte_id','fecha_nacimiento' =>'required|date','imagen' =>'required|image']);
             $new_sportman = $this->sportmanService->create($request->all());
-        return response()->json(['success'=>true,'message'=>'Deportista creado correctamente','deportista'=>$new_sportman]);
+            return response()->json(['success'=>true,'message'=>'Deportista creado correctamente','deportista'=>$new_sportman]);
         }catch(\Exception $e){
             return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
         }
@@ -54,15 +55,13 @@ class SportmanController extends Controller
      * @param $sportman
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($sportman)
+    public function destroy()
     {
         try{
-            $this->sportmanService->delete($sportman);
-            return response()->json(['success'=>true,'message'=>'Deportista desactivado']);
+            return response()->json(['success'=>true,'message'=>'No esta permirido eliminar deportistas']);
         }catch(\Exception $e){
             return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
         }
-
     }
 
     /**
@@ -81,6 +80,22 @@ class SportmanController extends Controller
             return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
         }
 
+    }
+
+    public function update(Request $request, $sportman)
+    {
+        try{
+            $this->sportmanService->edit($sportman, $request->all());
+            return response()->json(['success'=>true,'message'=>'Deportista actualizado correctamente']);
+        }catch(\Exception $e){
+            return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
+        }
+    }
+
+    public function active($sportman)
+    {
+        $response = $this->sportmanService->active($sportman);
+        return response()->json($response);
     }
 
 }
