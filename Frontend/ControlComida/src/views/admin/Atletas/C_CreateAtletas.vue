@@ -33,14 +33,14 @@ const Atleta_credentials = reactive({
     edad:'',
     genero:'',
     fecha_nacimiento:'',
-    url_imagen:'',
     activo:'',
     //datos a los que debo hacer un select multiple
     provincia_id:'',
     deporte_id:'',
-    actividad_id:'',
+    actividad_id: [],
     //imagen
-    url_imagen:'',
+    imagen:null,
+
 })
 //onMounted
 onMounted(async()=>{
@@ -52,9 +52,7 @@ onMounted(async()=>{
 
 })
 //funciones
-const Atletas_post= async ()=>{
 
-}
 const validateCedula = () => {
   Atleta_credentials.cedula = Atleta_credentials.cedula.replace(/\D/g, '');
 };
@@ -81,15 +79,16 @@ const selectedCount = ref(0);
 const selectedName = ref([]);
 
 const seleted_type = async(data)=>{
-  console.log(data.ActividadD_id);
-  console.log(data.ActividadD_nombre);
-  console.log(data.selected) ;
+  //console.log(data.ActividadD_id);
+  //   console.log(data.ActividadD_nombre);
+  //   console.log(data.selected) ;
 
   if (data.selected) {
     data.selected = false;
     selectedCount.value--;
     const index = selectedName.value.findIndex((t) => t.ActividadD_id === data.ActividadD_id);
     if (index !== -1) {
+        Atleta_credentials.actividad_id.splice(index, 1)
         selectedName.value.splice(index, 1);
     }
   } else {
@@ -99,7 +98,11 @@ const seleted_type = async(data)=>{
         ActividadD_id: data.ActividadD_id,
         Nombre: data.ActividadD_nombre,
       });
-
+      //hacerle push al atlteas credentials
+      const index_1 = selectedName.value.findIndex((t) => t.ActividadD_id === data.ActividadD_id);
+      console.log(index_1);
+      console.log(selectedName.value[index_1].ActividadD_id);
+      Atleta_credentials.actividad_id.push(selectedName.value[index_1].ActividadD_id)
       selectedCount.value++;
     }
   }
@@ -111,22 +114,89 @@ const remove_select = (data) => {
   if(index !== -1){
     selectedName.value.splice(index, 1);
     Actividades_deportivas.value[data].selected = !Actividades_deportivas.value[data].selected;
+    Atleta_credentials.actividad_id.splice(index, 1)
     selectedCount.value--;
 
 }
 };
+//imagenes
+const imageFile = ref(null);
+const previewImage = ref(null);
+const handleFileInputChange = async(event) => {
+  const file = event.target.files[0]; // Obtener solo el primer archivo seleccionado
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      previewImage.value = reader.result;
+    };
+    reader.readAsDataURL(file);
+    //Atleta_credentials.imagen = file;
+    imageFile.value =  file;
+    Atleta_credentials.imagen = imageFile.value;
+    console.log(Atleta_credentials.imagen)
+  }
+};
+const Atletas_post= async ()=>{
+   // P_Atletas.post_atletas(Atleta_credentials);
+   let formdata = new FormData();
+   formdata.append('imagen', imageFile.value)
+   formdata.append('cedula', Atleta_credentials.cedula);
+    try{
+                const response = await fetch (`https://specialolimpics--production-jistoria.sierranegra.cloud/api/dashboard/sportman` ,{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json',
+                    },
+                    credentials:'include',
+                    body:formdata,
+                })
+                const jsonData = await response.json();
+                return jsonData;
+            }
+            catch (error) {
+                console.log(error.response);
+                return
+            }
+}
+const pre_carga = ()=>{
+    Atleta_credentials.cedula =1316612603;
+    Atleta_credentials.nombre = 'gato';
+    Atleta_credentials.apellido ='jose'
+    Atleta_credentials.edad = 23
+    Atleta_credentials.fecha_nacimiento = '2002-05-02'
+    Atleta_credentials.genero='M'
+    Atleta_credentials.provincia_id ='4'
+}
 </script>
 <template>
+    {{ Atleta_credentials }}
+    <!-- Tambies debes enviar fecha de nacimiento -->
+    <button @click="pre_carga" >
+        llenar datos
+    </button>
     <div class="body_vue">
         <div class="content_vue">
             <C_Header></C_Header>
-            <form @submit.prevent="Atletas_post" class="mt-4">
+            <form @submit.prevent="Atletas_post" class="mt-4" enctype="multipart/form-data">
                 <div class="container">
                     <div class="row">
-                        <div class="col-12 mb-3">                            
+                        <div class="col-12 mb-3" >                            
                             <div class="base_dataEdit_top">
-                                <div class="d-flex justify-content-center">
-                                    <img class="img_base_edit_place" src="../../../assets/imgs/Yo.jpg">
+                                <div >
+                                    <div v-if="previewImage == null" class="d-flex justify-content-center">
+                                        <img  class="img_base_edit_place" src="../../../assets/imgs/Yo.jpg">
+                                    </div>
+                                    <div v-if="true" >
+                                        <div v-if="previewImage" class=" ">
+                                            <div class="d-flex justify-content-center">
+                                                <img class="img_base_edit_place" :src="previewImage" alt="Preview" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <input class="form-control edit_whimge mb-2" type="file" @change="handleFileInputChange" accept="image/*" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -163,6 +233,15 @@ const remove_select = (data) => {
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <div class="mb-3">
+                                            <label for="exampleInputPassword1" class="form-label">fecha de nacimiento</label>
+                                            <input v-model="Atleta_credentials.fecha_nacimiento" class="form-control" type="date" id="fecha" name="fecha">
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="row" >
+                                    <div class="col-12 col-sm-6" >
+                                        <div class="mb-3">
                                             <label for="exampleInputPassword1" class="form-label">Genero</label>
                                             <select v-model="Atleta_credentials.genero" class="form-select" aria-label="Default select example">
                                                 <option value="M">Masculino</option>
@@ -170,8 +249,6 @@ const remove_select = (data) => {
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row" >
                                     <div class="col-12  col-sm-6">
                                         <div class="mb-3">
                                             <label for="exampleInputPassword1" class="form-label">Estado</label>
@@ -264,5 +341,9 @@ const remove_select = (data) => {
 <style>
 .border_text_data{
     border-bottom: 1px solid black;
+}
+.edit_whimge{
+
+    max-width: 400px;
 }
 </style>
