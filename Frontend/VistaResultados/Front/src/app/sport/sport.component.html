@@ -9,8 +9,7 @@
       class="row row-cols-lg-5 row-cols-md-3 row-cols-sm-2 row-cols-xl-6 text-center justify-content-center px-xl-6 px-3 aos-init aos-animate"
       data-aos="fade-up"
     >
-      @for (sport of sports; track $index) {
-      <div class="col my-3">
+      <div class="col my-3" *ngFor="let sport of sports">
         <div
           class="card border-hover-primary hover-scale"
           [routerLink]="['/sport', sport.id]"
@@ -21,13 +20,12 @@
         >
           <div class="card-body">
             <div class="iconos-color mb-1">
-              <i class="fa fa-solid {{ sport.icon }} fs-1"></i>
+              <i class="fs-1 material-symbols-rounded">{{ sport.icon }}</i>
             </div>
             <h6 class="fw-bold texto-color">{{ sport.name }}</h6>
           </div>
         </div>
       </div>
-      }
     </div>
   </div>
 </section>

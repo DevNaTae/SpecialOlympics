@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class SportService {
   constructor(private readonly http: HttpClient) {}
 
-  private url = 'https://663b791ffee6744a6ea1c316.mockapi.io';
+  private url = 'https://tvs5g2hd-4100.use2.devtunnels.ms';
 
   get(): Observable<any> {
     return this.http.get<any>(`${this.url}/sport`);
