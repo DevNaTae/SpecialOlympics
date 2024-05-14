@@ -40,15 +40,16 @@ const ShowSuccess = ()=>{
     Swal.fire({
         icon: "success",
         title:'Documento Subido Con exito',
-        timer: 3000,
+        timer: 4000,
 
     })
 }
-const ShowError = () =>{
+const ShowError = (message) =>{
     Swal.fire({
         icon:'error',
         title: 'Error al subir el documento',
-        timer: 3000,
+        text: message,
+        timer: 4000,
     })
 }
 onMounted( async ()=>{
@@ -78,10 +79,13 @@ const subir_doc = async()=>{
   formData.append('excelLoad', selectedFile.value);
   ShowLoading()
   const data = await P_print_upload.upload_xls(formData)
-  if(data == true){
-    ShowSuccess();
+  console.log(data.response.status)
+  if(data.response.status == 422){
+    ShowError(data.response.data.message[0].errors);
+  }else if(data.response.status == 500) {
+    ShowError(data.response.data.message);
   }else{
-    ShowError();
+    ShowSuccess();
   }
 }
 
