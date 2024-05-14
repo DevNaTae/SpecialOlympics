@@ -12,6 +12,8 @@
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "html2pdf.js": "^0.10.1",
+    "jspdf": "^2.5.1",
     "jsqr": "^1.4.0",
     "pinia": "^2.1.7",
     "qrcode-vue3": "^1.6.8",

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -39,6 +40,7 @@ class Deportista extends Model
         'apellido',
         'edad',
         'genero',
+        'deporte_id',
         'fecha_nacimiento',
         'url_imagen',
         'activo',
@@ -51,6 +53,7 @@ class Deportista extends Model
 
     // protected $appends = ['qr'];
 
+    protected $dates = ['fecha_nacimiento'];
 
 
     /**
@@ -61,7 +64,13 @@ class Deportista extends Model
         return $this->belongsTo(Provincia::class, 'provincia_id');
     }
 
-
+    public function actividades_deportivas()
+    {
+        return $this->belongsToMany(ActividadDeportiva::class, 'actividad_deportista', 'deportista_id', 'actividad_id')
+            ->withPivot('resultados')
+            ->withTimestamps();
+    }
+    protected $hidden = ['created_at', 'updated_at'];
     /**
      * Obtener los almuerzos asociados al deportista.
      */
@@ -75,17 +84,44 @@ class Deportista extends Model
      * Obtener la URL de la imagen del deportista.
      */
     public function qr()
-    {
-        return $this->Storage::get(filePath: 'public/qrcodes/' . $this->cedula);
+{
+    $qrFilePath = 'public/qrcodes/' . $this->cedula;
+
+    if (Storage::exists($qrFilePath)) {
+        return Storage::get($qrFilePath);
     }
+
+    return null; // O manejar de otra manera si el archivo no existe
+}
+
     public function Deporte()
     {
-        return $this->hasMany(Deporte::class);
+        return $this->belongsTo(Deporte::class,'deporte_id');
     }
 
     public function getRouteKeyName()
     {
         return 'cedula'; // Utiliza 'cedula' como la clave de ruta en lugar de 'id'
     }
+
+    public function getAll()
+    {
+        return [
+            'id' => $this->id,
+            'dni' => $this->cedula,
+            'sportsman_number' => $this->numero_deportista,
+            'address' => $this->provincia->provincia,
+            'name' => $this->nombre.' '.$this->apellido,
+            'age' => $this->edad,
+            'gender' => $this->genero,
+            'birthday' => $this->fecha_nacimiento->format($this->formato),
+            'img_url' => $this->url_imagen,
+        ];
+    }
+
+    public function getFechaNacimientoAttribute($value)
+{
+    return Carbon::parse($value)->format($this->formato);
+}
 
 }

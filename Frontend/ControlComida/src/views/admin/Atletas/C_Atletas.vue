@@ -124,7 +124,7 @@ watch(capitalizedSearchQuery, async(newValue, oldValue) => {
                             <button class="ms-3 btn btn-dark">Agregar Atleta</button>
                 </RouterLink>
             </div>
-            <div class="container-fluid mt-3">
+            <div class="container mt-3">
                 <form class="d-flex" role="search">
                 <input v-model="searchQuery" class="form-control me-2" type="text" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>

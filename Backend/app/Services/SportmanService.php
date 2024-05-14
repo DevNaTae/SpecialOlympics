@@ -13,19 +13,42 @@ class SportmanService
         $this->sportman = $sportman;
     }
 
-    public function paginate($search = null)
+    public function paginate($filters)
     {
+        $search= $filters['search'] ?? null;
+        $provincia= $filters['provincia'] ?? null;
+        $deporte= $filters['deporte'] ?? null;
         $sportman_paginate = $this->sportman
-                    ->when($search, function($query) use ($search){
-                        return $query->where('nombre','like','%'.$search.'%');
-                    })
-                    ->paginate(20);
+    ->with(['deporte', 'provincia', 'actividades_deportivas', 'actividades_deportivas.lugar'])
+    ->when($search, function ($query) use ($search) {
+        return $query->where(function ($query) use ($search) {
+            $query->where('nombre', 'like', '%' . $search . '%')
+                ->orWhere('apellido', 'like', '%' . $search . '%')
+                ->orWhere('cedula', 'like', '%' . $search . '%');
+        });
+    })
+    ->when($provincia, function ($query) use ($provincia) {
+        return $query->where('provincia_id', $provincia);
+    })
+    ->when($deporte, function ($query) use ($deporte) {
+        return $query->whereHas('actividades_deportivas', function ($query) use ($deporte) {
+            $query->where('deporte_id', $deporte);
+        });
+    })
+
+    ->paginate(20);
+
         return $sportman_paginate;
     }
 
     public function create($data)
     {
         try{
+            $provincia = \App\Models\Provincia::find($data['provincia_id']);
+            $image = $data['imagen'];
+            $name_file = $data['nombre'].' '.$data['apellido'].' '.$data['cedula'].'.'.$image->getClientOriginalExtension();
+            $image->storeAs('public/images/'.$provincia->provincia.'/',$name_file);
+            $data['url_imagen'] = 'storage/images/'.$provincia->provincia.'/'.$name_file;
             $this->sportman->create($data);
             return true;
         }catch(Exception $e){
@@ -45,11 +68,12 @@ class SportmanService
         }
     }
 
-    public function delete($id)
+    public function active($id)
     {
             $sportman = $this->sportman->find($id);
-            $sportman->update(['activo'=>0]);
-            return true;
+            $sportman->update(['activo'=>!$sportman->activo]);
+            $message = $sportman->activo ? 'Desactivado' : 'Activado';
+            return ['success'=>true, 'message'=>'Deportista '.$message.' correctamente'];
     }
 
     public function find($id)

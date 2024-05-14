@@ -81,22 +81,24 @@ export const  C_Atletas = defineStore('Atletas',{
                 console.log(error);
             }
         },
-        async put_atleta(formdata, id){
+        async put_atleta(formData, id){
             try {
                 const response = await fetch(`${this.url}/api/dashboard/sportman/${id}`,{
                     method:'PUT',
+                    mode:'cors',
                     headers:{
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
                     credentials:'include',
-                    body: JSON.stringify(formdata)
+                    body: JSON.stringify(formData)
                 })
                 const jsonData = await response.json();
                 return jsonData
             } catch (error) {
                 console.log(error);
             }
+           
         },
         async dismis_atleta(id){
             try {
