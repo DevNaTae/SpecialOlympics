@@ -92,7 +92,7 @@ export const C_print_upload = defineStore('print_upload',{
                 return true
             } catch (error) {
                 console.log(error);
-                return false
+                return error
             }
             // return false
             // return true
