@@ -26,8 +26,8 @@ onMounted(async()=>{
 
 const emit = defineEmits(['DeporteSeleccionado']);
 const first_id= async(id)=>{
-  tiposDeportes.value[id].selected = true;
-  emit('DeporteSeleccionado', id);
+  //tiposDeportes.value[id].selected = true;
+  emit('DeporteSeleccionado', null);
 
 }
 

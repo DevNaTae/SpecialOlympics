@@ -168,7 +168,7 @@ const ShowLoading = () => {
                             <button v-if="false">
                                 <i class="bi bi-person-down color_wicon"></i>
                             </button>
-                            <button @click="go_edit_page(type_credential)" class="button_icon_status ">
+                            <button @click="go_edit_page(type_credential)" class="button_icon_status_edit ">
                                 <i class="bi bi-screwdriver color_wicon"></i>
                             </button>
                             <button v-if="type_credential.activo === true" @click="dismis_type(type_credential.invitado_id)" class="button_icon_status color_wicon">
@@ -199,6 +199,14 @@ const ShowLoading = () => {
     word-wrap: break-word; 
 }
 .button_icon_status{
+    padding: 10px;
+    margin-left: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    background: gray;
+    
+}
+.button_icon_status_edit{
     padding: 10px;
     margin-left: 10px;
     margin-top: 5px;

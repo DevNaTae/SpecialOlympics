@@ -140,12 +140,20 @@ const Atletas_post= async ()=>{
    // P_Atletas.post_atletas(Atleta_credentials);
    let formdata = new FormData();
    formdata.append('imagen', imageFile.value)
-   formdata.append('cedula', Atleta_credentials.cedula);
+    formdata.append('cedula', Atleta_credentials.cedula);
+    formdata.append('nombre', Atleta_credentials.nombre);
+    formdata.append('apellido', Atleta_credentials.apellido);
+    formdata.append('edad', Atleta_credentials.edad);
+    formdata.append('fecha_nacimiento', Atleta_credentials.fecha_nacimiento);
+    formdata.append('genero', Atleta_credentials.genero);
+    formdata.append('provincia_id', Atleta_credentials.provincia_id);
+    formdata.append('deporte_id', Atleta_credentials.deporte_id);
+    formdata.append('actividad_id', Atleta_credentials.actividad_id);
+    formdata.append('activo', Atleta_credentials.activo);
     try{
                 const response = await fetch (`https://specialolimpics--production-jistoria.sierranegra.cloud/api/dashboard/sportman` ,{
                     method:'POST',
                     headers:{
-                        'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
                     credentials:'include',
@@ -170,7 +178,6 @@ const pre_carga = ()=>{
 }
 </script>
 <template>
-    {{ Atleta_credentials }}
     <!-- Tambies debes enviar fecha de nacimiento -->
     <button @click="pre_carga" >
         llenar datos
