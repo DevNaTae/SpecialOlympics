@@ -18,7 +18,6 @@ export const C_Sportman = defineStore('Estado_personal',{
             const response = await fetch (`${this.url}/api/dashboard/get_guest`,{
                 method:'GET',
                 headers:{
-                    'X-Requested-With': 'XMLHttpRequest',
                     'Content-Type':'application/json',
                     'Accept': 'application/json',
                 },
@@ -31,7 +30,6 @@ export const C_Sportman = defineStore('Estado_personal',{
             const response = await fetch (`${this.url}/api/dashboard/get_guestf/${data}?page=${page}`,{
                 method:'GET',
                 headers:{
-                    'X-Requested-With': 'XMLHttpRequest',
                     'Content-Type':'application/json',
                     'Accept': 'application/json',
                 },

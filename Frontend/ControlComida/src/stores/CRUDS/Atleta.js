@@ -79,6 +79,7 @@ export const  C_Atletas = defineStore('Atletas',{
                 })
             } catch (error) {
                 console.log(error);
+                throw error
             }
         },
         async put_atleta(formData, id){
