@@ -36,7 +36,11 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithValidation
         $provincia_id= Provincia::select('provincia_id')->where('provincia','LIKE',$row['provincia'])->first();
         $nameParts = explode(',',$row['name']);
         $apellido = ucwords(strtolower($nameParts[0]));
+        $apellido = str_replace(['ñ', 'Ñ'], ['n', 'N'], $apellido);
+
         $name = ltrim(strtr($nameParts[1],['_'=>' ']));
+        $name = str_replace(['ñ', 'Ñ'], ['n', 'N'], $name);
+
         $cedula = $row['cedula'];
         $fechaNacimiento = Carbon::createFromFormat('d/m/Y', $row['dob'])->format('Y-m-d');
         $actividades = explode(', ', $row['evento']);
@@ -45,7 +49,7 @@ class DeportistaImport implements ToModel, WithHeadingRow, WithValidation
              // Guardar el código QR en el almacenamiento (storage)
             $fileName = $cedula ; // Nombre del archivo basado en la cédula
             Storage::put('public/qrcodes/' . $fileName, $qrCode);
-            $url_imagen = strtolower("public/images/".$row['provincia']."/"."$apellido $name $cedula.jpg");
+            $url_imagen = strtolower("storage/images/".$row['provincia']."/"."$apellido $name $cedula.jpg");
             $url_imagen = str_replace(' ', '_', $url_imagen);
             $new_deportista = new Deportista([
                 'nombre' => $name,
