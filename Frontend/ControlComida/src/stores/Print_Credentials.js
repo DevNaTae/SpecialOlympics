@@ -8,7 +8,10 @@ export const C_print_upload = defineStore('print_upload',{
             deportista:'',
             provincias:'',
             url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
-
+            pagina_actual:'',
+            pagina_inicio:'',
+            pagina_final:'',
+            print_unit:'',
         }
     ),
     actions:{
@@ -92,7 +95,7 @@ export const C_print_upload = defineStore('print_upload',{
                 return true
             } catch (error) {
                 console.log(error);
-                return false
+                return error
             }
             // return false
             // return true
@@ -113,7 +116,34 @@ export const C_print_upload = defineStore('print_upload',{
             } catch (error) {
                 console.log(error);
             }
-        }
+        },
+        async get_paginate_Atletas(){
+
+        },
+        async get_paginateTipes(page=1){
+            try {
+                const response = await fetch(`${this.url}/api/dashboard/credentials_athlete/?page=${page}`,{
+                    method:'GET',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json',
+                    },
+                    credentials:'include',
+                })
+                console.log(response);
+                const jsonData = await response.json();
+                // console.log('la pagina en la que estas es'+ jsonData.current_page);
+                // console.log('la ultima pagina es'+jsonData.last_page);
+                // console.log('desde el inicio'+jsonData.from);
+                console.log(jsonData.atletas)
+                this.pagina_actual = jsonData.current_page;
+                this.pagina_inicio = jsonData.from
+                this.pagina_final = jsonData.last_page
+                this.print_unit = jsonData.atletas;
+            } catch (error) {
+                
+            }
+        },
 
     },
 })

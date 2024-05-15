@@ -54,49 +54,52 @@ const sesion_function = async()=>{
 </script>
 <template>
 <div class="center-container" >
-    <div class="container-fluid font_serie">
-                <div class="row justify-content-center mb-2">
-                    <div class="col-5 col-lg-1 ">
-                        <div class="d-flex justify-content-center">
-                            <img class="logo_resolution " src="../assets/imgs/Uleam.png" alt="Descripción de la imagen">
+    <div class="container-fluid font_serie ">
+            <div class="base_login mx-auto">
+                <div class="container-fluid rounded">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="d-flex justify-content-center">
+                                <img class="logo_resolution " src="../assets/imgs/Uleam.png" alt="Descripción de la imagen">
+                            </div>
+                        </div>
+                        <div class="col-2 ">
+                            <div class="d-flex justify-content-center">
+                                <i class="bi bi-pass-fill"
+                                style="font-size: 3.5rem; color: black;"
+                                ></i>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="d-flex justify-content-center">
+                                <img class="logo_resolution" src="../assets/imgs/olimpiadas_O.png" alt="Descripción de la imagen">
+                            </div>
                         </div>
                     </div>
-                    <div class="col-2 col-lg-1 ">
-                        <div class="d-flex justify-content-center">
-                            <i class="bi bi-infinity"
-                            style="font-size: 3.5rem; color: red;"
-                            ></i>
-                        </div>
-                    </div>
-                    <div class="col-5 col-lg-1 ">
-                        <div class="d-flex justify-content-center">
-                            <img class="logo_resolution" src="../assets/imgs/olimpiadas_O.png" alt="Descripción de la imagen">
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-center border_blu">
-                    <div class="col-10 col-xl-4">
-                        <div class="base_session">
-                            <h2 class="text-center">Administracion</h2>
-                            <h2>Credenciales:</h2>
-                            <form @submit.prevent="sesion_function">
+                    <div class="row">
+                        <div class="col-12 col-xl-12">
+                            <h2 class="text-center">Administración</h2>
+                            <h2 class="text-center">Credenciales:</h2>
+                            <form @submit.prevent="sesion_function" class="mb-2">
                                 <div class="form-floating mb-3">
-                                    <input type="email" v-model="form_session.email" class="form-control"  placeholder="name@example.com">
-                                    <label for="floatingInput">Usuario</label>
+                                        <input type="email" v-model="form_session.email" class="form-control data_control"  placeholder="name@example.com">
+                                        <label for="floatingInput">Usuario:</label>
                                 </div>
-                                <div class="form-floating">
-                                    <input type="password" v-model="form_session.password" class="form-control" placeholder="Password">
-                                    <label for="floatingPassword">Contraseña</label>
+                                <div class="form-floating mb-3">
+                                        <input type="password" v-model="form_session.password" class="form-control  data_control" placeholder="Password">
+                                        <label for="floatingPassword">Contraseña</label>
                                 </div>
-                                <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-success mt-3">
-                                        Iniciar sesion
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-success">
+                                        Iniciar Sesion
                                     </button>
                                 </div>
                             </form>
                         </div>
+
                     </div>
                 </div>
+            </div>
     </div>
 </div>
 
@@ -123,5 +126,16 @@ const sesion_function = async()=>{
     background: rgb(255, 255, 255);
     border-radius: 15px;
     padding: 15px;
+}
+.base_login{
+    border: 0.1mm solid rgb(154, 149, 149);
+    border-radius: 15px;
+    background-color: #ffffff; /* Color de fondo */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.605); 
+    width: 380px;
+    height: auto;
+}
+.data_control{
+    border: 1px solid rgb(122, 117, 117);
 }
 </style>

@@ -8,10 +8,29 @@ export const  C_Atletas = defineStore('Atletas',{
             pagina_inicio:null,
             pagina_final:null,
             pagina_actual:null,
-            url:'https://specialolimpics--production-jistoria.sierranegra.cloud'
+            url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
+            url2:'http://127.0.0.1:8000'
         }
     ),
     actions:{
+        //ESTE GET ES MIO DIEGO NO LO TOMES EN CUENTA
+        async get_deportistas(){
+            try {
+                const response = await fetch (`${this.url}/api/dashboard/sportman_pluck`,{
+                    method:'GET',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json',
+                    },
+                    credentials:'include',
+                })
+                const jsonData = await response.json();
+                return jsonData;
+            } catch (error) {
+                console.log(error);
+                throw error
+            }
+        },
         async post_atletas(formdata){
             try {
                 const response = await fetch (`${this.url}/api/dashboard/sportman` ,{
@@ -79,6 +98,7 @@ export const  C_Atletas = defineStore('Atletas',{
                 })
             } catch (error) {
                 console.log(error);
+                throw error
             }
         },
         async put_atleta(formData, id){

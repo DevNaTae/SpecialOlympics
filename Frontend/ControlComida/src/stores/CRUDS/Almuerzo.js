@@ -1,19 +1,22 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-export const C_ActividadesD = defineStore('ActividadesDeportivas',{
+
+export const C_Almuerzo = defineStore('Almuerzo',{
     state: ()=>(
         {
-            actividadesDeportivas:[],
-            url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
+            almuerzos:[],
+            DateLunch:[],
+            url:'http://127.0.0.1:8000'
+            //url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
+
 
         }
     ),
     actions:{
-        async get_ActividadesD(id){
-            try{
-                console.log(id)
-                const response = await fetch (`${this.url}/api/dashboard/get_ad_f/${id}`,{
+        async getAlmuerzo(){
+            try {
+                const response = await fetch (`${this.url}/api/dashboard/lunch_get`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -22,16 +25,35 @@ export const C_ActividadesD = defineStore('ActividadesDeportivas',{
                     credentials:'include',
                 })
                 const jsonData = await response.json();
-                this.actividadesDeportivas = jsonData;
-                return jsonData;
-            }catch (error) {
-                console.log(error.response);
-                return
+                this.almuerzos = jsonData;
+                return 
+            } catch (error) {
+                console.log(error);
+                throw error
             }
         },
-        async post_ActividadesD(formdata){
-            try{
-                const response = await fetch (`${this.url}/api/dashboard/store_ad`,{
+        async getDateLunch(){
+            try {
+                const response = await fetch (`${this.url}/api/dashboard/lunch_date`,{
+                    method:'GET',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json',
+                    },
+                    credentials:'include',
+                })
+                const jsonData = await response.json();
+                this.DateLunch = jsonData;
+                console.log(jsonData);
+                return jsonData;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async postAlmuerzo(formdata){
+            console.log(formdata);
+            try {
+                const response = await fetch(`${this.url}/api/dashboard/lunch_store`,{
                     method:'POST',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
@@ -42,19 +64,19 @@ export const C_ActividadesD = defineStore('ActividadesDeportivas',{
                     body: JSON.stringify(formdata)
                 })
                 const jsonData = await response.json();
+                console.log(jsonData);
                 return jsonData;
-            }catch (error) {
-                console.log(error.response);
-                return
+            } catch (error) {
+
+                console.log(error);
             }
         },
-        async put_ActividadesD(formdata,id){
-            console.log(id);
-            try{
-                const response = await fetch (`${this.url}/api/dashboard/update_ad/${id}`,{
-                    method:'PUT',
+        async deleteAlmuerzo(formdata){
+            console.log(formdata);
+            try {
+                const response = await fetch(`${this.url}/api/dashboard/lunch_delete`,{
+                    method:'DELETE',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
@@ -62,28 +84,10 @@ export const C_ActividadesD = defineStore('ActividadesDeportivas',{
                     body: JSON.stringify(formdata)
                 })
                 const jsonData = await response.json();
+                console.log(jsonData);
                 return jsonData;
-            }catch (error) {
-                console.log(error.response);
-                return
-            }
-        },
-        async delete_ActividadesD(id){
-            try{
-                const response = await fetch (`${this.url}/api/dashboard/delete_ad/${id}`,{
-                    method:'DELETE',
-                    headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Content-Type':'application/json',
-                        'Accept': 'application/json',
-                    },
-                    credentials:'include',
-                })
-                const jsonData = await response.json();
-                return jsonData;
-            }catch (error) {
-                console.log(error.response);
-                return
+            } catch (error) {
+                console.log(error);
             }
         },
     },

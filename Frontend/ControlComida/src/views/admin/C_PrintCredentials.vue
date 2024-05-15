@@ -5,15 +5,15 @@ import { C_print_upload } from '@/stores/Print_Credentials'
 import { C_TiposInvitados } from '@/stores/CRUDS/Tipo_de_invitados';
 import { C_Atletas } from '@/stores/CRUDS/Atleta';
 import { Modal } from 'bootstrap';
-import { ref,reactive,onMounted } from 'vue';
+import { ref,reactive,onMounted,watch } from 'vue';
 
 //pinias
 const P_print_upload = C_print_upload()
 const P_TiposInvitados = C_TiposInvitados()
 const P_Atletas = C_Atletas();
-//
+//variables
 const tiposInvitados = ref({});
-
+const print_paginate_atleta= ref([]);
 onMounted( async()=>{
   const data = await P_TiposInvitados.get_TiposInvitados();
   P_TiposInvitados.TiposInvitados.forEach(tipo => {
@@ -25,8 +25,14 @@ onMounted( async()=>{
     }
   }  
   });
+  await P_print_upload.get_paginateTipes();
+  print_paginate_atleta.value = P_print_upload.print_unit
   // const primerObjeto = Object.values(tiposInvitados.value)[0];
   // first_id (primerObjeto.tipo_id)
+  //llamada del qr
+
+  modifySvgSizes();
+
 })
 const seleted_type = async(data)=>{
   console.log(data);
@@ -38,22 +44,128 @@ const seleted_type = async(data)=>{
   cheked.value = false;
 
 }
+const getImageUrl = (data) => {
+  const baseUrl = P_print_upload.url;
+
+  const imageUrl = data;
+  return new URL(imageUrl, baseUrl).href;
+};
+const getQrUrl = (data) => {
+  const baseUrl = P_print_upload.url;
+  const imageUrl = data;
+  return new URL(imageUrl, baseUrl).href;
+};
+
+
+//pdf
 const cheked = ref(true);
 const posiciones = ['arriba-izquierda', 'arriba-derecha', 'abajo-izquierda', 'abajo-derecha'];
-const credencialesIndex = [1, 2, 3, 4, 5]; // Índices de las credenciales
-
+const credencialesIndex = [1, 2, 3, 4, 5]; 
 import jsPDF from 'jspdf';
 import  html2pdf  from 'html2pdf.js';
-const generarPDF = ()=>{
-  console.log('entre')
-  const contenido = document.getElementById('contenidoParaPDF');
-  html2pdf()
-    .from(contenido)
-    .save();
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+const pdfGenerado = ref(false);
+const generarPDF = async()=>{
+        const contenido = document.getElementById('contenidoParaPDF');
+        var opt = {
+            margin: 0,
+            filename: 'lotes.pdf',
+            image: { type: 'jpeg', quality: 0.20 },
+            html2canvas: { scale: 2,useCORS: true },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'p' }
+        };
+        pdfGenerado.value = false;
+
+        await html2pdf().set(opt).from(contenido).save();
+
+        pdfGenerado.value = true;
 }
+const contador = ref(0)
+watch(pdfGenerado, (nuevoEstado) => {
+  if (nuevoEstado) {
+    console.log('¡El PDF ha sido generado!');
+    if(contador.value !== 2){
+      nextPage();
+      contador.value++
+      console.log('en espera del segundo pdf')
+      const timeoutId = setTimeout(() => {
+        generarPDF();
+      }, 5000); 
+    }else{
+      contador.value = 0;
+    }
+  } else {
+    console.log('Generando PDF...');
+  }
+});
+//modificar el qr
+const svgContainers = ref([]);
+
+
+function modifySvgSizes() {
+  svgContainers.value =[];
+  print_paginate_atleta.value.forEach((item, index) => {
+    const parser = new DOMParser();
+    const svgDocument = parser.parseFromString(item.qr, 'image/svg+xml');
+    const svgElement = svgDocument.documentElement;
+
+    // Modificar el ancho y alto del SVG
+    svgElement.setAttribute('width', '80');
+    svgElement.setAttribute('height', '150');
+    svgContainers.value.push(svgElement);
+
+  });
+}
+//paginacion
+const currentPage = ref(1);
+const goToPage = async(data)=>{
+  currentPage.value = data;
+  await P_print_upload.get_paginateTipes(currentPage.value);
+  print_paginate_atleta.value = P_print_upload.print_unit
+  modifySvgSizes()
+
+}
+const previousPage = async() => {
+  // Ir a la página anterior si no estamos en la primera página
+  if (currentPage.value > 1) {
+    currentPage.value--;
+    await P_print_upload.get_paginateTipes(currentPage.value);
+    print_paginate_atleta.value = P_print_upload.print_unit
+    modifySvgSizes()
+    // Aquí puedes llamar a tu función para cargar los datos de la página
+  }
+};
+
+const nextPage = async() => {
+  // Ir a la página siguiente si no estamos en la última página
+  if (currentPage.value < P_print_upload.pagina_final) {
+    currentPage.value++;
+    await P_print_upload.get_paginateTipes(currentPage.value);
+    print_paginate_atleta.value = P_print_upload.print_unit
+    modifySvgSizes()
+    // Aquí puedes llamar a tu función para cargar los datos de la página
+  }
+};
 </script>
 <template>
-<div class="body_vue">
+  {{ contador }}
+  <!-- {{ P_print_upload.print_unit }} -->
+  <!-- {{ P_print_upload.print_unit.url_image }} -->
+  <div v-for="(paginate,index) in print_paginate_atleta">
+    {{ paginate.url_image }}
+  </div>
+  <div v-for="(paginate,index) in print_paginate_atleta" class="border_y" hidden>
+      <div class="border_v d-flex" v-if="svgContainers[index]">
+        <div class="border_r " v-html="svgContainers[index].outerHTML"></div>
+      </div>
+  </div>
+
+
+  
+<div class="body_vue relleno_r" >
         <div class="content_vue ">
             <C_Header></C_Header>
             <div class="container-fluid border_o mt-5 ">
@@ -71,38 +183,58 @@ const generarPDF = ()=>{
                     </div>
                     <div class="border_o">
                       <button class="btn btn-info" @click="generarPDF">Generar PDF</button>
-                      <h3>Pagina Actual:</h3>
+                      <h3>Pagina Actual:{{ currentPage }}</h3>
                       <h3>Pagina Siguiente:</h3>
-                      <h3>Pagina final:</h3>
+                      <h3>Pagina final: {{ P_print_upload.pagina_final }}</h3>
+                      <h3>En espera del procesar el siguiente doc qui poner un sweet alert</h3>
                     </div>
 
                   </div>
-                  <div class="d-flex justify-content-center">
-                    <nav aria-label="Page navigation example">
-                      <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                      </ul>
-                    </nav>
+                  <div class="d-flex justify-content-center border_black">
+                    <!-- paginacion -->
+                    <button @click="previousPage" :disabled="currentPage === 1">
+                      Anterior
+                    </button>
+                    <button v-for="pageNumber in P_print_upload.pagina_final" :key="pageNumber" @click="goToPage(pageNumber)">
+                      {{ pageNumber }}
+                    </button>
+                    <button @click="nextPage" :disabled="currentPage === P_print_upload.pagina_final">
+                      Siguiente
+                    </button>
                   </div>
+
                 </div>
-                <div class="col-8 border_black">
+                <div class="col-8 border_black" >
                   <div v-if="!cheked == true" class="base_edit_print d-flex justify-content-center align-items-center border_v">
                       <i class="bi bi-files font_print"></i>
                   </div>
                   <div class="border_v">
 
-                  <div class="hoja-a4 mt-2" id="contenidoParaPDF">
-                    <div v-for="(index, i) in credencialesIndex" :key="i" :class="`contenedor ${posiciones[i % 4]}`" >
-                        <img src="../../assets/imgs/Yo.jpg" alt="Imagen" class="imagen" style="top: 6.9em; left: 8.6em;">
-                        <div class="texto" style="top: 29.9em; left: 11em;">JOSE MARIA DE LAS MERCEDES LOURDES</div>
-                        <div class="texto" style="top: 32.9em; left: 11em; color:#2092d1">DEPORTE: ATLETISMO</div>
-                        <div class="texto2" style="top: 13em; left: 3em; color: white;">ATLETA</div>
-                        <div class="texto2" style="top: 13em; left: -1.9em; color: white;"></div>
-                        <img src="../../assets/imgs/Yo.jpg" alt="Imagen" class="qr" style="top:27em; left: 19.7em;">
+                  <div class="hoja-a4" id="contenidoParaPDF">
+                    <img src="https://specialolimpics--production-jistoria.sierranegra.cloud/storage/images/oe._los_rios/amador_anderson_1207139005.jpg" class="imagen" style="top: 6.9em; left: 8.6em;">
+
+                    <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" >
+                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_image" class="imagen" style="top: 6.9em; left: 8.6em;">
+                      <div class="texto medid_img" style="top: 29.9em; left: 11em; ">{{ index.name }}  {{ index.lastname }}</div>
+                      <div class="texto medid_img" style="top: 31.5em; left: 11em; color:#2092d1;" >
+                        DEPORTE: {{ index.sport }}
+                      </div>
+                      <div class="texto mb-2 medid_img" style="top: 33.5em; left: 11em; color:#2092d1;">
+                        Evento:
+                        <div class="d-flex justify-content-center ">
+                          <div  class="me-2"  v-for="event in index.events">
+                            <a >{{ event.activity }}</a>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div v-html="index.qr" class="qr" style="top:27em; left: 19.7em;" hidden></div> -->
+                      <div class=" d-flex qr"    v-if="svgContainers[i]" style="top:25em; left: 19.3em;" >
+                        <div class="" v-html="svgContainers[i].outerHTML"></div>
+                      </div>
+
+                      <div class="texto2" style="top: 12.8em; left: 3em; color: white;">ATLETA</div>
+
+
                     </div>
                   </div>
 
@@ -143,23 +275,32 @@ const generarPDF = ()=>{
     </div>
 </template>
 <style scoped>
+.svg-container {
+  width: 100px;
+  height: 100px;
+}
+
+
 /* tarjeta */
 .hoja-a4 {
             width: 210mm; /* Ancho de una hoja A4 */
-            height: 297mm; /* Altura de una hoja A4 */
+
+            height: 296.3mm; /* Altura de una hoja A4 por defecto 297*/
             background-color: white; /* Color de fondo de la hoja */
-            border: 1px solid black; /* Borde para simular el borde de la hoja */
+            border: 0mm solid black; /* Borde para simular el borde de la hoja */
             margin: 20px auto; /* Margen para centrar la hoja en la página */
             position: relative; /* Posición relativa para los contenedores internos */
             overflow: hidden; /* Ocultar el contenido que se salga de la hoja */
             max-width: 210mm;
             max-height: auto;
+            /* adicion mia */
+            margin-top: 0;
         }
 
         /* Estilo para los contenedores internos */
         .contenedor {
             width: 50%; /* Cada contenedor ocupa el 50% del ancho de la hoja */
-            height: 51%; /* Cada contenedor ocupa el 50% del alto de la hoja */
+            height: 50%; /* Cada contenedor ocupa el 50% del alto de la hoja */
             border: 1px dashed gray; /* Borde punteado para los contenedores */
             box-sizing: border-box; /* Incluir el borde en el tamaño total del contenedor */
             position: absolute;
@@ -185,13 +326,13 @@ const generarPDF = ()=>{
         }
 
         .abajo-izquierda {
-            bottom: 0;
-            left: 0;
+            bottom: 0px;
+            left: 0px;
             
         }
 
         .abajo-derecha {
-            bottom: 0;
+            bottom: 0px;
             right: 0;
             
         }
@@ -237,6 +378,9 @@ const generarPDF = ()=>{
             max-height: 100%; /* Asegurar que la imagen no exceda el alto del contenedor */
             width: 10.5vh;
             height: 10.5vh;
+        }
+        .medid_img{
+          width: 218px;
         }
 /*  */
 .body_vue{

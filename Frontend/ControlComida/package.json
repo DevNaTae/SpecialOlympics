@@ -16,6 +16,7 @@
     "html2pdf.js": "^0.10.1",
     "jspdf": "^2.5.1",
     "jsqr": "^1.4.0",
+    "pdfmake": "^0.2.10",
     "pinia": "^2.1.7",
     "qrcode-vue3": "^1.6.8",
     "sweetalert2": "^11.10.8",
