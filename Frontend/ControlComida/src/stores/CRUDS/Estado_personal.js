@@ -24,6 +24,7 @@ export const C_Sportman = defineStore('Estado_personal',{
                 credentials:'include',
             })
             const jsonData = await response.json();
+            return jsonData;
             //console.log(jsonData);
         },
         async get_typeC(data,page=1){
