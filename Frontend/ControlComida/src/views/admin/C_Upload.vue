@@ -93,7 +93,7 @@ const subir_doc = async()=>{
     ShowError(data.response.data.message[0].errors);
   }else if(data.response.status == 500) {
     ShowError(data.response.data.message);
-  }else if(data.success==true){
+  }else{
     ShowSuccess();
   }
 }
