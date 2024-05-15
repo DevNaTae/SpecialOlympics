@@ -5,7 +5,7 @@ import { C_print_upload } from '@/stores/Print_Credentials'
 import { C_TiposInvitados } from '@/stores/CRUDS/Tipo_de_invitados';
 import { C_Atletas } from '@/stores/CRUDS/Atleta';
 import { Modal } from 'bootstrap';
-import { ref,reactive,onMounted } from 'vue';
+import { ref,reactive,onMounted,watch } from 'vue';
 
 //pinias
 const P_print_upload = C_print_upload()
@@ -67,48 +67,40 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
+const pdfGenerado = ref(false);
 const generarPDF = async()=>{
-  console.log('entre')
-  //usar el locaStorage
-  // const contenido = document.getElementById('contenidoParaPDF').innerHTML;
-  // const docDefinition = {
-  //   content: [
-  //     { text: contenido }
-  //   ]
-  // };  
-  // pdfMake.createPdf(docDefinition).open();
-
-
-  // const pdf = new jsPDF();
-  // const contenido = document.getElementById('contenidoParaPDF');
-  // pdf.html(contenido, {
-  //   callback: () => {
-  //     // Guardar el PDF
-  //     pdf.save('documento.pdf');
-  //   }
-  // });
-
-  //este es el que mejor lo hace bien
-  const contenido = document.getElementById('contenidoParaPDF');
-  // await html2pdf()
-  //   .from(contenido)
-  //   .set({
-  //     image: { type: 'jpeg', quality: 0.98 }, // Opcional: configuración de imagen
-  //     filename: 'documento.pdf' // Nombre del archivo PDF
-  //   })
-  //   .save();
+        const contenido = document.getElementById('contenidoParaPDF');
         var opt = {
             margin: 0,
-            filename: 'time_sheet_report.pdf',
+            filename: 'lotes.pdf',
             image: { type: 'jpeg', quality: 0.20 },
             html2canvas: { scale: 2,useCORS: true },
             jsPDF: { unit: 'in', format: 'a4', orientation: 'p' }
         };
+        pdfGenerado.value = false;
 
-        html2pdf().set(opt).from(contenido).save();
+        await html2pdf().set(opt).from(contenido).save();
 
-
+        pdfGenerado.value = true;
 }
+const contador = ref(0)
+watch(pdfGenerado, (nuevoEstado) => {
+  if (nuevoEstado) {
+    console.log('¡El PDF ha sido generado!');
+    if(contador.value !== 2){
+      nextPage();
+      contador.value++
+      console.log('en espera del segundo pdf')
+      const timeoutId = setTimeout(() => {
+        generarPDF();
+      }, 5000); 
+    }else{
+      contador.value = 0;
+    }
+  } else {
+    console.log('Generando PDF...');
+  }
+});
 //modificar el qr
 const svgContainers = ref([]);
 
@@ -149,7 +141,7 @@ const previousPage = async() => {
 
 const nextPage = async() => {
   // Ir a la página siguiente si no estamos en la última página
-  if (currentPage.value < totalPages) {
+  if (currentPage.value < P_print_upload.pagina_final) {
     currentPage.value++;
     await P_print_upload.get_paginateTipes(currentPage.value);
     print_paginate_atleta.value = P_print_upload.print_unit
@@ -159,6 +151,7 @@ const nextPage = async() => {
 };
 </script>
 <template>
+  {{ contador }}
   <!-- {{ P_print_upload.print_unit }} -->
   <!-- {{ P_print_upload.print_unit.url_image }} -->
   <div v-for="(paginate,index) in print_paginate_atleta">

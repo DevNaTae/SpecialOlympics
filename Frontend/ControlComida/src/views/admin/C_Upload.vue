@@ -64,17 +64,26 @@ const provincia_sett = ()=>{
 const sett_icono = (data)=>{
   tipo_selected.value = data.nombre;
   icono_selected.value= data.icono;
+  if(tipo_selected.value == 'xls o xlsx'){
+    fileNames.value =[];
+    provincia_seleccionada.value=''
+  }
   Modal.getInstance(document.getElementById(`exampleModal`)).hide();
 }
 
 const handleFileUpload = (event) => {
+  
   selectedFile.value = event.target.files[0];
   isExcelFile.value = selectedFile.value && selectedFile.value.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 };
+const borrar_data = ()=>{
+  selectedFile.value = null;
+  const input = document.getElementById('archivoInput');
+  input.value = '';
 
+}
 const subir_doc = async()=>{
-
   const formData = new FormData();
   formData.append('excelLoad', selectedFile.value);
   ShowLoading()
@@ -152,7 +161,7 @@ const fileInput = ref(null);
                   </button>
                   <div class="mt-3">
                     <p>Tipo de archivo: 
-                      <a class="btn btn-primary">
+                      <a class="btn btn-primary" v-if="tipo_selected !== ''">
                         <i class="icon-font" :class="icono_selected"> </i>
                       </a>
                     </p>
@@ -161,17 +170,23 @@ const fileInput = ref(null);
 
               </div>
             </div>
-            <div class="container">
-              <div v-if="tipo_selected == 'xls o xlsx'" class="d-flex justify-content-center">
-                <form class="Type_WH" @submit.prevent="subir_doc" enctype="multipart/form-data">
-                  <div class="mb-3">
-                    <input @change="handleFileUpload" class="form-control" type="file" id="formFile">
-                  </div>
-                  <div class="d-flex justify-content-around">
-                    <button type="submit" :disabled="!selectedFile || !isExcelFile" class="btn btn-success">subir</button>
-                    <button class="btn btn-danger" >Cancelar</button>
-                  </div>
+            <div class="container ">
+              <div v-if="tipo_selected == 'xls o xlsx'" class="d-flex">
+
+                <form class="Type_WH " @submit.prevent="subir_doc" enctype="multipart/form-data">
+                      <div class="d-flex">
+                        <div class="aumento_input_file">
+                          <input  id="archivoInput" @change="handleFileUpload" class="form-control input_file_edit" type="file" >
+                        </div>
+                        <div class="flex-grow-1 d-flex justify-content-end">
+                          <button type="submit" :disabled="!selectedFile || !isExcelFile" class="btn btn-success me-3">subir</button>
+                          <a @click="borrar_data()"class="btn btn-danger" >
+                            <i class="bi bi-trash-fill"></i>
+                          </a>
+                        </div>
+                      </div>
                 </form>
+
               </div>
               <div v-if="tipo_selected == 'jpg'" class="d-flex justify-content-center">
                 <div class="container">
@@ -274,7 +289,10 @@ const fileInput = ref(null);
     height: 120px;
 }
 .Type_WH{
-  width: 400px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
 }
 .style_files{
   background: rgb(207, 193, 193);
@@ -291,5 +309,12 @@ const fileInput = ref(null);
   text-align: center;
   color: #2c3e50;
   margin-top: 0px;
+}
+.input_file_edit{
+  border: 0.1mm solid rgb(154, 149, 149);
+}
+.aumento_input_file{
+  border: 0px solid black;
+  width: 60%;
 }
 </style>

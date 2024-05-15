@@ -8,7 +8,7 @@ export const C_session = defineStore('session',{
             user:[],
             verif:false,
             deportistas:'',
-            url:'http://127.0.0.1:8000'
+            url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
 
         }
     ),

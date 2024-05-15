@@ -8,7 +8,10 @@ export const C_print_upload = defineStore('print_upload',{
             deportista:'',
             provincias:'',
             url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
-
+            pagina_actual:'',
+            pagina_inicio:'',
+            pagina_final:'',
+            print_unit:'',
         }
     ),
     actions:{

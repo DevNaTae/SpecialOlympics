@@ -114,9 +114,14 @@ const scanQRCode = () => {
 
 <template>
   <div>
-    <div class="d-flex justify-content-center mb-3">
+    <div class="d-flex justify-content-center mb-4">
       <button @click="toggleCamera" class="btn btn-dark">{{ isCameraOn ? 'Apagar cámara' : 'Encender cámara' }}</button>
     </div>
+    <div v-if="isCameraOn == false" class="d-flex justify-content-center base_scanner_qr_icon mt-4">
+      <img src="../assets/imgs/qr_place.svg">
+    </div>
+
+    <!-- esto es lo del video -->
     <video ref="video" autoplay></video>
     <canvas ref="canvas" style="display: none;"></canvas>
   </div>
@@ -131,4 +136,9 @@ video {
   width: 100%;
   max-width: 400px;
 }
+.font_size_qr{
+  font-size: 20.5rem;
+  width: 100%;
+}
+
 </style>

@@ -8,6 +8,8 @@ export const C_Almuerzo = defineStore('Almuerzo',{
             almuerzos:[],
             DateLunch:[],
             url:'http://127.0.0.1:8000'
+            //url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
+
 
         }
     ),

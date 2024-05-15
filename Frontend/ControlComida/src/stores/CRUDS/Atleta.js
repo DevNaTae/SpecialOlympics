@@ -16,7 +16,7 @@ export const  C_Atletas = defineStore('Atletas',{
         //ESTE GET ES MIO DIEGO NO LO TOMES EN CUENTA
         async get_deportistas(){
             try {
-                const response = await fetch (`${this.url2}/api/dashboard/sportman_pluck`,{
+                const response = await fetch (`${this.url}/api/dashboard/sportman_pluck`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
