@@ -21,7 +21,7 @@ export const C_print_upload = defineStore('print_upload',{
                 const response = await fetch (`${this.url}/api/eats/${data}`,{
                     method:'GET',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        //'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
@@ -45,7 +45,7 @@ export const C_print_upload = defineStore('print_upload',{
                 const response = await fetch(`${this.url}/api/eats_mark/${data}`,{
                     method:'POST',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        //'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },

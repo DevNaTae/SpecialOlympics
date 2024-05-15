@@ -7,8 +7,8 @@ export const C_Almuerzo = defineStore('Almuerzo',{
         {
             almuerzos:[],
             DateLunch:[],
-            url:'http://127.0.0.1:8000'
-            //url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
+            //url:'http://127.0.0.1:8000'
+            url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
 
 
         }
@@ -56,7 +56,7 @@ export const C_Almuerzo = defineStore('Almuerzo',{
                 const response = await fetch(`${this.url}/api/dashboard/lunch_store`,{
                     method:'POST',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        //'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },

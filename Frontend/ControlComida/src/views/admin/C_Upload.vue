@@ -12,7 +12,7 @@ const isExcelFile = ref(false);
 const P_print_upload = C_print_upload()
 const provincias = ref('');
 
-const tipo_selected= ref('');
+const tipo_selected= ref('jpg');
 const icono_selected = ref('');
 
 const iconos_tipo = reactive({
@@ -88,11 +88,19 @@ const subir_doc = async()=>{
   formData.append('excelLoad', selectedFile.value);
   ShowLoading()
   const data = await P_print_upload.upload_xls(formData)
-  console.log(data.response.status)
-  if(data.response.status == 422){
-    ShowError(data.response.data.message[0].errors);
-  }else if(data.response.status == 500) {
-    ShowError(data.response.data.message);
+  //console.log(data.response)
+  if(data.response){
+    if(data.response.status == 422){
+      const row = data.response.data.message[0].row;
+      await Swal.fire({
+        icon:'error',
+        title: 'Error al subir el documento',
+        text: data.response.data.message[0].errors+', fila: '+row,
+        timer: 4000,
+    })
+    }else if(data.response.status == 500) {
+      ShowError(data.response.data.message);
+    }
   }else{
     ShowSuccess();
   }
@@ -102,9 +110,11 @@ const fileNames = ref([]);
 const fileInputRef = ref(null);
 
 const handleFileChange = (event) => {
-  // fileNames.value = Array.from(event.target.files);
   const files = event.target.files;
+  console.log(files[0].name)
   for (let i = 0; i < files.length; i++) {
+
+
     fileNames.value.push(files[i]);
   }
 };

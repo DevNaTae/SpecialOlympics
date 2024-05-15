@@ -87,7 +87,7 @@ const contador = ref(0)
 watch(pdfGenerado, (nuevoEstado) => {
   if (nuevoEstado) {
     console.log('¡El PDF ha sido generado!');
-    if(contador.value !== 2){
+    if(contador.value !== 1){
       nextPage();
       contador.value++
       console.log('en espera del segundo pdf')
@@ -166,6 +166,7 @@ const nextPage = async() => {
 
   
 <div class="body_vue relleno_r" >
+  esto es para subir
         <div class="content_vue ">
             <C_Header></C_Header>
             <div class="container-fluid border_o mt-5 ">
