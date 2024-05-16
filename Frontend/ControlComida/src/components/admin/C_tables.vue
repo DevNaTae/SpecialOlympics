@@ -21,6 +21,7 @@ const query_credentials = reactive({
     invitado_id:'',
     provincia_id:'',
     tipo_invitado_id:'',
+    fecha_nacimiento:'',
 })
 
 const handleTipoSeleccionado = async (tipo) => {
@@ -70,14 +71,14 @@ const go_edit_page= (data)=>{
     query_credentials.invitado_id = data.invitado_id;
     query_credentials.provincia_id = data.provincia_id;
     query_credentials.tipo_invitado_id = data.tipo_invitado_id;
-
-    // router.push(
-    //         {
-    //           name:'C_editcredentials', 
-    //           params:{f_num:data.invitado_id},
-    //           query:{Datos_deportista: JSON.stringify(query_credentials)}
-    //         }
-    // )
+    query_credentials.fecha_nacimiento = data.fecha_nacimiento;
+    router.push(
+            {
+              name:'C_editcredentials', 
+              params:{f_num:data.invitado_id},
+              query:{Datos_deportista: JSON.stringify(query_credentials)}
+            }
+    )
 }
 const dismis_type = async(data)=>{
     const closeLoadingAlert = ShowLoading();

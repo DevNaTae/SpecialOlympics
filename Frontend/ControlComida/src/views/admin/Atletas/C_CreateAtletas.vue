@@ -163,7 +163,7 @@ const Atletas_post= async ()=>{
                 if(jsonData.success == false){
                     await Swal.fire({
                         icon:'error',
-                        title: 'Error al subir el documento',
+                        title: 'Error con el atleta',
                         text: jsonData.message,
                         timer: 4000,
                     })
@@ -175,6 +175,7 @@ const Atletas_post= async ()=>{
                         timer: 4000,
 
                     })
+                    router.go(-1)
                 }
                 return jsonData;
             }

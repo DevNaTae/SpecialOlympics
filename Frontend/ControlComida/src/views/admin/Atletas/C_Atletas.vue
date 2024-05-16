@@ -279,7 +279,7 @@ const save_actividades = ()=>{
                                         <button  v-if="false">
                                             <i class="bi bi-person-check color_wicon "></i>
                                         </button>
-                                        <button @click="actividades_selectivas(Atletas)" type="button" data-bs-toggle="modal" :data-bs-target="'#exampleModal_'+Atletas.id" class="button_icon_status_sett_AD"  v-if="true" >
+                                        <button hidden @click="actividades_selectivas(Atletas)" type="button" data-bs-toggle="modal" :data-bs-target="'#exampleModal_'+Atletas.id" class="button_icon_status_sett_AD"  v-if="true" >
                                             <i class="bi bi-clipboard-fill"></i>
                                             <i class="bi bi-0-circle-fill"></i>                                     
                                             <i class="bi bi-1-circle-fill"></i>
