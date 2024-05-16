@@ -1,5 +1,4 @@
 <script setup>
-import Swal from 'sweetalert2';
 import C_Header from '../../components/C_Header.vue';
 import C_footer from '../../components/C_Footer.vue';
 import { C_print_upload } from '@/stores/Print_Credentials'
@@ -56,89 +55,7 @@ const getQrUrl = (data) => {
   const imageUrl = data;
   return new URL(imageUrl, baseUrl).href;
 };
-//sweet alert
-const ShowLoading = () => {
-  const loadingAlert = Swal.fire({
-    title: 'Procesando...',
-    html: '<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>',
-    showConfirmButton: false,
-    allowOutsideClick: false, 
-  });
 
-  const CloseLoading = () => {
-    Swal.close(); // Cerramos la instancia de SweetAlert2
-  };
-
-  return CloseLoading;
-};
-const ShowSuccess = ()=>{
-    Swal.fire({
-        icon: "success",
-        title: 'PDFs Impresos: ' + currentPage.value,
-        allowOutsideClick: false, // Evitar que el usuario cierre la alerta haciendo clic fuera de ella
-        showConfirmButton: false, // No mostrar el botón de confirmación mientras se está cargando
-        timer: 4000,
-
-    })
-}
-const Show_end=()=>{
-  Swal.fire({
-        icon: "success",
-        title: 'Impresion por lote completada' ,
-        allowOutsideClick: false, // Evitar que el usuario cierre la alerta haciendo clic fuera de ella
-        showConfirmButton: false, // No mostrar el botón de confirmación mientras se está cargando
-        timer: 4000,
-
-    })
-}
-const ShowError = () =>{
-    Swal.fire({
-        icon:'error',
-        title: 'Error al intentar hacer un documento',
-        timer: 3000,
-    })
-}
-const ShowLoading_wait = () => {
-  const loadingAlert = Swal.fire({
-    title: 'En espera ',
-    html: '<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>',
-    showConfirmButton: false,
-    allowOutsideClick: false, 
-  });
-
-  const CloseLoading = () => {
-    Swal.close(); // Cerramos la instancia de SweetAlert2
-  };
-
-  return CloseLoading;
-};
-
-
-
-//
-const select_print = ref('')
-//traer invitados
-const get_paginate_invitados = async()=>{
-  await P_print_upload.get_paginate_TiposInvitados();
-  print_paginate_atleta.value = P_print_upload.print_unit
-  modifySvgSizes();
-  select_print.value = 'Invitados'
-  currentPage.value = 1;
-  next_page.value = 2;
-  predit.value = 0;
-}
-//traer Atletas
-const get_paginate_atletas = async()=>{
-  await P_print_upload.get_paginateTipes(1);
-  print_paginate_atleta.value = P_print_upload.print_unit
-  modifySvgSizes();
-  select_print.value = 'Atletas'
-  currentPage.value = 1;
-  next_page.value = 2;
-  predit.value = 0;
-
-
-}
 
 //pdf
 const cheked = ref(true);
@@ -152,7 +69,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const pdfGenerado = ref(false);
 const generarPDF = async()=>{
-       const closeLoadingAlert = ShowLoading();
         const contenido = document.getElementById('contenidoParaPDF');
         var opt = {
             margin: 0,
@@ -168,38 +84,19 @@ const generarPDF = async()=>{
         pdfGenerado.value = true;
 }
 const contador = ref(0)
-const lotes_limit= ref(1)
-//validar el contador de lotes_limit
-const validarNumero = (event) => {
-  const input = event.target;
-  let valor = input.value.trim();
-  // Reemplazar comas por puntos para asegurar el formato decimal correcto
-  valor = valor.replace(',', '.');
-  // Validar si el valor es un número positivo
-  if (isNaN(valor) || valor < 0) {
-    input.value = '';
-    lotes_limit.value = 0;
-  } else {
-    lotes_limit.value = parseFloat(valor);
-  }
-}
-//
 watch(pdfGenerado, (nuevoEstado) => {
   if (nuevoEstado) {
     console.log('¡El PDF ha sido generado!');
-        ShowSuccess();
-    const timeoutId = setTimeout(()=>{
-        if(contador.value == lotes_limit.value){
-        nextPage();
-        contador.value++
-          const closeLoadingAlert = ShowLoading_wait();
-          generarPDF();
-      }else{
-        contador.value = 0;
-        Show_end();
-      }
-    }, 5000)
-
+    if(contador.value !== 1){
+      nextPage();
+      contador.value++
+      console.log('en espera del segundo pdf')
+      const timeoutId = setTimeout(() => {
+        generarPDF();
+      }, 5000); 
+    }else{
+      contador.value = 0;
+    }
   } else {
     console.log('Generando PDF...');
   }
@@ -224,18 +121,9 @@ function modifySvgSizes() {
 }
 //paginacion
 const currentPage = ref(1);
-const next_page = ref(2);
-const predit = ref(0);
 const goToPage = async(data)=>{
   currentPage.value = data;
-  predit.value= currentPage.value + 1;
-  next_page.value=predit.value;
-  if(select_print.value == 'Invitados'){
-    await P_print_upload.get_paginate_TiposInvitados(currentPage.value);
-  }
-  if(select_print.value == 'Atletas'){
-    await P_print_upload.get_paginateTipes(currentPage.value);
-  }
+  await P_print_upload.get_paginateTipes(currentPage.value);
   print_paginate_atleta.value = P_print_upload.print_unit
   modifySvgSizes()
 
@@ -244,15 +132,7 @@ const previousPage = async() => {
   // Ir a la página anterior si no estamos en la primera página
   if (currentPage.value > 1) {
     currentPage.value--;
-    predit.value= currentPage.value - 1;
-    next_page.value=predit.value;
-
-    if(select_print.value == 'Invitados'){
-    await P_print_upload.get_paginate_TiposInvitados(currentPage.value);
-  }
-  if(select_print.value == 'Atletas'){
     await P_print_upload.get_paginateTipes(currentPage.value);
-  }
     print_paginate_atleta.value = P_print_upload.print_unit
     modifySvgSizes()
     // Aquí puedes llamar a tu función para cargar los datos de la página
@@ -261,19 +141,9 @@ const previousPage = async() => {
 
 const nextPage = async() => {
   // Ir a la página siguiente si no estamos en la última página
-  console.log(select_print.value);
-    if (currentPage.value < P_print_upload.pagina_final) {
-      currentPage.value++;
-
-      predit.value= currentPage.value + 1;
-      next_page.value=predit.value;
-
-      if(select_print.value == 'Invitados'){
-        await P_print_upload.get_paginate_TiposInvitados(currentPage.value);
-      }
-      if(select_print.value == 'Atletas'){
-        await P_print_upload.get_paginateTipes(currentPage.value);
-      }
+  if (currentPage.value < P_print_upload.pagina_final) {
+    currentPage.value++;
+    await P_print_upload.get_paginateTipes(currentPage.value);
     print_paginate_atleta.value = P_print_upload.print_unit
     modifySvgSizes()
     // Aquí puedes llamar a tu función para cargar los datos de la página
@@ -281,16 +151,12 @@ const nextPage = async() => {
 };
 </script>
 <template>
-  <!-- {{ contador }} -->
+  {{ contador }}
   <!-- {{ P_print_upload.print_unit }} -->
   <!-- {{ P_print_upload.print_unit.url_image }} -->
-  <!-- <div v-for="(paginate,index) in print_paginate_atleta">
-    {{ paginate.cedula }}
-    {{ paginate.nombre }}
-    {{ paginate.apellido }}
-    {{ paginate.tipo_invitado }}
-    {{ paginate.provincia }}
-  </div> -->
+  <div v-for="(paginate,index) in print_paginate_atleta">
+    {{ paginate.url_image }}
+  </div>
   <div v-for="(paginate,index) in print_paginate_atleta" class="border_y" hidden>
       <div class="border_v d-flex" v-if="svgContainers[index]">
         <div class="border_r " v-html="svgContainers[index].outerHTML"></div>
@@ -312,32 +178,27 @@ const nextPage = async() => {
                   <div class="border_y" style="border: 0px;"> <!--cuadro amarillo izquierdo-->
                     <h2 style="border-bottom: 2px solid black; padding-bottom: 10px;">Opciones a Imprimir:</h2>
                     
-                    <div class="botones-primeros ">
-                    <div class="d-flex justify-content-center mb-2 ">
-                      <button @click="get_paginate_atletas" class="btn btn-primary me-2">
+                    <div class="botones-primeros">
+                    <div class="d-flex justify-content-center mb-2">
+                      <button class="btn btn-primary me-2">
                         Atletas
                       </button>
-                      <button @click="get_paginate_invitados" type="button" class="btn btn-primary" >
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Invitados
                       </button>
                     </div>
                     </div>
                     
-                    <div v-if="select_print !== ''" class="border_o" style="border: 0px;"> <!--bloque anaranjado izquierdo-->
-                      <div class="d-flex mt-2 mb-2">
-                        <button class="btn btn-info" @click="generarPDF">Generar PDF</button>
-                      </div>
-                      <h5>
-                          <p>Rango de lotes</p>
-                          <input @input="validarNumero" v-model="lotes_limit" type="number" class="border_black rounded" min="1"> 
-                      </h5>
+                    <div class="border_o" style="border: 0px;"> <!--bloque anaranjado izquierdo-->
+                      <button class="btn btn-info" @click="generarPDF">Generar PDF</button>
                       <h3>Pagina Actual:{{ currentPage }}</h3>
-                      <h3>Pagina Siguiente:{{ next_page }}</h3>
+                      <h3>Pagina Siguiente:</h3>
                       <h3>Pagina final: {{ P_print_upload.pagina_final }}</h3>
+                      <h3>En espera del procesar el siguiente doc qui poner un sweet alert</h3>
                     </div>
 
                   </div>
-                  <div v-if="select_print !== ''" class="d-flex justify-content-center border_black" style="border: 0px;"><!--cuadro negro izquierdo-->
+                  <div class="d-flex justify-content-center border_black" style="border: 0px;"><!--cuadro negro izquierdo-->
                     <!-- paginacion -->
                     <button @click="previousPage" :disabled="currentPage === 1" style="border-top-left-radius: 10px; border-bottom-left-radius: 10px;">
                       Anterior
@@ -357,12 +218,12 @@ const nextPage = async() => {
 <!--inicio del cuadro de impresion-->
               <!-- <div class="cuadro-derecho"> -->
                 <div class="col-8" style="border-left: 2px solid black;"><!--bloque negro derecho-->
-                  <div v-if="select_print == ''" class="base_edit_print d-flex justify-content-center align-items-center ">
+                  <div v-if="!cheked == true" class="base_edit_print d-flex justify-content-center align-items-center border_v">
                       <i class="bi bi-files font_print"></i>
                   </div>
                   <div class="border_v" style="border: 0px;"><!--bloque morado derecho-->
 
-                  <div v-if="select_print == 'Atletas'" class="hoja-a4" id="contenidoParaPDF" >
+                  <div class="hoja-a4" id="contenidoParaPDF">
                     <img src="https://specialolimpics--production-jistoria.sierranegra.cloud/storage/images/oe._los_rios/amador_anderson_1207139005.jpg" class="imagen" style="top: 6.9em; left: 8.6em;">
 
                     <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
@@ -384,41 +245,16 @@ const nextPage = async() => {
                         <div class="" v-html="svgContainers[i].outerHTML"></div>
                       </div>
 
-                      <div class="texto2" style="top: 17.2em; left: 2em;">ATLETA</div>
+                      <div class="texto2" style="top: 12.8em; left: 3em; color: white;">ATLETA</div>
                     </div>
                   </div>
-
-                  <div  v-if="select_print == 'Invitados'" class="hoja-a4" id="contenidoParaPDF" >
-                    <img src="https://specialolimpics--production-jistoria.sierranegra.cloud/storage/images/oe._los_rios/amador_anderson_1207139005.jpg" class="imagen" style="top: 6.9em; left: 8.6em;">
-
-                    <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
-                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_imagen" class="imagen" style="top: 6.9em; left: 8.6em;">
-                      <div class="texto medid_img" style="top: 29.9em; left: 11em; ">{{ index.nombre }}  {{ index.apellido }}</div>
-
-                      <div class="texto mb-2 medid_img" style="top: 34.5em; left: 11em; color:#2092d1;">
-                        Cedula:
-                        {{ index.cedula }}
-                      </div>
-                      <div class="texto mb-2 medid_img" style="top: 32.5em; left: 11em; color:#2092d1;">
-                        {{ index.provincia }}
-                      </div>
-                      <!-- <div v-html="index.qr" class="qr" style="top:27em; left: 19.7em;" hidden></div> -->
-                      <div class=" d-flex qr"    v-if="svgContainers[i]" style="top:25em; left: 19.3em;" >
-                        <div class="" v-html="svgContainers[i].outerHTML"></div>
-                      </div>
-
-                      <div class="texto2 " style="top: 17.2em; left: 2em;">
-                        <a>{{ index.tipo_invitado }}</a>
-                      </div>
-                    </div>
-                  </div>
-
-
-
                   </div>
                 </div>
               <!-- </div> -->
 <!--fin del cuadro de impresion-->
+
+
+
               </div>
             </div>
         </div>
@@ -530,13 +366,14 @@ const nextPage = async() => {
 
         .texto2 {
             position: absolute; /* Posición absoluta para poder mover el texto */
-            color: rgb(250, 247, 247); /* Color del texto */
-            font-size: 30px; /* Tamaño de fuente */
+            color: black; /* Color del texto */
+            font-size: 40px; /* Tamaño de fuente */
             font-weight: bold; /* Negrita */
             pointer-events: none; /* Evitar que el texto afecte los eventos del ratón */
             text-align: center; /* Justificar el texto al centro */
-            width: 80%; /* Hacer que el texto ocupe todo el ancho del contenedor */
+            width: 50%; /* Hacer que el texto ocupe todo el ancho del contenedor */
             font-family: "GFS Neohellenic", sans-serif;
+            color: #8c2b92;
         }
 
         .imagen {
@@ -591,7 +428,7 @@ const nextPage = async() => {
   
 }
 .base_edit_print{
-  border: 0px solid red;
+  border: 5px solid red;
   width: auto;
   height: 70vh;
 }

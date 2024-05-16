@@ -12,7 +12,7 @@ const isExcelFile = ref(false);
 const P_print_upload = C_print_upload()
 const provincias = ref('');
 
-const tipo_selected= ref('');
+const tipo_selected= ref('jpg');
 const icono_selected = ref('');
 
 const iconos_tipo = reactive({

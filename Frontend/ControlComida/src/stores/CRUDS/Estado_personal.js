@@ -87,7 +87,7 @@ export const C_Sportman = defineStore('Estado_personal',{
         async dismiss_personal(id){
             try {
                 const response = await fetch (`${this.url}/api/dashboard/delete_guest/${id}`,{
-                    method:'POST',
+                    method:'DELETE',
                     headers:{
                         // 'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',

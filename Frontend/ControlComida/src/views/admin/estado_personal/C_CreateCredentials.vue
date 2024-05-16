@@ -44,12 +44,10 @@ const data_sett= reactive({
     activo:'',
     provincia_id:'',
     tipo_invitado_id:'',
-    fecha_nacimiento:'',
 })
 const credencials_post = async()=>{
     const closeLoadingAlert = ShowLoading();
     const data = await P_TI.post_personal(data_sett);
-    console.log(data);
     if(data.success == "false"){
         await Swal.fire({
             title: 'Error',
@@ -58,7 +56,7 @@ const credencials_post = async()=>{
             confirmButtonText: 'Entendido'
         });
         return;
-    }else if(data.success == 'true'){
+    }else if(data.success == true){
         await Swal.fire({
         title: 'Invitado Agregado',
         text: data.message,
@@ -156,11 +154,14 @@ const validateCedula = () => {
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                        <div class="mb-3">
-                                            <label for="exampleInputPassword1" class="form-label">fecha de nacimiento</label>
-                                            <input v-model="data_sett.fecha_nacimiento" class="form-control" type="date" id="fecha" name="fecha">
-                                        </div>
+                                    <div class="mb-3">
+                                        <label for="exampleInputPassword1" class="form-label">Genero</label>
+                                        <select v-model="data_sett.genero" class="form-select" aria-label="Default select example">
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Femenino</option>
+                                        </select>
                                     </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-12  col-sm-6">
@@ -169,15 +170,6 @@ const validateCedula = () => {
                                         <select v-model="data_sett.activo" class="form-select" aria-label="Default select example">
                                             <option value="true">Activo</option>
                                             <option value="false">De baja</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="mb-3">
-                                        <label for="exampleInputPassword1" class="form-label">Genero</label>
-                                        <select v-model="data_sett.genero" class="form-select" aria-label="Default select example">
-                                            <option value="M">Masculino</option>
-                                            <option value="F">Femenino</option>
                                         </select>
                                     </div>
                                 </div>
