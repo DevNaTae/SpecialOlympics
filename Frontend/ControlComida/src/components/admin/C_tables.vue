@@ -123,6 +123,7 @@ const ShowLoading = () => {
 </script>
 <template>
     <!-- debo hacer un load mientras se pide la peticion -->
+<div class="completo_tabla">
     <div class="container mt-5">
         <modal_state @tipoSeleccionado="handleTipoSeleccionado"></modal_state>
         <RouterLink :to="{name:'C_CreateCredentials'}">
@@ -191,9 +192,22 @@ const ShowLoading = () => {
             <button class="btn btn-info me-2" @click="nextPage" :disabled="P_estadoC.pagina_actual === P_estadoC.pagina_final">&raquo;</button>
         </div>
     </div>
+</div>
 
 </template>
 <style>
+
+
+@media(max-width:600px){
+    .completo_tabla{
+        border: 0px solid;
+        margin: 5em;
+        margin-bottom: 2em; 
+        box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.5); border-radius: 1em; 
+        padding: 2em;
+    }
+}
+
 .name_ajust {
     white-space: normal; 
     word-wrap: break-word; 

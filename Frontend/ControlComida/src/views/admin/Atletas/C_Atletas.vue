@@ -232,6 +232,8 @@ const save_actividades = ()=>{
     <div class="body_vue">
         <div class="content_vue">
             <C_Header></C_Header>
+            <div class="contenedor-padre">
+            <div class="encerrar-gestion-atleta">
             <div class="container mt-5">
                 <modal_atletas @DeporteSeleccionado="handleDeporteSeleccionado" ></modal_atletas>
                 <RouterLink :to="{name:'C_create_atletas'}">
@@ -349,6 +351,8 @@ const save_actividades = ()=>{
                 </div>
             </div>
         </div>
+    </div>
+        </div>
         <footer class="footer_vue">
             <C_footer></C_footer>
         </footer>
@@ -356,6 +360,34 @@ const save_actividades = ()=>{
     
 </template>
 <style>
+
+.contenedor-padre{
+    display: flex;
+    justify-content: center;
+}
+
+.encerrar-gestion-atleta{
+    /* border: 0px solid;
+    margin: 0.5em;
+    border-radius: 1em;
+    padding: 1em;
+    margin-bottom: 5em;
+    margin-top: 5em; */
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.5); 
+    width: 70%;
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+
+@media(max-width:600px) {
+    .encerrar-gestion-atleta{
+        width: 90%;
+        margin-top: 3em;
+        margin-bottom: 3em;
+        box-shadow: 0px 0px 10px 5px black(0,0,0,0.5);
+    }
+}
+
 .button_icon_status_dismiss{
     padding: 10px;
     margin-left: 10px;

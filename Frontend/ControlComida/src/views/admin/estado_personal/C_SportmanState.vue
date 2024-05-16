@@ -14,7 +14,7 @@ import C_tables from '@/components/admin/C_tables.vue';
         <div class="content_vue ">
             <C_Header></C_Header>
             
-            <C_tables ></C_tables>
+            <C_tables></C_tables>
         </div>
         <footer class="footer_vue">
             <C_footer></C_footer>
