@@ -163,7 +163,7 @@ const Atletas_post= async ()=>{
                 if(jsonData.success == false){
                     await Swal.fire({
                         icon:'error',
-                        title: 'Error al subir el documento',
+                        title: 'Error al agregar al atleta',
                         text: jsonData.message,
                         timer: 4000,
                     })

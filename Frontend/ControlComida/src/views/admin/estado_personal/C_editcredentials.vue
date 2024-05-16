@@ -27,6 +27,8 @@ const query_credentials = reactive({
     activo:'',
     provincia_id:'',
     tipo_invitado_id:'',
+    fecha_nacimiento:'',
+
 })
 
 const tiposInvitados = ref({});
@@ -44,6 +46,7 @@ onMounted(async()=>{
     id_invitado.value = data.invitado_id;
     query_credentials.provincia_id = data.provincia_id;
     query_credentials.tipo_invitado_id = data.tipo_invitado_id;
+    query_credentials.fecha_nacimiento = data.fecha_nacimiento
     const datas = await P_TiposInvitados.get_TiposInvitados();
     P_TiposInvitados.TiposInvitados.forEach(tipo => {
         if (!tiposInvitados.value.hasOwnProperty(tipo.tipo_invitado_id)) {
@@ -157,13 +160,11 @@ const ShowLoading = () => {
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <div class="mb-3">
-                                        <label for="exampleInputPassword1" class="form-label">Genero</label>
-                                        <select v-model="query_credentials.genero" class="form-select" aria-label="Default select example">
-                                            <option value="M">Masculino</option>
-                                            <option value="F">Femenino</option>
-                                        </select>
+                                                <label for="exampleInputPassword1" class="form-label">fecha de nacimiento</label>
+                                                <input v-model="query_credentials.fecha_nacimiento" class="form-control" type="date" id="fecha" name="fecha">
                                     </div>
                                 </div>
+
                             </div>
                             <div class="row">
                                 <div class="col-12  col-sm-6">
@@ -172,6 +173,15 @@ const ShowLoading = () => {
                                         <select v-model="query_credentials.activo" class="form-select" aria-label="Default select example">
                                             <option value="true">Activo</option>
                                             <option value="false">De baja</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="exampleInputPassword1" class="form-label">Genero</label>
+                                        <select v-model="query_credentials.genero" class="form-select" aria-label="Default select example">
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Femenino</option>
                                         </select>
                                     </div>
                                 </div>

@@ -144,6 +144,26 @@ export const C_print_upload = defineStore('print_upload',{
                 
             }
         },
+        async get_paginate_TiposInvitados(page=1){
+            const response = await fetch(`${this.url}/api/dashboard/credentials_guest/?page=${page}`,{
+                method:'GET',
+                headers:{
+                    'Content-Type':'application/json',
+                    'Accept': 'application/json',
+                },
+                credentials:'include',
+            })
+            console.log(response);
+            const jsonData = await response.json();
+            // console.log('la pagina en la que estas es'+ jsonData.current_page);
+            // console.log('la ultima pagina es'+jsonData.last_page);
+            // console.log('desde el inicio'+jsonData.from);
+            console.log(jsonData)
+            this.pagina_actual = jsonData.current_page;
+            this.pagina_inicio = jsonData.from
+            this.pagina_final = jsonData.last_page
+            this.print_unit = jsonData.invitados;
+        },
 
     },
 })
