@@ -422,7 +422,7 @@ const nextPage = async() => {
                         <div class="" v-html="svgContainers[i].outerHTML"></div>
                       </div>
 
-                      <div class="texto2 " style="top: 17.2em; left: 2em;">
+                      <div class="texto2" style="top: 17.2em; left: 2em;">
                         <a>{{ index.tipo_invitado }}</a>
                       </div>
                     </div>
@@ -545,14 +545,13 @@ const nextPage = async() => {
 
         .texto2 {
             position: absolute; /* Posición absoluta para poder mover el texto */
-            color: black; /* Color del texto */
-            font-size: 40px; /* Tamaño de fuente */
+            color: rgb(255, 255, 255); /* Color del texto */
+            font-size: 30px; /* Tamaño de fuente */
             font-weight: bold; /* Negrita */
             pointer-events: none; /* Evitar que el texto afecte los eventos del ratón */
             text-align: center; /* Justificar el texto al centro */
-            width: 50%; /* Hacer que el texto ocupe todo el ancho del contenedor */
+            width: 80%; /* Hacer que el texto ocupe todo el ancho del contenedor */
             font-family: "GFS Neohellenic", sans-serif;
-            color: #8c2b92;
         }
 
         .imagen {
