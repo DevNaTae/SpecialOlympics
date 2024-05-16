@@ -53,7 +53,7 @@ const ShowLoading = () => {
 const ShowSuccess = ()=>{
     Swal.fire({
         icon: "success",
-        title: 'PDFs Impresos: ' + currentPage.value,
+        title: 'PDFs Generados: ' + currentPage.value,
         allowOutsideClick: false, // Evitar que el usuario cierre la alerta haciendo clic fuera de ella
         showConfirmButton: false, // No mostrar el botón de confirmación mientras se está cargando
         timer: 4000,
@@ -63,7 +63,7 @@ const ShowSuccess = ()=>{
 const Show_end=()=>{
   Swal.fire({
         icon: "success",
-        title: 'Impresion por lote completada' ,
+        title: 'Descarga por lote completada' ,
         allowOutsideClick: false, // Evitar que el usuario cierre la alerta haciendo clic fuera de ella
         showConfirmButton: false, // No mostrar el botón de confirmación mientras se está cargando
         timer: 4000,
@@ -152,6 +152,14 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const pdfGenerado = ref(false);
 const generarPDF = async()=>{
+        if(lotes_limit.value === 0){
+          Swal.fire({
+              icon:'error',
+              title: 'No puede ser 0 la impresion de lotes',
+              timer: 3000,
+          })
+          return
+        }
         const closeLoadingAlert = ShowLoading();
         const contenido = document.getElementById('contenidoParaPDF');
         var opt = {
@@ -179,9 +187,13 @@ const validarNumero = (event) => {
   if (isNaN(valor) || valor < 0) {
     input.value = '';
     lotes_limit.value = 0;
-  } else {
+  } else if(valor > P_print_upload.pagina_final){
+    input.value = P_print_upload.pagina_final;
+    lotes_limit.value = P_print_upload.pagina_final;
+  }else{
     lotes_limit.value = parseFloat(valor);
   }
+
 }
 
 watch(pdfGenerado, (nuevoEstado) => {
@@ -191,15 +203,19 @@ watch(pdfGenerado, (nuevoEstado) => {
         if(contador.value === lotes_limit.value){
           contador.value = 0;
           Show_end();
-
-
       }else{
           nextPage();
           contador.value++
-          const timeoutId_1 = setTimeout(()=>{
-            const closeLoadingAlert = ShowLoading_wait();
-            generarPDF();
-          }, 3000)
+          if(contador.value === lotes_limit.value){
+            contador.value = 0;
+            Show_end();
+            return
+          }else{
+            const timeoutId_1 = setTimeout(()=>{
+              const closeLoadingAlert = ShowLoading_wait();
+              generarPDF();
+            }, 3000)
+          }
       }
     }, 5000)
   } else {
@@ -329,7 +345,7 @@ const nextPage = async() => {
                       </div>
                       <h5>
                           <p>Rango de lotes</p>
-                          <input @input="validarNumero" v-model="lotes_limit" type="number" class="border_black rounded" min="1"> 
+                          <input @input="validarNumero" v-model="lotes_limit" type="number" class="input_edit_print rounded" min="1" :max="P_print_upload.pagina_final"> 
                       </h5>
                       <h3>Pagina Actual:{{ currentPage }}</h3>
                       <h3>Pagina Siguiente: {{ next_page }}</h3>
@@ -597,6 +613,9 @@ const nextPage = async() => {
 }
 .font_print{
   font-size: 5.0rem;
+}
+.input_edit_print {
+  border: 3px solid black;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

@@ -167,10 +167,10 @@ onMounted(() => {
                         <div class="container_food_data_bottom">
                             <div class="d-flex justify-content-center pt-4">
                                 <button v-if="food_setting.completo == false" @click="food_petition" class="btn btn-success mb-2" >
-                                    No ha comido
+                                    Almuerzo entregado
                                 </button>
                                 <button v-else  class="btn btn-warning mb-2">
-                                        Ya comio
+                                    Almuerzo no entregado
                                 </button>
                             </div>
                         </div>

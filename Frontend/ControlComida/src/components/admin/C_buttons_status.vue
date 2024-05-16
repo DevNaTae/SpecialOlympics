@@ -63,7 +63,7 @@ import select_activities from './select_activities.vue';
                 </div>
             </div>
 
-            <div class="col-6 col-sm-4 mt-2  border_">
+            <div class="col-6 col-sm-4 mt-2  border_" hidden>
                 <div class="d-flex justify-content-center">
                     <RouterLink :to="{ name:'C_Resultados'}">
                         <button type="button" class="btn_hw btn btn-light">
