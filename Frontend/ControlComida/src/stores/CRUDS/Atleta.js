@@ -107,7 +107,6 @@ export const  C_Atletas = defineStore('Atletas',{
                     method:'PUT',
                     mode:'cors',
                     headers:{
-                        'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
                     credentials:'include',

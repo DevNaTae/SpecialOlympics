@@ -52,7 +52,7 @@ export const C_Sportman = defineStore('Estado_personal',{
                 const response = await fetch(`${this.url}/api/dashboard/store_guest`,{
                     method:'POST',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        // 'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
@@ -71,7 +71,7 @@ export const C_Sportman = defineStore('Estado_personal',{
                 const response = await fetch(`${this.url}/api/dashboard/update_guest/${id}`,{
                     method:'PUT',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        // 'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
@@ -89,7 +89,7 @@ export const C_Sportman = defineStore('Estado_personal',{
                 const response = await fetch (`${this.url}/api/dashboard/delete_guest/${id}`,{
                     method:'DELETE',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        // 'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },

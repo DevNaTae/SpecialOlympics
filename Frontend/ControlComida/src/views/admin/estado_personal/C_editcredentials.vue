@@ -120,16 +120,20 @@ const ShowLoading = () => {
         <C_Header></C_Header>
         <form class="mt-4" @submit.prevent="credentials_update">
             <div class="container">
+                <h2>Tipo de Invitado:</h2>
                 <div class="row ">
-                    <div class="col-12 mb-3">
-                        <div class="base_dataEdit_top">
-                            <div class="d-flex justify-content-center">
-                                <i class="img_base_edit bi bi-person-circle"></i>
+                    <div class="col-12 col-sm-3 base_dataEdit_top rounded ">
+                        <div class="d-flex align-items-center" style="height: 100% ;">
+                            <div  class="mx-auto">
+                                <div class="d-flex justify-content-center">
+                                    <i class="img_base_edit bi bi-person-circle"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 ">
-                        <div class=" base_dataEdit">
+                    <div class="col-12 col-sm-9">
+                        <div class=" base_dataEdit_top p-3 rounded">
+                            <h2>Datos Pesonales:</h2>
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <div class="mb-3">
@@ -190,12 +194,16 @@ const ShowLoading = () => {
                                     </select>
                                 </div>
                             </div>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-info mb-3 mt-2">
+                                    Guardar Cambios
+                                </button>
+                            </div>
                         </div>
+
                     </div>
                 </div>
-                <button class="btn btn-primary mb-3 mt-2">
-                    Guardar Cambios
-                </button>
+
             </div>
         </form>
     </div>
@@ -219,9 +227,11 @@ const ShowLoading = () => {
 }
 .base_dataEdit_top{
     /* background: rgb(235, 229, 229);  */
-    background: rgb(192, 189, 189); 
+    /* border-bottom: 0.1mm solid rgb(154, 149, 149); */
+    background: rgb(235, 201, 201) !important;
     box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
 
 
 }
+
 </style>

@@ -227,8 +227,8 @@ const handleFileInputChange = (event) => {
             <form class="mt-4" @submit.prevent="Atleta_update">
                 <div class="container">
                     <div class="row">
-                        <div class="col-12 mb-3">                            
-                            <div class="base_dataEdit_top">
+                        <div class="col-12 col-sm-3 base_dataEdit_top mb-2 rounded">
+                            <div >
                                 <div >
                                     <div v-if="previewImage == null" class="d-flex justify-content-center">
                                         <img :src="getImageUrl()" class="img_base_edit_place" alt="Imagen completa">
@@ -246,8 +246,8 @@ const handleFileInputChange = (event) => {
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 ">
-                            <div class=" base_dataEdit">
+                        <div class="col-12 col-sm-9  mb-3">
+                            <div class=" base_dataEdit_top p-2 rounded">
                                 <!-- aqui se guarda -->
                                 <div class="row">
                                     <div class="col-12 col-sm-6">
@@ -371,9 +371,6 @@ const handleFileInputChange = (event) => {
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary mb-3 mt-2">
-                        Guardar Cambios
-                    </button>
                 </div>
             </form>
         </div>

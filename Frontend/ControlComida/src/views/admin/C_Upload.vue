@@ -108,13 +108,15 @@ const subir_doc = async()=>{
 
 const fileNames = ref([]);
 const fileInputRef = ref(null);
+const selectedFileNames = ref([]);
 
 const handleFileChange = (event) => {
   const files = event.target.files;
   console.log(files[0].name)
   for (let i = 0; i < files.length; i++) {
 
-
+    const fileName = files[i].name;
+    selectedFileNames.value.push(fileName);
     fileNames.value.push(files[i]);
   }
 };
@@ -122,6 +124,16 @@ const handleFileChange = (event) => {
 import axios  from 'axios';
 
 const upload_img = async()=>{
+
+  if(provincia_seleccionada.value== ''){
+    Swal.fire({
+        icon:'error',
+        title: 'Seleccione una provincia',
+        timer: 4000,
+    })
+    return
+  }
+
   const formData = new FormData();
   fileNames.value.forEach((file) => {
     // Agregar la imagen al FormData con una clave única
@@ -134,19 +146,49 @@ const upload_img = async()=>{
       },
       withCredentials: true,
     });
+    console.log(response.data.success);
+    console.log(response.data.message);
+    if(response.data.success == true){
+      Swal.fire({
+        icon: "success",
+        title: response.data.message,
+        timer: 4000,
+      })
+    }else{
+      Swal.fire({
+        icon: "error",
+        title: 'hubo un error al hacer la peticion',
+        timer: 4000,
+      })
+    }
   } catch (error) {
     console.error('Error al enviar las imágenes:', error);
+    console.error(error.response.status);
+    if(error.response.status == 404){
+      Swal.fire({
+        icon:'error',
+        title: 'No se encontraro imagenes',
+        timer: 4000,
+      })
+    }else if(error.response.status == 500){
+      Swal.fire({
+        icon:'error',
+        title: 'Error de servidor',
+        timer: 4000,
+      })
+    }
 
   }
-
-  //const data = P_print_upload.upload_imgs(formData,provincia_seleccionada.value);
 
 }
 
 
 const removeFile = (index) => {
-  // Eliminar el archivo correspondiente del arreglo de nombres de archivos
+  selectedFileNames.value.splice(index, 1);
   fileNames.value.splice(index, 1);
+  const input = document.getElementById('formFile_img');
+
+  input.value = '';
 };
 
 const fileInput = ref(null);
@@ -160,6 +202,11 @@ const fileInput = ref(null);
       <button type="submit">Subir Archivo</button>
     </form>
   </div>
+
+
+
+
+
 <div class="body_vue" >
         <div class="content_vue">
             <C_Header></C_Header>
@@ -222,14 +269,15 @@ const fileInput = ref(null);
                         <!-- solo acepte imagenes jpg -->
                         <input class="form-control" type="file" id="formFile_img"  @change="handleFileChange" multiple>
                         <div class="ms-3 mt-2">
-                          <button class="btn btn-primary" @click="upload_img">Enviar</button>
+                          <button :disabled="fileNames.length === 0" class="btn btn-primary" @click="upload_img">Enviar</button>
                         </div>
                       </div>
                     </div>
                     <div class="col-12 col-sm-12">
+
                       <div class="p-3 style_files" v-show="fileNames.length > 0">
                         <ul class="file-list">
-                          <li v-for="(fileName, index) in fileNames" :key="index">
+                          <li v-for="(fileName, index) in selectedFileNames" :key="index">
                             <div class="d-flex justify-content-between mt-2">
                               {{ fileName }}
                               <button class="btn btn-danger" @click="removeFile(index)">
@@ -239,6 +287,7 @@ const fileInput = ref(null);
                           </li>
                         </ul>
                       </div>
+
                     </div>
                   </div>
                 </div>

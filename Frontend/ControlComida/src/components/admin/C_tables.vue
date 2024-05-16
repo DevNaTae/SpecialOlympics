@@ -24,6 +24,7 @@ const query_credentials = reactive({
 })
 
 const handleTipoSeleccionado = async (tipo) => {
+    
   tipoSeleccionado.value = tipo;
   await P_estadoC.get_typeC(tipoSeleccionado.value)
 
@@ -70,13 +71,13 @@ const go_edit_page= (data)=>{
     query_credentials.provincia_id = data.provincia_id;
     query_credentials.tipo_invitado_id = data.tipo_invitado_id;
 
-    router.push(
-            {
-              name:'C_editcredentials', 
-              params:{f_num:data.invitado_id},
-              query:{Datos_deportista: JSON.stringify(query_credentials)}
-            }
-    )
+    // router.push(
+    //         {
+    //           name:'C_editcredentials', 
+    //           params:{f_num:data.invitado_id},
+    //           query:{Datos_deportista: JSON.stringify(query_credentials)}
+    //         }
+    // )
 }
 const dismis_type = async(data)=>{
     const closeLoadingAlert = ShowLoading();
@@ -121,7 +122,6 @@ const ShowLoading = () => {
 
 </script>
 <template>
-    
     <!-- debo hacer un load mientras se pide la peticion -->
     <div class="container mt-5">
         <modal_state @tipoSeleccionado="handleTipoSeleccionado"></modal_state>
