@@ -12,7 +12,7 @@ const dataArray = ref([]);
 const food_petition = async () => {
   // Mostrar el diálogo de confirmación
   const result = await Swal.fire({
-    title: "Este deportista comera, esta seguro?",
+    title: "¿Se entregará el almuerzo? ¿Está seguro?",
     showDenyButton: true,
     showCancelButton: false,
     confirmButtonText: "Si",
@@ -71,20 +71,21 @@ const food_setting = reactive({
 onMounted(() => {
   //console.log(route.query.Datos_deportista)
   const data = JSON.parse(route.query.Datos_deportista)
-  //console.log(data);
+  console.log(data);
   dataArray.value = data;
-  food_setting.url_image = dataArray.value.deportista.url_imagen;
-  food_setting.nombre = dataArray.value.deportista.nombre;
-  food_setting.apellido = dataArray.value.deportista.apellido;
-  food_setting.genero = dataArray.value.deportista.genero;
-  food_setting.activo = dataArray.value.deportista.activo;
-  food_setting.completo =dataArray.value.deportista.almuerzos[0].completado;
-  food_setting.cedula = dataArray.value.deportista.cedula;
+  console.log(dataArray.value.nombre)
+  food_setting.url_image = dataArray.value.url_image;
+  food_setting.nombre = dataArray.value.nombre;
+  food_setting.apellido = dataArray.value.apellido;
+  food_setting.genero = dataArray.value.genero;
+  food_setting.activo = dataArray.value.activo;
+  food_setting.completo =dataArray.value.almuerzos[0].completado;
+  food_setting.cedula = dataArray.value.cedula;
   ///
-  food_setting.almuerzo_id = dataArray.value.deportista.almuerzos[0].id
+  food_setting.almuerzo_id = dataArray.value.almuerzos[0].id 
   //hora de almuerzo
-  food_setting.hora_inicio = dataArray.value.deportista.almuerzos[0].horario_comida.hora_inicio ;
-  food_setting.hora_fin = dataArray.value.deportista.almuerzos[0].horario_comida.hora_fin;
+  food_setting.hora_inicio = dataArray.value.almuerzos[0].horario_comida.hora_inicio ;
+  food_setting.hora_fin = dataArray.value.almuerzos[0].horario_comida.hora_fin;
 });
 </script>
 <template>
@@ -105,7 +106,13 @@ onMounted(() => {
                 <div class="row ">
                     <div class="col-12 pt-4">
                         <div class="container_food_data_top">
-
+                            <div class="d-flex justify-content-between ">
+                                <img class="img_logos" src="../../assets/imgs/Uleam.png">
+                                <div >
+                                    <i  class="bi bi-qr-code-scan" style="font-size: 4.0rem;" ></i>
+                                </div>
+                                <img class="img_logos" src="../../assets/imgs/olimpiadas_O.png">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -128,17 +135,6 @@ onMounted(() => {
                                     <h2 class="text-center">{{ food_setting.nombre }} {{ food_setting.apellido }}</h2>
                                 </div>
                                 <div>
-                                    <div class="mt-2">
-                                        <h2 class="text-center">Estado:</h2>
-                                       
-                                            <p class="text-center" v-if=" food_setting.activo == true">
-                                            Activo
-                                            </p>
-                                            <p class="text-center" v-else>
-                                            De baja
-                                            </p>
-                                        
-                                    </div>
                                 </div>
                                 <div class="col-12">
                                     <div>
@@ -147,7 +143,7 @@ onMounted(() => {
                                             <p class="text-center">
                                                 <p>{{ food_setting.hora_inicio }} -- {{ food_setting.hora_fin }} </p>
                                             </p>
-                                            <h2 class="text-center">Almuerzo Consumido:</h2>
+                                            <h2 class="text-center">Almuerzo:</h2>
                                             <p class="text-center" v-if="food_setting.completo == true">
                                                 <i class="font_size_data bi bi-check-circle-fill"></i>
                                             </p>
@@ -166,10 +162,10 @@ onMounted(() => {
                     <div class="col-12  pb-4">
                         <div class="container_food_data_bottom">
                             <div class="d-flex justify-content-center pt-4">
-                                <button v-if="food_setting.completo == false" @click="food_petition" class="btn btn-success mb-2" >
+                                <button v-if="food_setting.completo == true" class="btn btn-success mb-2" >
                                     Almuerzo entregado
                                 </button>
-                                <button v-else  class="btn btn-warning mb-2">
+                                <button v-else   @click="food_petition" class="btn btn-warning mb-2">
                                     Almuerzo no entregado
                                 </button>
                             </div>
@@ -249,5 +245,10 @@ onMounted(() => {
 .border_sett_bottom{
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
+}
+.img_logos{
+    width: 80px;
+    padding: 5px;
+    height: 90px;
 }
 </style>

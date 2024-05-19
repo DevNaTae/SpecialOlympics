@@ -326,7 +326,7 @@ const nextPage = async() => {
               <!-- <div class="cuadro-izquierdo">   -->
                 <div class="col-4 border_v" style="border: 5px; padding-right: 2em;"><!--cuadro morado izquierdo-->
                   <div class="border_y" style="border: 0px;"> <!--cuadro amarillo izquierdo-->
-                    <h2 style="border-bottom: 2px solid black; padding-bottom: 10px;">Opciones a Imprimir:</h2>
+                    <h2 style="border-bottom: 2px solid black; padding-bottom: 10px;">Opciones a imprimir:</h2>
                     
                     <div class="botones-primeros">
                     <div class="d-flex justify-content-center mb-2">

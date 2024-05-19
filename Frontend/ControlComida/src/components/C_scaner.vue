@@ -91,18 +91,23 @@ const scanQRCode = () => {
         const closeLoadingAlert = ShowLoading();
         const data = await C_scan.get_qr(code.data);
         //prueba_img.value = C_scan.deportista.deportista.url_imagen;
+        console.log(data.message);
         if(data=== true){
           toggleCamera();
           router.push(
             {
               name:'C_food_state', 
-              params:{f_num:C_scan.deportista.deportista.cedula},
+              params:{f_num:1},
               query:{Datos_deportista: JSON.stringify(C_scan.deportista)}
             }
           )
           ShowSuccess()
         }else{
-          ShowError()
+          Swal.fire({
+              icon:'error',
+              title: data.message,
+              timer: 3000,
+          })
         }
       }
     }
@@ -113,12 +118,15 @@ const scanQRCode = () => {
 </script>
 
 <template>
-  <div>
+  <div class="p-2">
     <div class="d-flex justify-content-center mb-4">
       <button @click="toggleCamera" class="btn btn-dark">{{ isCameraOn ? 'Apagar cámara' : 'Encender cámara' }}</button>
     </div>
-    <div v-if="isCameraOn == false" class="d-flex justify-content-center base_scanner_qr_icon mt-4">
-      <img src="../assets/imgs/qr_place.svg">
+
+    <div v-if="isCameraOn == false" class="p-4 base_scanner_qr_icon">
+      <div v-if="isCameraOn == false" class="d-flex justify-content-center ">
+        <img src="../assets/imgs/qr_place.svg">
+      </div>
     </div>
 
     <!-- esto es lo del video -->
@@ -141,4 +149,10 @@ video {
   width: 100%;
 }
 
+.base_scanner_qr_icon{
+  border: 1px solid rgba(0, 0, 0, 0.37);
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px 10px rgba(0, 0, 0, 0.605); 
+
+}
 </style>

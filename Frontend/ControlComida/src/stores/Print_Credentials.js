@@ -29,10 +29,13 @@ export const C_print_upload = defineStore('print_upload',{
                 })
                 // console.log(response.status)
                 if(response.status === 404){
-                    return false
+                    const jsonData = await response.json();
+                    console.log(jsonData);
+                    return jsonData;
                 }
                 const jsonData = await response.json();
-                this.deportista = jsonData
+                console.log(jsonData)
+                this.deportista = jsonData.data
                 return true
             } catch (error) {
                 console.log(error);
