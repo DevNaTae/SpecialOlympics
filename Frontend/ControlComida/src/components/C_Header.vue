@@ -55,7 +55,7 @@ const data_qr = async()=>{
                         <li>
                             <RouterLink :to="{ name:'C_Upload' }" class="text_none">
                                 <a class="dropdown-item " >
-                                        Subir excel
+                                        Subir archivos
                                 </a>
                             </RouterLink>
                         </li>

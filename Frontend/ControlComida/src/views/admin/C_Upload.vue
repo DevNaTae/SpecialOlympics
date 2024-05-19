@@ -133,7 +133,7 @@ const upload_img = async()=>{
     })
     return
   }
-
+  ShowLoading()
   const formData = new FormData();
   fileNames.value.forEach((file) => {
     // Agregar la imagen al FormData con una clave única
