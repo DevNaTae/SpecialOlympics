@@ -51,4 +51,24 @@ class DataPublicController extends Controller
             return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
         }
     }
+
+    public function get_address()
+    {
+        try{
+            $lugar = $this->dataService->get_address();
+            return response()->json($lugar);
+        }catch(\Exception $e){
+            return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
+        }
+    }
+
+    public function get_place()
+    {
+        try{
+            $lugar = $this->dataService->get_place();
+            return response()->json($lugar,200,[],JSON_UNESCAPED_SLASHES);
+        }catch(\Exception $e){
+            return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
+        }
+    }
 }
