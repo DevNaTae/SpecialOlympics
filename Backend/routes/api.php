@@ -42,7 +42,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
 //Ruta solo para repartidor
 Route::middleware(['auth:sanctum','role:Voluntario'])->group(function(){
-    Route::get('eats/{deportista}',[EatsController::class,'index']);
+    Route::get('eats/{cedula}',[EatsController::class,'index']);
     Route::post('eats',[EatsController::class,'store']);
     Route::put('eats/{eats}',[EatsController::class,'update']);
     Route::post('eats_mark/{almuerzo}',[EatsController::class,'mark']);
@@ -79,7 +79,7 @@ Route::middleware(['auth:sanctum','role:Administrador'])->prefix('dashboard')->g
     Route::get('/get_guestf/{tipo_invitado_id}', [GuestController::class, 'indexf']);
     Route::get('/get_find/{nombreCompleto}', [GuestController::class, 'show']);
     route::post('/store_guest', [GuestController::class, 'store']);
-    route::delete('/delete_guest/{invitado}', [GuestController::class, 'delete']);
+    route::post('/delete_guest/{invitado}', [GuestController::class, 'delete']);
     route::put('/update_guest/{invitado}', [GuestController::class, 'update']);
     //crudcito de provincia
     Route::get('/get_provincia', [ProvinceController::class, 'index']);
@@ -94,9 +94,12 @@ Route::middleware(['auth:sanctum','role:Administrador'])->prefix('dashboard')->g
     Route::get('/lunch_date',[LunchDateController::class,'index']);
     //DataPDF
     Route::get('credentials_athlete',[FilesController::class,'athleteCredentials']);
+    Route::get('credentials_guest',[FilesController::class,'guestCredentials']);
 });
 
 //Rutas publicas
 Route::get('/athlete',[DataPublicController::class,'get_sportman']);
 Route::get('/sport',[DataPublicController::class,'get_sport']);
 Route::get('/activity',[DataPublicController::class,'get_activity']);
+Route::get('/address',[DataPublicController::class,'get_address']);
+Route::get('/place',[DataPublicController::class,'get_place']);
