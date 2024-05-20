@@ -53,7 +53,7 @@ const ShowLoading = () => {
 const ShowSuccess = ()=>{
     Swal.fire({
         icon: "success",
-        title: 'PDFs Generados: ' + currentPage.value,
+        title: 'PDFs Generados: ' + contador.value,
         allowOutsideClick: false, // Evitar que el usuario cierre la alerta haciendo clic fuera de ella
         showConfirmButton: false, // No mostrar el botón de confirmación mientras se está cargando
         timer: 4000,
@@ -198,24 +198,26 @@ const validarNumero = (event) => {
 
 watch(pdfGenerado, (nuevoEstado) => {
   if (nuevoEstado) {
-    ShowSuccess();
     const timeoutId = setTimeout(()=>{
         if(contador.value === lotes_limit.value){
           contador.value = 0;
           Show_end();
       }else{
-          nextPage();
           contador.value++
-          if(contador.value === lotes_limit.value){
-            contador.value = 0;
-            Show_end();
-            return
-          }else{
-            const timeoutId_1 = setTimeout(()=>{
-              const closeLoadingAlert = ShowLoading_wait();
-              generarPDF();
-            }, 3000)
-          }
+          ShowSuccess();
+          setTimeout(async()=>{
+            nextPage();
+            if(contador.value === lotes_limit.value){
+              contador.value = 0;
+              Show_end();
+              return
+            }else{
+              const timeoutId_1 = setTimeout(()=>{
+                const closeLoadingAlert = ShowLoading_wait();
+                generarPDF();
+              }, 3000)
+            }
+          },3000)
       }
     }, 5000)
   } else {
@@ -305,6 +307,7 @@ const nextPage = async() => {
 };
 </script>
 <template>
+
   <div v-for="(paginate,index) in print_paginate_atleta" hidden>
     {{ paginate.url_image }}
   </div>
@@ -382,24 +385,29 @@ const nextPage = async() => {
                     <img src="https://specialolimpics--production-jistoria.sierranegra.cloud/storage/images/oe._los_rios/amador_anderson_1207139005.jpg" class="imagen" style="top: 6.9em; left: 8.6em;">
 
                     <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
-                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_image" class="imagen" style="top: 6.9em; left: 8.6em;">
-                      <div class="texto medid_img" style="top: 29.9em; left: 11em; ">{{ index.name }}  {{ index.lastname }}</div>
-                      <div class="texto medid_img" style="top: 31.5em; left: 11em; color:#2092d1;" >
-                        DEPORTE: {{ index.sport }}
+                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_image" class="imagen" >
+                      <div class="texto" style="top: 29.5em; left: 11em;">{{ index.name }}  {{ index.lastname }}</div>
+                      <div class="texto" style="top: 32em; left: 11em; color:#2092d1">DEPORTE: {{ index.sport }}</div>
+                      <!-- el peto -->
+                      <!-- provicional hasta que llegue el sportman id -->
+                      <div class="texto peto">
+                        <button class="btn btn-warning peto_sett">
+                         {{ index.id }}
+                        </button>
                       </div>
-                      <div class="texto mb-2 medid_img" style="top: 33.5em; left: 11em; color:#2092d1;">
-                        Evento:
-                        <div class="d-flex justify-content-center ">
-                          <div  class="me-2"  v-for="event in index.events">
-                            <a >{{ event.activity }}</a>
+                      <!-- actividades deportivas -->
+                      <div class="texto3" style="top: 33.9em; left: 5em; color:#2092d1">ACTIVIDAD(ES) DEPORTIVA:</div>
+                      <div class="texto " style="top: 33.9em; left: 15em; color:#2092d1;">
+                        <div class="d-flex mt-2 ">
+                          <div   class=" ms-2 d-inline "   v-for="event in index.events">
+                            <a style="font-weight: 700;" >{{ event.activity }}</a>
                           </div>
                         </div>
                       </div>
-                      <!-- <div v-html="index.qr" class="qr" style="top:27em; left: 19.7em;" hidden></div> -->
+                      <!-- qr -->
                       <div class=" d-flex qr"    v-if="svgContainers[i]" style="top:25em; left: 19.3em;" >
                         <div class="" v-html="svgContainers[i].outerHTML"></div>
                       </div>
-
                       <div class="texto2" style="top: 17.2em; left: 2em;">ATLETA</div>
                     </div>
                   </div>
@@ -407,7 +415,7 @@ const nextPage = async() => {
                     <img src="https://specialolimpics--production-jistoria.sierranegra.cloud/storage/images/oe._los_rios/amador_anderson_1207139005.jpg" class="imagen" style="top: 6.9em; left: 8.6em;">
 
                     <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
-                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_imagen" class="imagen" style="top: 6.9em; left: 8.6em;">
+                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_imagen" class="imagen" >
                       <div class="texto medid_img" style="top: 29.9em; left: 11em; ">{{ index.nombre }}  {{ index.apellido }}</div>
 
                       <div class="texto mb-2 medid_img" style="top: 34.5em; left: 11em; color:#2092d1;">
@@ -426,6 +434,7 @@ const nextPage = async() => {
                         <a>{{ index.tipo_invitado }}</a>
                       </div>
                     </div>
+                    
                   </div>
                   </div>
                 </div>
@@ -535,10 +544,10 @@ const nextPage = async() => {
             position: absolute; /* Posición absoluta para poder mover el texto */
             color: black; /* Color del texto */
             font-size: 70%; /* Tamaño de fuente */
-            font-weight: bold; /* Negrita */
+            font-weight: 800; /* Negrita */
             pointer-events: none; /* Evitar que el texto afecte los eventos del ratón */
             text-align: center; /* Justificar el texto al centro */
-            width: 50%; /* Hacer que el texto ocupe todo el ancho del contenedor */
+            width: 55%; /* Hacer que el texto ocupe todo el ancho del contenedor */
             font-family: "Montserrat Alternates", sans-serif;
             color: #8c2b92;
         }
@@ -553,7 +562,31 @@ const nextPage = async() => {
             width: 80%; /* Hacer que el texto ocupe todo el ancho del contenedor */
             font-family: "GFS Neohellenic", sans-serif;
         }
-
+        .texto3 {
+            position: absolute; /* Posición absoluta para poder mover el texto */
+            color: black; /* Color del texto */
+            font-size: 70%; /* Tamaño de fuente */
+            font-weight: 900; /* Negrita */
+            pointer-events: none; /* Evitar que el texto afecte los eventos del ratón */
+            text-align: left; /* Justificar el texto al centro */
+            width: 40%; /* Hacer que el texto ocupe todo el ancho del contenedor */
+            font-family: "Montserrat Alternates", sans-serif;
+            color: #8c2b92;
+            
+        }
+        .texto4 {
+            position: absolute; /* Posición absoluta para poder mover el texto */
+            color: black; /* Color del texto */
+            font-size: 70%; /* Tamaño de fuente */
+            font-weight: bold; /* Negrita */
+            pointer-events: none; /* Evitar que el texto afecte los eventos del ratón */
+            text-align: left; /* Justificar el texto al centro */
+            width: 30%; /* Hacer que el texto ocupe todo el ancho del contenedor */
+            font-family: "Montserrat Alternates", sans-serif;
+            color: #8c2b92;
+            max-width: 50px;
+            
+        }
         .imagen {
             position: absolute; /* Posición absoluta para poder mover la imagen */
             pointer-events: auto; /* Permitir que la imagen afecte los eventos del ratón */
@@ -561,7 +594,9 @@ const nextPage = async() => {
             max-height: 100%; /* Asegurar que la imagen no exceda el alto del contenedor */
             width: 10em;
             height: 10.3em;
-            border-radius: 4.5vh;
+            border-radius: 100px;
+            top: 6.2em; left: 11.8em;
+            
         }
 
         .qr {
@@ -585,7 +620,18 @@ const nextPage = async() => {
           margin-top: 5px;
           margin-bottom: 5px;
         }
+        .peto{
+          position: absolute; /* Posición absoluta para poder mover el texto */
+          top: 30.2em; 
+          left: 22em; 
+          color:#2092d1;
 
+        }
+        .peto_sett{
+          width: 60px;
+          height: 40px;
+          font-size: 1.3rem;
+        }
         
 /*  */
 .body_vue{
