@@ -7,6 +7,7 @@ export const C_print_upload = defineStore('print_upload',{
             prueba:'hola_2',
             deportista:'',
             provincias:'',
+            //url:'http://127.0.0.1:8000',
             url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
             pagina_actual:'',
             pagina_inicio:'',

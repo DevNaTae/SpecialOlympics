@@ -31,6 +31,8 @@ const storeDeportista = C_Atletas();
 const storeInvitado = C_Sportman();
 const selectedUser = ref('');
 const selectedDate = ref('');
+const selectedTimeStart = ref('');
+const selectedTimeEnd = ref('');
 const showAssign = ref(false);
 const showDelete = ref(false);
 const showAssignDiv = () => {
@@ -38,12 +40,16 @@ const showAssignDiv = () => {
     showDelete.value = false;
     selectedUser.value = '';
     selectedDate.value = '';
+    selectedTimeStart.value = '';
+    selectedTimeEnd.value = '';
 }
 const showDeleteDiv = async () => {
     showAssign.value = false;
     showDelete.value = true;
     selectedUser.value = '';
     selectedDate.value = '';
+    selectedTimeStart.value = '';
+    selectedTimeEnd.value = '';
     const closeLoadingAlert = ShowLoading();
     await storeAlmuerzo.getAlmuerzo();
     closeLoadingAlert();
@@ -132,7 +138,7 @@ const deleteData = async (selectedUser,selectedDate) =>{
             break;
     }
 }
-const setData = async (selectedUser,selectedDate) => {
+const setData = async (selectedUser,selectedDate, selectedTimeStart, selectedTimeEnd) => {
     const closeLoadingAlert = ShowLoading();
     switch(selectedUser){
         case '1':
@@ -151,6 +157,8 @@ const setData = async (selectedUser,selectedDate) => {
                         const response2 =await storeAlmuerzo.postAlmuerzo({
                             array: response.map((atleta) => atleta.id),
                             horario_comida_id: selectedDate,
+                            time_start: selectedTimeStart,
+                            time_end: selectedTimeEnd,
                             type: 1
                         });
                         if(response2.success===true){
@@ -254,18 +262,35 @@ onMounted(async () => {
                         <button @click="showDeleteDiv" class="btn btn-danger me-2">Eliminar</button>
                     </div>
                     <div v-if="showAssign">
-                        <div class="row mt-4">
-                            <div class="col-md-4 ">
-                                <h1>Selecciona una fecha:</h1>
-                            </div>
-                            <div class="col-md-6">
-                                <select v-model="selectedDate" class="form-select">
-                                    <option value="" disabled selected>Selecciona una fecha</option>
-                                    <option v-for="Dates in storeAlmuerzo.DateLunch" :key="Dates.id" :value="Dates.id">{{ Dates.horario }} -- {{Dates.hora_inicio}}-{{Dates.hora_fin}}</option>
-                                </select>
+                        <div class="container mt-4">
+                            <div class="row mt-4">
+                                <div class="col-md-4 p-2">
+                                    <h1>Selecciona una fecha:</h1>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-6 p-3">
+                                            <select v-model="selectedDate" class="form-select">
+                                                <option value="" disabled selected>Selecciona una fecha</option>
+                                                <option v-for="Dates in storeAlmuerzo.DateLunch" :key="Dates.id" :value="Dates.id">
+                                                    {{ Dates.fecha }} -- {{ Dates.horario }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="timeInicio">Hora de inicio:</label>
+                                            <input type="time" id="timeInicio" v-model="selectedTimeStart" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="timeFin">Hora de fin:</label>
+                                            <input type="time" id="timeFin" v-model="selectedTimeEnd" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row mt-4" v-if="selectedDate !== ''">
+                        <p v-if="selectedTimeStart > selectedTimeEnd" class="text-danger">La hora de fin debe ser mayor a la hora de inicio</p>
+                        <div class="row mt-4" v-if="selectedDate !== '' && selectedTimeStart!=='' && selectedTimeEnd!=='' || selectedTimeStart < selectedTimeEnd">
                             <div class="col-md-4">
                                 <h1>Asigna almuerzos:</h1>
                             </div>
@@ -275,16 +300,18 @@ onMounted(async () => {
                                     <option value="2" >Invitados</option>
                                 </select>
                                 <div class="form-group mt-3">
-                                    <button @:click="setData(selectedUser,selectedDate)" class="btn btn-primary" :disabled=" selectedDate === '' || selectedUser=== ''">Asignar almuerzo</button>
+                                    <button @:click="setData(selectedUser,selectedDate,selectedTimeStart,selectedTimeEnd)" class="btn btn-primary" :disabled=" selectedDate === '' || selectedUser=== ''">Asignar almuerzo</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
                     <div class="row" v-if="showDelete">
                         <div  class="scrollable-div col-md-6">
                             <div class="col-md-6">
                                 <h1>Selecciona una fecha:</h1>
                             </div>
+                            
                             <div class="col-md-8">
                                 <select v-model="selectedDate" class="form-select">
                                     <option value="" disabled selected>Selecciona una fecha</option>

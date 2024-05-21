@@ -7,7 +7,6 @@ export const C_TiposInvitados = defineStore('TiposInvitados',{
             prueba:'hola_1',
             TiposInvitados:[],
             url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
-
         }
     ),
     actions:{
