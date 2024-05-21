@@ -24,12 +24,13 @@ const DeporteSeleccionado= ref(null);
 
 const handleDeporteSeleccionado = async (tipo) => {
   DeporteSeleccionado.value = tipo;
+  //console.log(DeporteSeleccionado.value)
   await P_Atletas.get_atletas(DeporteSeleccionado.value);
   
 
 };
 const go_edit_page = async(data) =>{
-    console.log(data);
+    //console.log(data);
     router.push(
             {
               name:'C_edit_atletas', 
@@ -50,17 +51,19 @@ const pages = computed(()=>{
     return result;
 })
 const gotoPage = async(id) =>{
-    await P_Atletas.get_atletas(DeporteSeleccionado.value,id)
+    await P_Atletas.get_atletas(DeporteSeleccionado.value,searchQuery.value,id)
 }
 const nextPage = async() => {
   if (P_Atletas.pagina_actual  < P_Atletas.pagina_final) {
     P_Atletas.pagina_actual++;
-    await P_Atletas.get_atletas(DeporteSeleccionado.value,P_Atletas.pagina_actual)
+    await P_Atletas.get_atletas(DeporteSeleccionado.value,searchQuery.value,P_Atletas.pagina_actual)
   }
 };
-const prevPage = () => {
+const prevPage = async() => {
   if (P_Atletas.pagina_actual > 1) {
     P_Atletas.pagina_actual--;
+    await P_Atletas.get_atletas(DeporteSeleccionado.value,searchQuery.value,P_Atletas.pagina_actual)
+
   }
 };
 //dar de baja
@@ -68,7 +71,7 @@ const dismis_type = async(data)=>{
     const closeLoadingAlert = ShowLoading();
 
     const message = await P_Atletas.dismis_atleta(data);
-    console.log(message);
+    //console.log(message);
     if(message.success == "false"){
         await Swal.fire({
             title: 'Error',
@@ -118,7 +121,7 @@ const capitalizedSearchQuery = computed(() => capitalizeFirstLetter(searchQuery.
 
 // Observar cambios en la variable searchQuery y mostrar el nuevo valor en la consola
 watch(capitalizedSearchQuery, async(newValue, oldValue) => {
-  console.log('Nueva consulta de búsqueda:', newValue);
+  //console.log('Nueva consulta de búsqueda:', newValue);
   await P_Atletas.get_atletas(DeporteSeleccionado.value , newValue);
 });
 //
@@ -228,7 +231,6 @@ const save_actividades = ()=>{
 }
 </script>
 <template>
-
     <div class="body_vue">
         <div class="content_vue">
             <C_Header></C_Header>

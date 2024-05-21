@@ -6,7 +6,7 @@ import { C_print_upload } from '@/stores/Print_Credentials'
 import { C_TiposInvitados } from '@/stores/CRUDS/Tipo_de_invitados';
 import { C_Atletas } from '@/stores/CRUDS/Atleta';
 import { Modal } from 'bootstrap';
-import { ref,reactive,onMounted,watch } from 'vue';
+import { ref,reactive,onMounted,watch,computed } from 'vue';
 
 //pinias
 const P_print_upload = C_print_upload()
@@ -305,6 +305,24 @@ const nextPage = async() => {
     }
 
 };
+//
+const visiblePages = computed(() => {
+  const totalPages = P_print_upload.pagina_final;
+  const current = currentPage.value;
+  const delta = 2;
+  let start = Math.max(current - delta, 1);
+  let end = Math.min(current + delta, totalPages);
+
+  if (end - start < 4) {
+    if (current <= delta) {
+      end = Math.min(5, totalPages);
+    } else if (current >= totalPages - delta) {
+      start = Math.max(totalPages - 4, 1);
+    }
+  }
+
+  return Array.from({ length: (end - start + 1) }, (_, i) => start + i);
+});
 </script>
 <template>
 
@@ -351,7 +369,7 @@ const nextPage = async() => {
                           <input @input="validarNumero" v-model="lotes_limit" type="number" class="input_edit_print rounded" min="1" :max="P_print_upload.pagina_final"> 
                       </h5>
                       <h3>Pagina Actual:{{ currentPage }}</h3>
-                      <h3>Pagina Siguiente: {{ next_page }}</h3>
+                      <h3>Pagina Siguiente: {{ currentPage < P_print_upload.pagina_final ? currentPage + 1 : P_print_upload.pagina_final }} </h3>
                       <h3>Pagina final: {{ P_print_upload.pagina_final }}</h3>
                     </div>
 
@@ -361,7 +379,7 @@ const nextPage = async() => {
                     <button @click="previousPage" :disabled="currentPage === 1" style="border-top-left-radius: 10px; border-bottom-left-radius: 10px;">
                       Anterior
                     </button>
-                    <button v-for="pageNumber in P_print_upload.pagina_final" :key="pageNumber" @click="goToPage(pageNumber)">
+                    <button v-for="pageNumber in visiblePages" :key="pageNumber" @click="goToPage(pageNumber)">
                       {{ pageNumber }}
                     </button>
                     <button @click="nextPage" :disabled="currentPage === P_print_upload.pagina_final" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">
@@ -622,15 +640,15 @@ const nextPage = async() => {
         }
         .peto{
           position: absolute; /* Posición absoluta para poder mover el texto */
-          top: 30.2em; 
-          left: 22em; 
+          top: 27em; 
+          left: 0em; 
           color:#2092d1;
 
         }
         .peto_sett{
-          width: 60px;
-          height: 40px;
-          font-size: 1.3rem;
+          width: 80px;
+          height: 60px;
+          font-size: 1.7rem;
         }
         
 /*  */

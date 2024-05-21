@@ -53,6 +53,7 @@ export const  C_Atletas = defineStore('Atletas',{
                 const baseUrl = "https://specialolimpics--production-jistoria.sierranegra.cloud";
                 const path = "/api/dashboard/sportman";
                 const url = new URL(path, baseUrl);
+                console.log(url);
                 const data_enviar={
                     deporte: deporte,
                     page :page,
@@ -77,7 +78,6 @@ export const  C_Atletas = defineStore('Atletas',{
 
                 })
                 const jsonData = await response.json();
-                console.log(jsonData.data)
                 this.pagina_actual = jsonData.current_page;
                 this.pagina_inicio = jsonData.from
                 this.pagina_final = jsonData.last_page
