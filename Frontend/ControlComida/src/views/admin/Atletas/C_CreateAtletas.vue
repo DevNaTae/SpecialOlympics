@@ -200,9 +200,7 @@ const pre_carga = ()=>{
 </script>
 <template>
     <!-- Tambies debes enviar fecha de nacimiento -->
-    <button @click="pre_carga" >
-        llenar datos
-    </button>
+
     <div class="body_vue">
         <div class="content_vue">
             <C_Header></C_Header>
