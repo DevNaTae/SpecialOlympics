@@ -35,6 +35,9 @@ const selectedTimeStart = ref('');
 const selectedTimeEnd = ref('');
 const showAssign = ref(false);
 const showDelete = ref(false);
+//pdf
+const showExcel = ref(false);
+const selectedDate_id = ref('');
 const showAssignDiv = () => {
     showAssign.value = true;
     showDelete.value = false;
@@ -46,6 +49,7 @@ const showAssignDiv = () => {
 const showDeleteDiv = async () => {
     showAssign.value = false;
     showDelete.value = true;
+    showExcel.value = false;
     selectedUser.value = '';
     selectedDate.value = '';
     selectedTimeStart.value = '';
@@ -53,6 +57,9 @@ const showDeleteDiv = async () => {
     const closeLoadingAlert = ShowLoading();
     await storeAlmuerzo.getAlmuerzo();
     closeLoadingAlert();
+}
+const showExceldiv = ()=>{
+    showExcel.value = !showExcel.value;
 }
 const deleteData = async (selectedUser,selectedDate) =>{
     const closeLoadingAlert = ShowLoading();
@@ -248,7 +255,12 @@ onMounted(async () => {
     await storeAlmuerzo.getDateLunch();
     closeLoadingAlert();
 });
+const generarExcel = async ()=>{
+    const closeLoadingAlert = ShowLoading();
+    const data = await storeAlmuerzo.Excel_lunch(selectedDate_id.value);
+    closeLoadingAlert();
 
+}
 
 </script>
 <template>
@@ -256,10 +268,33 @@ onMounted(async () => {
         <div class="content_vue">
             <C_Header></C_Header>
             <div class="container mt-4">
-                <div class="main-container mt-4">
-                    <div class="text-center mt-4">
-                        <button @click="showAssignDiv" class="btn btn-primary me-2">Asignar</button>
-                        <button @click="showDeleteDiv" class="btn btn-danger me-2">Eliminar</button>
+                <div class="main-container mt-4 bordce">
+                    <div class="row ">
+                        <div class="col-6 ">
+                            <div class="text-start mt-4">
+                                <button @click="showExceldiv" class="btn btn-primary me-2">generarExcel</button>
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="text-end mt-4">
+                                <button @click="showAssignDiv" class="btn btn-primary me-2">Asignar</button>
+                                <button @click="showDeleteDiv" class="btn btn-danger me-2">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row  mt-4" v-if="showExcel">
+                        <div class="col-4">
+                            Seleccione un horario a generar
+                            <select v-model="selectedDate_id" class="form-select">
+                                <option value="" disabled selected>Selecciona una fecha</option>
+                                <option v-for="Dates in storeAlmuerzo.DateLunch" :key="Dates.id" :value="Dates.id">
+                                    {{ Dates.fecha }} -- {{ Dates.horario }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <button @click="generarExcel()" class="btn btn-primary mt-4">Generar Excel</button>
+                        </div>
                     </div>
                     <div v-if="showAssign">
                         <div class="container mt-4">
@@ -305,7 +340,6 @@ onMounted(async () => {
                             </div>
                         </div>
                     </div>
-                    
                     <div class="row" v-if="showDelete">
                         <div  class="scrollable-div col-md-6">
                             <div class="col-md-6">
@@ -354,6 +388,7 @@ onMounted(async () => {
                             </div>
                         </div>          
                     </div>
+
                     
                 </div>
             </div>

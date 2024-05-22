@@ -15,6 +15,7 @@ const P_Atletas = C_Atletas();
 //variables
 const tiposInvitados = ref({});
 const print_paginate_atleta= ref([]);
+//
 onMounted( async()=>{
   const data = await P_TiposInvitados.get_TiposInvitados();
   P_TiposInvitados.TiposInvitados.forEach(tipo => {
@@ -33,6 +34,10 @@ onMounted( async()=>{
   //llamada del qr
 
   modifySvgSizes();
+  //llamar provincias
+  await P_print_upload.get_provincia();
+  provincias.value = P_print_upload.provincias;
+
 
 })
 //sweetes alert
@@ -97,7 +102,7 @@ const ShowLoading_wait = () => {
 const select_print = ref('')
 //traer invitados
 const get_paginate_invitados = async()=>{
-  
+  const closeLoadingAlert = ShowLoading();
   await P_print_upload.get_paginate_TiposInvitados();
   print_paginate_atleta.value = P_print_upload.print_unit
   modifySvgSizes();
@@ -105,9 +110,12 @@ const get_paginate_invitados = async()=>{
   currentPage.value = 1;
   next_page.value = 2;
   predit.value = 0;
+  closeLoadingAlert()
+
 }
 //traer Atletas
 const get_paginate_atletas = async()=>{
+  const closeLoadingAlert = ShowLoading();
   await P_print_upload.get_paginateTipes(1);
   print_paginate_atleta.value = P_print_upload.print_unit
   modifySvgSizes();
@@ -115,9 +123,11 @@ const get_paginate_atletas = async()=>{
   currentPage.value = 1;
   next_page.value = 2;
   predit.value = 0;
+  closeLoadingAlert()
 
 }
 const seleted_type = async(data)=>{
+  
   console.log(data);
   for (const key in tiposInvitados.value) {
     tiposInvitados.value[key].selected = false;
@@ -247,6 +257,7 @@ const currentPage = ref(1);
 const next_page = ref(2);
 const predit = ref(0);
 const goToPage = async(data)=>{
+  const closeLoadingAlert = ShowLoading();
   currentPage.value = data;
   predit.value= currentPage.value + 1;
   next_page.value=predit.value;
@@ -258,11 +269,12 @@ const goToPage = async(data)=>{
   }
   print_paginate_atleta.value = P_print_upload.print_unit
   modifySvgSizes()
-
+  closeLoadingAlert()
 
 }
 const previousPage = async() => {
   // Ir a la página anterior si no estamos en la primera página
+  const closeLoadingAlert = ShowLoading();
   if (currentPage.value > 1) {
     currentPage.value--;
     predit.value= currentPage.value - 1;
@@ -279,11 +291,14 @@ const previousPage = async() => {
     modifySvgSizes()
 
   }
+  closeLoadingAlert()
 
 };
 
 const nextPage = async() => {
   // Ir a la página siguiente si no estamos en la última página
+  const closeLoadingAlert = ShowLoading();
+
   console.log(select_print.value);
     if (currentPage.value < P_print_upload.pagina_final) {
       currentPage.value++;
@@ -303,7 +318,7 @@ const nextPage = async() => {
 
 
     }
-
+    closeLoadingAlert()
 };
 //
 const visiblePages = computed(() => {
@@ -323,20 +338,32 @@ const visiblePages = computed(() => {
 
   return Array.from({ length: (end - start + 1) }, (_, i) => start + i);
 });
+//provincia
+const provincias = ref('');
+const provincia_seleccionada = ref('');
+
+const provincia_sett = ()=>{
+  console.log('Valor seleccionado:', provincia_seleccionada.value);
+} 
 </script>
 <template>
+<div class="border_blue">
+  Provincia Seleccionada
+    <select 
+    v-model="provincia_seleccionada" 
+    class="form-select" 
+    aria-label="Default select example"
+    @change="provincia_sett"
+    >
+      <option v-for="datos in provincias"
+      :value="datos.provincia_id"
+      >
+      {{ datos.provincia }}
+      </option>
+    </select>
+</div>
 
-  <div v-for="(paginate,index) in print_paginate_atleta" hidden>
-    {{ paginate.url_image }}
-  </div>
-  <div v-for="(paginate,index) in print_paginate_atleta" class="border_y" hidden>
-      <div class="border_v d-flex" v-if="svgContainers[index]">
-        <div class="border_r " v-html="svgContainers[index].outerHTML"></div>
-      </div>
-  </div>
 
-
-  
 <div class="body_vue relleno_r" style="background-color: white;"> <!--bloque general, fondo de ventana generar PDF-->
         <div class="content_vue ">  <!--the same-->
             <C_Header></C_Header>

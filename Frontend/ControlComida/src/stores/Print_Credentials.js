@@ -96,7 +96,7 @@ export const C_print_upload = defineStore('print_upload',{
                     withCredentials: true,
                 })
                 console.log(response);
-                return true
+                return response
             } catch (error) {
                 console.log(error);
                 return error
@@ -124,7 +124,46 @@ export const C_print_upload = defineStore('print_upload',{
         async get_paginate_Atletas(){
 
         },
-        async get_paginateTipes(page=1){
+        //paginar atletas
+        async get_paginateTipes(page=1,provincias){
+            //armado de la url
+            const baseUrl = this.url;
+            const path = '/api/dashboard/credentials_athlete';
+            const url = new URL(path,baseUrl);
+            console.log(url);
+            const data_enviar ={
+                page: page,
+                provincia_id: provincias,
+            }
+            Object.keys(data_enviar).forEach(key=>{
+                if(data_enviar[key] === null || data_enviar[key]=== undefined){
+                    data_enviar[key] = '';
+                }
+                url.searchParams.append(key, data_enviar[key])
+            })
+            try {
+                const response = await fetch(url,{
+                    method:'GET',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json',
+                    },
+                    credentials:'include',
+                })
+                const jsonData = await response.json();
+                // console.log('la pagina en la que estas es'+ jsonData.current_page);
+                // console.log('la ultima pagina es'+jsonData.last_page);
+                // console.log('desde el inicio'+jsonData.from);
+                console.log(jsonData.atletas)
+                this.pagina_actual = jsonData.current_page;
+                this.pagina_inicio = jsonData.from
+                this.pagina_final = jsonData.last_page
+                this.print_unit = jsonData.atletas;
+            } catch (error) {
+                console.log(error);
+            }
+            return true
+            //
             try {
                 const response = await fetch(`${this.url}/api/dashboard/credentials_athlete/?page=${page}`,{
                     method:'GET',
@@ -148,7 +187,9 @@ export const C_print_upload = defineStore('print_upload',{
                 
             }
         },
-        async get_paginate_TiposInvitados(page=1){
+        //paginar invitador
+        async get_paginate_TiposInvitados(page=1,provincias){
+
             const response = await fetch(`${this.url}/api/dashboard/credentials_guest/?page=${page}`,{
                 method:'GET',
                 headers:{

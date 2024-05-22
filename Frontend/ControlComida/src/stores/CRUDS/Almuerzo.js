@@ -90,5 +90,28 @@ export const C_Almuerzo = defineStore('Almuerzo',{
                 console.log(error);
             }
         },
+        async Excel_lunch(data){
+            console.log('id selecionado '+ data);
+            try {
+                const response = await axios.post(`${this.url}/api/dashboard/launch_export`, 
+                { horario_id: data },
+                {
+                    withCredentials: true, // Esto asegura que las cookies sean enviadas
+                    responseType: 'blob'
+                }
+                ); // Cambia la ruta según tu configuración
+                const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                const url = URL.createObjectURL(blob);
+        
+                // Crea un enlace temporal y haz clic en él para descargar el archivo
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'almuerzo.xlsx');
+                document.body.appendChild(link);
+                link.click();
+            } catch (error) {
+                console.error('Error al descargar el archivo Excel:', error);
+            }
+        },
     },
 })

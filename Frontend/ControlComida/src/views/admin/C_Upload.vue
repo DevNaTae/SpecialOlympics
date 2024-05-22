@@ -88,7 +88,7 @@ const subir_doc = async()=>{
   formData.append('excelLoad', selectedFile.value);
   ShowLoading()
   const data = await P_print_upload.upload_xls(formData)
-  console.log(data.response)
+  //console.log(data.response)
   if(data.response){
     if(data.response.status == 422){
       const row = data.response.data.message[0].row;
@@ -102,10 +102,8 @@ const subir_doc = async()=>{
       ShowError(data.response.data.message);
     }
     //cambio a tomar en cuenta
-  }else if(data.response.status == 200){
-    ShowSuccess();
   }else{
-    ShowError(data.response.data.message);
+    ShowSuccess();
   }
 }
 
