@@ -11,6 +11,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\TypeGuestController;
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\LunchController;
+use App\Http\Controllers\LunchDateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +42,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
 //Ruta solo para repartidor
 Route::middleware(['auth:sanctum','role:Voluntario'])->group(function(){
-    Route::get('eats/{deportista}',[EatsController::class,'index']);
+    Route::get('eats/{cedula}',[EatsController::class,'index']);
     Route::post('eats',[EatsController::class,'store']);
     Route::put('eats/{eats}',[EatsController::class,'update']);
     Route::post('eats_mark/{almuerzo}',[EatsController::class,'mark']);
@@ -49,6 +51,8 @@ Route::middleware(['auth:sanctum','role:Voluntario'])->group(function(){
 Route::middleware(['auth:sanctum','role:Administrador'])->prefix('dashboard')->group(function(){
     Route::resource('sportman', SportmanController::class);
     Route::post('sportman_active/{deportista}',[SportmanController::class,'active']);
+    Route::post('sportman_activities/{deportista}',[SportmanController::class,'activitiesAttach']);
+    Route::get('sportman_pluck',[SportmanController::class,'pluck']);
     //crudcito de deportes
     Route::get('/get_deporte', [SportController::class, 'index']);
     route::post('/store_deporte', [SportController::class, 'store']);
@@ -75,16 +79,27 @@ Route::middleware(['auth:sanctum','role:Administrador'])->prefix('dashboard')->g
     Route::get('/get_guestf/{tipo_invitado_id}', [GuestController::class, 'indexf']);
     Route::get('/get_find/{nombreCompleto}', [GuestController::class, 'show']);
     route::post('/store_guest', [GuestController::class, 'store']);
-    route::delete('/delete_guest/{invitado}', [GuestController::class, 'delete']);
+    route::post('/delete_guest/{invitado}', [GuestController::class, 'delete']);
     route::put('/update_guest/{invitado}', [GuestController::class, 'update']);
     //crudcito de provincia
     Route::get('/get_provincia', [ProvinceController::class, 'index']);
     //Rutas para archivos
     Route::post('/deportista_import',[FilesController::class,'deportistaImport']);
     Route::post('/deportista_images/{provincia}',[FilesController::class,'deportistaImages']);
+    //Rutas para almuerzos
+    Route::get('/lunch_get',[LunchController::class,'index']);
+    Route::post('/lunch_store',[LunchController::class,'store']);
+    Route::delete('/lunch_delete',[LunchController::class,'delete']);
+    //Ruta para Horario de comida
+    Route::get('/lunch_date',[LunchDateController::class,'index']);
+    //DataPDF
+    Route::get('credentials_athlete',[FilesController::class,'athleteCredentials']);
+    Route::get('credentials_guest',[FilesController::class,'guestCredentials']);
 });
 
 //Rutas publicas
 Route::get('/athlete',[DataPublicController::class,'get_sportman']);
 Route::get('/sport',[DataPublicController::class,'get_sport']);
 Route::get('/activity',[DataPublicController::class,'get_activity']);
+Route::get('/address',[DataPublicController::class,'get_address']);
+Route::get('/place',[DataPublicController::class,'get_place']);

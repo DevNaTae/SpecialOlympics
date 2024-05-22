@@ -18,20 +18,19 @@ export const C_Sportman = defineStore('Estado_personal',{
             const response = await fetch (`${this.url}/api/dashboard/get_guest`,{
                 method:'GET',
                 headers:{
-                    'X-Requested-With': 'XMLHttpRequest',
                     'Content-Type':'application/json',
                     'Accept': 'application/json',
                 },
                 credentials:'include',
             })
             const jsonData = await response.json();
+            return jsonData;
             //console.log(jsonData);
         },
         async get_typeC(data,page=1){
             const response = await fetch (`${this.url}/api/dashboard/get_guestf/${data}?page=${page}`,{
                 method:'GET',
                 headers:{
-                    'X-Requested-With': 'XMLHttpRequest',
                     'Content-Type':'application/json',
                     'Accept': 'application/json',
                 },
@@ -53,7 +52,7 @@ export const C_Sportman = defineStore('Estado_personal',{
                 const response = await fetch(`${this.url}/api/dashboard/store_guest`,{
                     method:'POST',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        // 'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
@@ -72,7 +71,7 @@ export const C_Sportman = defineStore('Estado_personal',{
                 const response = await fetch(`${this.url}/api/dashboard/update_guest/${id}`,{
                     method:'PUT',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        // 'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
@@ -88,9 +87,9 @@ export const C_Sportman = defineStore('Estado_personal',{
         async dismiss_personal(id){
             try {
                 const response = await fetch (`${this.url}/api/dashboard/delete_guest/${id}`,{
-                    method:'DELETE',
+                    method:'POST',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        // 'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },

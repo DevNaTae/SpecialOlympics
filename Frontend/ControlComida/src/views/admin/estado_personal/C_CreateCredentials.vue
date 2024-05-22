@@ -44,6 +44,8 @@ const data_sett= reactive({
     activo:'',
     provincia_id:'',
     tipo_invitado_id:'',
+    fecha_nacimiento:'',
+
 })
 const credencials_post = async()=>{
     const closeLoadingAlert = ShowLoading();
@@ -56,14 +58,21 @@ const credencials_post = async()=>{
             confirmButtonText: 'Entendido'
         });
         return;
-    }else{
+    }else if(data.success == 'true'){
         await Swal.fire({
-        title: 'Invitado editado',
+        title: 'Invitado Agregado',
         text: data.message,
         icon: 'success',
         confirmButtonText: 'Entendido'
         });
         router.go(-1)
+    }else{
+        await Swal.fire({
+            title: 'Error',
+            text: 'error de servidor',
+            icon: 'error',
+            confirmButtonText: 'Entendido'
+        });  
     }
     closeLoadingAlert()
 }
@@ -101,18 +110,22 @@ const validateCedula = () => {
     <div class="body_vue">
         <div class="content_vue">
             <C_Header></C_Header>
-            <form @submit.prevent="credencials_post" class="mt-3">
+            <form @submit.prevent="credencials_post" class="mt-2 mb-4">
                 <div class="container">
-                <div class="row ">
-                    <div class="col-12 mb-3">
-                        <div class="base_dataEdit_top">
-                            <div class="d-flex justify-content-center">
-                                <i class="img_base_edit bi bi-person-circle"></i>
+                    <h2>Tipo de Invitado:</h2>
+                <div class="row  ">
+                    <div class="col-12 col-sm-3 base_dataEdit_top rounded ">
+                        <div class="d-flex align-items-center" style="height: 100% ;">
+                            <div  class="mx-auto">
+                                <div class="d-flex justify-content-center">
+                                    <i class="img_base_edit bi bi-person-circle"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 ">
-                        <div class=" base_dataEdit">
+                    <div class="col-12 col-sm-9 ">
+                        <div class=" base_dataEdit_top p-2 rounded">
+                            <h2>Datos Pesonales:</h2>
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <div class="mb-3">
@@ -144,11 +157,8 @@ const validateCedula = () => {
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <div class="mb-3">
-                                        <label for="exampleInputPassword1" class="form-label">Genero</label>
-                                        <select v-model="data_sett.genero" class="form-select" aria-label="Default select example">
-                                            <option value="M">Masculino</option>
-                                            <option value="F">Femenino</option>
-                                        </select>
+                                            <label for="exampleInputPassword1" class="form-label">fecha de nacimiento</label>
+                                            <input v-model="data_sett.fecha_nacimiento" class="form-control" type="date" id="fecha" name="fecha">
                                     </div>
                                 </div>
                             </div>
@@ -159,6 +169,15 @@ const validateCedula = () => {
                                         <select v-model="data_sett.activo" class="form-select" aria-label="Default select example">
                                             <option value="true">Activo</option>
                                             <option value="false">De baja</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="exampleInputPassword1" class="form-label">Genero</label>
+                                        <select v-model="data_sett.genero" class="form-select" aria-label="Default select example">
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Femenino</option>
                                         </select>
                                     </div>
                                 </div>
@@ -181,12 +200,14 @@ const validateCedula = () => {
                                     </select>
                                 </div>
                             </div>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-info mb-3 mt-3">
+                                    Guardar Cambios
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary mb-3 mt-2">
-                    Guardar Cambios
-                </button>
             </div>
             </form>
         </div>

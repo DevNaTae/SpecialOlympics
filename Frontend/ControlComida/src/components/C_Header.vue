@@ -36,10 +36,12 @@ const data_qr = async()=>{
 }
 </script>
 <template>
-    <nav class="navbar bg-body-tertiary ">
+    <nav class="navbar bg-body-tertiary header_base">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="../assets/imgs/Uleam.png" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
+                <RouterLink :to="{name: 'C_status'}">
+                    <img src="../assets/imgs/Uleam.png" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
+                </RouterLink>
             </a>
             <div class="d-flex">
                 <button v-if="P_session.user == 'Voluntario'" @click="logout" class=" navbar-toggler" type="button" >
@@ -49,28 +51,37 @@ const data_qr = async()=>{
                     <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-gear-fill"></i>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item " >
+                    <ul class="dropdown-menu dropdown-menu-end hovet_ul">
+                        <li>
                             <RouterLink :to="{ name:'C_Upload' }" class="text_none">
-                                Subir excel
+                                <a class="dropdown-item " >
+                                        Subir archivos
+                                </a>
                             </RouterLink>
-                        </a></li>
-                        <li><a class="dropdown-item" >
-                            <RouterLink :to="{ name:'C_printCredentials'}" class="text_none">
-                                Imprimir credenciales
-                            </RouterLink>
-                        </a></li>
-                        <li><a class="dropdown-item" >
+                        </li>
+                        <li>
+                            <a class="dropdown-item" >
+                                <RouterLink :to="{ name:'C_printCredentials'}" class="text_none">
+                                    Imprimir credenciales
+                                </RouterLink>
+                            </a>
+                        </li>
+                        <li>
                             <RouterLink :to="{name: 'C_SportmanState'}" class="text_none">
-                                Estado del personal
+                                <a class="dropdown-item" >
+                                        Estado del personal
+                                </a>
                             </RouterLink>
-                        </a></li>
-                        <li><a class="dropdown-item" >
+                        </li>
+                        <li>
                             <RouterLink :to="{name: 'C_status'}" class="text_none">
-                                Status
+                                <a class="dropdown-item" >
+                                    Status
+                                </a>
                             </RouterLink>
-                        </a></li>
-                        <li><a class="dropdown-item" @click="logout">Cerrar Sesión</a></li>
+
+                        </li>
+                        <li><a class="dropdown-item" style="color: red;" @click="logout">Cerrar Sesión</a></li>
                     </ul>
                 </div>
             </div>
@@ -89,12 +100,19 @@ const data_qr = async()=>{
     color: black;
 }
 .edit_boton{
-  
     text-decoration: none;
     color: black;
     background: greenyellow;
     padding: 15px;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
+}
+.header_base{
+    border-bottom: 0.1mm solid rgb(154, 149, 149);
+    background: rgb(234, 228, 228) !important;
+
+}
+.hovet_ul li :hover{
+    background: rgb(145, 204, 16) !important;
 }
 </style>

@@ -84,15 +84,15 @@ class Deportista extends Model
      * Obtener la URL de la imagen del deportista.
      */
     public function qr()
-{
-    $qrFilePath = 'public/qrcodes/' . $this->cedula;
+    {
+        $qrFilePath = 'public/qrcodes/' . $this->cedula;
 
-    if (Storage::exists($qrFilePath)) {
-        return Storage::get($qrFilePath);
+        if (Storage::exists($qrFilePath)) {
+            return Storage::get($qrFilePath);
+        }
+
+        return null; // O manejar de otra manera si el archivo no existe
     }
-
-    return null; // O manejar de otra manera si el archivo no existe
-}
 
     public function Deporte()
     {
@@ -115,13 +115,34 @@ class Deportista extends Model
             'age' => $this->edad,
             'gender' => $this->genero,
             'birthday' => $this->fecha_nacimiento->format($this->formato),
-            'img_url' => $this->url_imagen,
+            'img_url' => 'https://specialolimpics--production-jistoria.sierranegra.cloud/'.$this->url_imagen,
         ];
     }
 
+    public function credentials()
+    {
+        $qrFilePath = 'public/qrcodes/' . $this->cedula;
+
+        return [
+            'id' => $this->id,
+            'dni' => $this->cedula,
+            'url_image' => $this->url_imagen,
+            'qr' => Storage::exists($qrFilePath) ? Storage::get($qrFilePath) : null,
+            'name' => $this->nombre,
+            'lastname' => $this->apellido,
+            'sportsman_number' => $this->numero_deportista,
+            'province' => $this->provincia->provincia,
+            'sport' => $this->deporte->deporte,
+            'events' => $this->actividades_deportivas->map(function($actividad){
+                return [
+                    'activity' => $actividad->actividad,
+                ];
+            }),
+        ];
+    }
     public function getFechaNacimientoAttribute($value)
-{
-    return Carbon::parse($value)->format($this->formato);
-}
+    {
+        return Carbon::parse($value)->format($this->formato);
+    }
 
 }

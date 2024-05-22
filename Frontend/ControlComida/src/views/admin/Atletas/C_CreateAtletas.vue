@@ -3,7 +3,6 @@ import Swal from 'sweetalert2';
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue';
 import { reactive } from 'vue';
-
 import C_Header from '@/components/C_Header.vue';
 import C_footer from '@/components/C_Footer.vue';
 const router = useRouter()
@@ -139,23 +138,53 @@ const handleFileInputChange = async(event) => {
 const Atletas_post= async ()=>{
    // P_Atletas.post_atletas(Atleta_credentials);
    let formdata = new FormData();
-   formdata.append('imagen', imageFile.value)
-   formdata.append('cedula', Atleta_credentials.cedula);
-    try{
+    formdata.append('imagen', imageFile.value)
+    formdata.append('cedula', Atleta_credentials.cedula);
+    formdata.append('nombre', Atleta_credentials.nombre);
+    formdata.append('apellido', Atleta_credentials.apellido);
+    formdata.append('edad', Atleta_credentials.edad);
+    formdata.append('fecha_nacimiento', Atleta_credentials.fecha_nacimiento);
+    formdata.append('genero', Atleta_credentials.genero);
+    formdata.append('provincia_id', Atleta_credentials.provincia_id);
+    formdata.append('deporte_id', Atleta_credentials.deporte_id);
+    formdata.append('actividad_id', Atleta_credentials.actividad_id);
+    formdata.append('activo', Atleta_credentials.activo);
+            try{
                 const response = await fetch (`https://specialolimpics--production-jistoria.sierranegra.cloud/api/dashboard/sportman` ,{
                     method:'POST',
                     headers:{
-                        'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
                     credentials:'include',
                     body:formdata,
                 })
                 const jsonData = await response.json();
+                console.log(jsonData);
+                if(jsonData.success == false){
+                    await Swal.fire({
+                        icon:'error',
+                        title: 'Error al agregar al atleta',
+                        text: jsonData.message,
+                        timer: 4000,
+                    })
+                }else if(jsonData.success == true){
+                    Swal.fire({
+                        icon: "success",
+                        title:'Atletas Agregado Con exito',
+                        text: jsonData.message,
+                        timer: 4000,
+
+                    })
+                }
                 return jsonData;
             }
             catch (error) {
                 console.log(error.response);
+                await Swal.fire({
+                        icon:'error',
+                        title: error.response,
+                        timer: 4000,
+                })
                 return
             }
 }
@@ -170,38 +199,36 @@ const pre_carga = ()=>{
 }
 </script>
 <template>
-    {{ Atleta_credentials }}
     <!-- Tambies debes enviar fecha de nacimiento -->
-    <button @click="pre_carga" >
-        llenar datos
-    </button>
+
     <div class="body_vue">
         <div class="content_vue">
             <C_Header></C_Header>
             <form @submit.prevent="Atletas_post" class="mt-4" enctype="multipart/form-data">
-                <div class="container">
+                <div class="container ">
                     <div class="row">
-                        <div class="col-12 mb-3" >                            
-                            <div class="base_dataEdit_top">
+                        <div class="col-12 col-sm-3 base_dataEdit_top mb-2 rounded">
+                            <div >
                                 <div >
                                     <div v-if="previewImage == null" class="d-flex justify-content-center">
                                         <img  class="img_base_edit_place" src="../../../assets/imgs/Yo.jpg">
                                     </div>
                                     <div v-if="true" >
-                                        <div v-if="previewImage" class=" ">
+                                        <div v-if="previewImage" >
                                             <div class="d-flex justify-content-center">
                                                 <img class="img_base_edit_place" :src="previewImage" alt="Preview" />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-center">
+                                    <div class="d-flex justify-content-center p-3">
                                         <input class="form-control edit_whimge mb-2" type="file" @change="handleFileInputChange" accept="image/*" />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 ">
-                            <div class=" base_dataEdit">
+                        <div class="col-12 col-sm-9  mb-3">
+                            <div class=" base_dataEdit_top p-2 rounded">
+                                <h2>Información</h2>
                                 <div class="row" >
                                     <div class="col-12 col-sm-6">
                                         <div class="mb-3">
@@ -279,9 +306,9 @@ const pre_carga = ()=>{
                                         </select>
                                     </div>
                                     <div class="col-12 col-sm-6 mb-2 mt-4" v-if="Atleta_credentials.deporte_id !== ''">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                             Actividades Deportivas: {{ selectedCount }}
-                                        </button>
+                                        </a>
                                         <div class="mt-2">
                                             <div v-for="(ActividadesS ,index ) in selectedName" key="index">
                                                 <div class="d-flex justify-content-between border_text_data">
@@ -315,20 +342,21 @@ const pre_carga = ()=>{
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                    <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
                                                 </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-info ">
+                                        Guardar Cambios
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary mb-3 mt-2">
-                        Guardar Cambios
-                    </button>
                 </div>
             </form>
         </div>
@@ -346,4 +374,5 @@ const pre_carga = ()=>{
 
     max-width: 400px;
 }
+
 </style>

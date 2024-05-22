@@ -28,7 +28,6 @@ class SportmanController extends Controller
         }catch(\Exception $e){
             return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
         }
-
     }
     /**
      * Almacena un nuevo deportista en la base de datos.
@@ -45,7 +44,6 @@ class SportmanController extends Controller
         }catch(\Exception $e){
             return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
         }
-
     }
 
     /**
@@ -79,7 +77,6 @@ class SportmanController extends Controller
         }catch(\Exception $e){
             return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
         }
-
     }
 
     public function update(Request $request, $sportman)
@@ -95,6 +92,23 @@ class SportmanController extends Controller
     public function active($sportman)
     {
         $response = $this->sportmanService->active($sportman);
+        return response()->json($response);
+    }
+
+    public function activitiesAttach($spotman, Request $request)
+    {
+        try{
+            $request->validate(['ids'=>'required|array','ids.*'=>'required|exists:actividades_deportivas,actividad_id']);
+            $response = $this->sportmanService->activitiesAttach($spotman, $request->input());
+            return response()->json($response);
+        }catch(\Exception $e){
+            return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
+        }
+    }
+
+    public function pluck()
+    {
+        $response = $this->sportmanService->pluckSport();
         return response()->json($response);
     }
 

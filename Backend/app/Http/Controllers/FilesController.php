@@ -7,9 +7,7 @@ use App\Imports\DeportistaImport;
 use App\Models\Provincia;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use Kreait\Firebase\Factory;
-use Kreait\Firebase\Storage;
-use Kreait\Firebase\Storage\Bucket;
+
 
 class FilesController extends Controller
 {
@@ -22,7 +20,7 @@ class FilesController extends Controller
             Excel::import(new DataImport,$request->file('excelLoad'),null, \Maatwebsite\Excel\Excel::XLSX);
             return response()->json(['success'=>true,'message'=>'Deportistas importados correctamente']);
         }catch(\Maatwebsite\Excel\Validators\ValidationException $e){
-            return response()->json(['success'=>false,'message'=>$e->failures()],422);
+            return response()->json(['success'=>false,'codigo'=>'422','message'=>$e->failures()],422);
         }
     }
 
@@ -33,30 +31,45 @@ class FilesController extends Controller
                 'images' => 'required|array',
                 'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-                $name = strtolower($provincia->provincia);
-                // Create an instance of the Firebase Storage client
-                $firebase = app('firebase.storage');
-                dd($firebase);
-                $storage = $firebase->getBucket();
-            // foreach($request->file('images') as $image){
-            //     $name_file = $image->getClientOriginalName();
-            //     $name_file = str_replace(' ', '_', $name_file);
-            //     $storage->upload($image, [
-            //         'name' => 'images/'.$name.'/'.$name_file
-            //     ]);
-            // }
-            return response()->json(['success'=>true,'message'=>'Imagenes subidas correctamente']);
-            // $request->validate([
-            //     'images' => 'required|array',
-            //     'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            // ]);
-            // $name = $provincia->provincia;
-            // foreach($request->file('images') as $image){
-            //     $url = $image->storeAs('public/images/'.$name.'/'.$image->getClientOriginalName());
-            // }
-            // return response()->json(['success'=>true,'message'=>'Imagenes subidas correctamente', 'url'=>$url]);
+            // Create an instance of the Firebase Storage client
+            $name = $provincia->provincia;
+            foreach($request->file('images') as $image){
+                $nameImage = str_replace(['ñ','Ñ'],['n','N'],$image->getClientOriginalName());
+                $url_imagen = strtolower("public/images/".$name."/".$nameImage);
+                $url_imagen = str_replace(' ', '_', $url_imagen);
+                $url = $image->storeAs($url_imagen);
+            }
+            return response()->json(['success'=>true,'message'=>'Imagenes subidas correctamente', 'url'=>$url]);
         }catch(\Exception $e){
-            return response()->json(['success'=>false,'message'=>$e->getMessage()],500);
+            return response()->json(['success'=>false,'codigo'=>'500','message'=>$e->getMessage()],500);
+        }
+    }
+
+    public function athleteCredentials()
+    {
+        try{
+            $deportistas = \App\Models\Deportista::paginate(4);
+            $last_page = $deportistas->lastPage();
+            $deportistas = $deportistas->map(function($deportista){
+                return $deportista->credentials();
+            });
+            return response()->json(['atletas'=>$deportistas, 'last_page'=>$last_page]);
+        }catch(\Exception $e){
+            return response()->json(['success'=>false,'codigo'=>'500','message'=>$e->getMessage()],500);
+        }
+    }
+
+    public function guestCredentials()
+    {
+        try{
+            $invitados = \App\Models\Invitado::paginate(4);
+            $last_page = $invitados->lastPage();
+            $invitados = $invitados->map(function($invitado){
+                return $invitado->credentials();
+            });
+            return response()->json(['invitados'=>$invitados, 'last_page'=>$last_page]);
+        }catch(\Exception $e){
+            return response()->json(['success'=>false,'codigo'=>'500','message'=>$e->getMessage()],500);
         }
     }
 }

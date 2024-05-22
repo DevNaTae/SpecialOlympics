@@ -11,15 +11,23 @@ class Almuerzo extends Model
 
     protected $table = 'almuerzos';
 
+    protected $primaryKey = 'id';
+
     protected $fillable = [
+        'invitado_id',
         'deportista_id',
-        'fecha',
-        'hora_inicio',
-        'hora_fin',
+        'horario_comida_id',
         'completado'
     ];
 
-
+    public function invitado()
+    {
+        return $this->belongsTo(Invitado::class);
+    }
+    public function horarioComida()
+    {
+        return $this->belongsTo(HorarioComida::class);
+    }
     public function deportista()
     {
         return $this->belongsTo(Deportista::class);

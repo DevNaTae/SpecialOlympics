@@ -12,7 +12,7 @@ const dataArray = ref([]);
 const food_petition = async () => {
   // Mostrar el diálogo de confirmación
   const result = await Swal.fire({
-    title: "Este deportista comera, esta seguro?",
+    title: "¿Se entregará el almuerzo? ¿Está seguro?",
     showDenyButton: true,
     showCancelButton: false,
     confirmButtonText: "Si",
@@ -71,24 +71,24 @@ const food_setting = reactive({
 onMounted(() => {
   //console.log(route.query.Datos_deportista)
   const data = JSON.parse(route.query.Datos_deportista)
-  //console.log(data);
+  console.log(data);
   dataArray.value = data;
-  food_setting.url_image = dataArray.value.deportista.url_imagen;
-  food_setting.nombre = dataArray.value.deportista.nombre;
-  food_setting.apellido = dataArray.value.deportista.apellido;
-  food_setting.genero = dataArray.value.deportista.genero;
-  food_setting.activo = dataArray.value.deportista.activo;
-  food_setting.completo =dataArray.value.deportista.almuerzos[0].completado;
-  food_setting.cedula = dataArray.value.deportista.cedula;
+  console.log(dataArray.value.nombre)
+  food_setting.url_image = dataArray.value.url_image;
+  food_setting.nombre = dataArray.value.nombre;
+  food_setting.apellido = dataArray.value.apellido;
+  food_setting.genero = dataArray.value.genero;
+  food_setting.activo = dataArray.value.activo;
+  food_setting.completo =dataArray.value.almuerzos[0].completado;
+  food_setting.cedula = dataArray.value.cedula;
   ///
-  food_setting.almuerzo_id = dataArray.value.deportista.almuerzos[0].id
-  food_setting.hora_inicio = dataArray.value.deportista.almuerzos[0].hora_inicio ;
-  food_setting.hora_fin = dataArray.value.deportista.almuerzos[0].hora_fin;
+  food_setting.almuerzo_id = dataArray.value.almuerzos[0].id 
+  //hora de almuerzo
+  food_setting.hora_inicio = dataArray.value.almuerzos[0].horario_comida.hora_inicio ;
+  food_setting.hora_fin = dataArray.value.almuerzos[0].horario_comida.hora_fin;
 });
 </script>
 <template>
-    {{ dataArray }}
-    {{ food_setting.url_image }}
     <div class="body_vue">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid justify-content-end">
@@ -101,66 +101,115 @@ onMounted(() => {
                 </div>
             </div>
         </nav>
-        <div  class="content_vue my-auto d-flex align-items-center p-4 " >
-            <div class="container">
-                <div class="row  p-3 background_set border_sett_top" >
-                    <div class="col-6 col-sm-4 ">
-                        <div class="d-flex justify-content-center ">
-                            <img class="img_food_state " :src="`http://127.0.0.1:8000/storage/${food_setting.url_image}`"> 
-                        </div>
-                    </div>
-                    <div class="col-6 col-sm-8 ">
-                        <div>
-                            <h2>Nombre y apellidos:</h2>
-                            <p>{{ food_setting.nombre }} {{ food_setting.apellido }}</p>
-                        </div>
-                        <div>
-                            <h2>Genero</h2>
-                             <!-- aqui debo hacer iconos de hombre y mujer  -->
-                            <p>{{ food_setting.genero }}</p>
-                            <h2>Estado</h2>
-                            <div>
-                                <p v-if=" food_setting.activo == true">
-                                    Activo
-                                </p>
-                                <p v-else>
-                                    De baja
-                                </p>
+        <div class="content_vue my-auto d-flex align-items-center">
+            <div class="container-sm">
+                <div class="row ">
+                    <div class="col-12 pt-4">
+                        <div class="container_food_data_top">
+                            <div class="d-flex justify-content-between ">
+                                <img class="img_logos" src="../../assets/imgs/Uleam.png">
+                                <div >
+                                    <i  class="bi bi-qr-code-scan" style="font-size: 4.0rem;" ></i>
+                                </div>
+                                <img class="img_logos" src="../../assets/imgs/olimpiadas_O.png">
                             </div>
-                           <!-- aqui debo poner si es true o false el estado  -->
                         </div>
                     </div>
                 </div>
-                <div class="row  background_set border_sett_bottom">
-                        <div class="col-12">
-                            <div>
-                                <div>
-                                <h2 class="mb-4">Horarios de comida:</h2>
-                                <p>{{ food_setting.hora_inicio }} -- {{ food_setting.hora_fin }} </p>
-                                <div class="d-flex justify-content-between">
-                                    <p>
-                                        Almuerzo:
-                                    </p>
-                                    <button v-if="food_setting.completo == false" @click="food_petition" class="btn btn-success mb-2" >
-                                        No ha comido
-                                    </button>
-                                    <button v-else  class="btn btn-warning mb-2">
-                                        Ya comio
-                                    </button>
+                <div class="row ">
+                    <div class="col-12 ">
+                        <div class="container_food_data_middle p-5">
+                            <!-- row image -->
+                            <div class="row ">
+                                <div class="col-12 col-sm-12 ">
+                                    <div class="d-flex justify-content-center">
+                                        <img v-if="food_setting.url_image === null" class="img_food_state " src="../../assets/imgs/Yo.jpg"> 
+                                        <img v-else class="img_food_state " :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/${food_setting.url_image}`"> 
+
+                                    </div>
                                 </div>
+                            </div>
+                            <!-- row info -->
+                            <div class="row ">
+                                <div>
+                                    <h2 class="text-center">{{ food_setting.nombre }} {{ food_setting.apellido }}</h2>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="col-12">
+                                    <div>
+                                        <div>
+                                            <h2 class="text-center">Horar de comida:</h2>
+                                            <p class="text-center">
+                                                <p>{{ food_setting.hora_inicio }} -- {{ food_setting.hora_fin }} </p>
+                                            </p>
+                                            <h2 class="text-center">Almuerzo:</h2>
+                                            <p class="text-center" v-if="food_setting.completo == true">
+                                                <i class="font_size_data bi bi-check-circle-fill"></i>
+                                            </p>
+                                            <p class="text-center" v-else>
+                                                <i class="font_size_data bi bi-x-circle-fill"></i>
+                                            </p>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-12  pb-4">
+                        <div class="container_food_data_bottom">
+                            <div class="d-flex justify-content-center pt-4">
+                                <button v-if="food_setting.completo == true" class="btn btn-success mb-2" >
+                                    Almuerzo entregado
+                                </button>
+                                <button v-else   @click="food_petition" class="btn btn-warning mb-2">
+                                    Almuerzo no entregado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
 <!-- La pagina a la que va despues del scanner -->
 
 </template>
 <style scoped>
+.font_size_data{
+    font-size: 50px;
+}
+.container_food_data_top{
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    height: 100px;
+    border-top: 0.1mm solid rgb(154, 149, 149);
+    background: rgb(234, 228, 228) !important;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.605); 
+
+}
+
+.container_food_data_bottom{
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    height: 100px;
+    border-bottom: 0.1mm solid rgb(154, 149, 149);
+    background: rgb(234, 228, 228) !important;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.605); 
+
+}
+.container_food_data_middle{
+    background: rgb(183, 196, 163);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.605); 
+
+}
+
 .img_food_state{
-    border-radius: 20%;
+    border: 5px solid rgb(236, 236, 236);
+    border-radius: 50%;
     width: 180px;
     height: 200px;
     padding: 0;
@@ -196,5 +245,10 @@ onMounted(() => {
 .border_sett_bottom{
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
+}
+.img_logos{
+    width: 80px;
+    padding: 5px;
+    height: 90px;
 }
 </style>

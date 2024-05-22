@@ -52,6 +52,14 @@ import { RouterLink, useRoute, useRouter } from 'vue-router'
               </button>
           </RouterLink>
         </div>
+        <div class="d-flex justify-content-center">
+          <RouterLink :to="{name:'C_almuerzos'}">
+            <button class="container_base_butt" data-bs-dismiss="modal">
+                  <img class="base_img_butt" src="../../assets/imgs/actividades/Almuerzo.png">
+                  <a class="title_butt btn btn-dark">Almuerzos</a>
+              </button>
+          </RouterLink>
+        </div>
       </div>
     </div>
   </div>

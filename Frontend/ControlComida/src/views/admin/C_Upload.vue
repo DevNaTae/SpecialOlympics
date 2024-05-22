@@ -40,15 +40,16 @@ const ShowSuccess = ()=>{
     Swal.fire({
         icon: "success",
         title:'Documento Subido Con exito',
-        timer: 3000,
+        timer: 4000,
 
     })
 }
-const ShowError = () =>{
+const ShowError = (message) =>{
     Swal.fire({
         icon:'error',
         title: 'Error al subir el documento',
-        timer: 3000,
+        text: message,
+        timer: 4000,
     })
 }
 onMounted( async ()=>{
@@ -63,35 +64,60 @@ const provincia_sett = ()=>{
 const sett_icono = (data)=>{
   tipo_selected.value = data.nombre;
   icono_selected.value= data.icono;
+  if(tipo_selected.value == 'xls o xlsx'){
+    fileNames.value =[];
+    provincia_seleccionada.value=''
+  }
   Modal.getInstance(document.getElementById(`exampleModal`)).hide();
 }
 
 const handleFileUpload = (event) => {
+  
   selectedFile.value = event.target.files[0];
   isExcelFile.value = selectedFile.value && selectedFile.value.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 };
+const borrar_data = ()=>{
+  selectedFile.value = null;
+  const input = document.getElementById('archivoInput');
+  input.value = '';
 
+}
 const subir_doc = async()=>{
-
   const formData = new FormData();
   formData.append('excelLoad', selectedFile.value);
   ShowLoading()
   const data = await P_print_upload.upload_xls(formData)
-  if(data == true){
-    ShowSuccess();
+  //console.log(data.response)
+  if(data.response){
+    if(data.response.status == 422){
+      const row = data.response.data.message[0].row;
+      await Swal.fire({
+        icon:'error',
+        title: 'Error al subir el documento',
+        text: data.response.data.message[0].errors+', fila: '+row,
+        timer: 4000,
+    })
+    }else if(data.response.status == 500) {
+      ShowError(data.response.data.message);
+    }
+    //cambio a tomar en cuenta
   }else{
-    ShowError();
+    ShowSuccess();
   }
 }
 
 const fileNames = ref([]);
 const fileInputRef = ref(null);
+const selectedFileNames = ref([]);
 
 const handleFileChange = (event) => {
-  // fileNames.value = Array.from(event.target.files);
   const files = event.target.files;
+  console.log(files[0].name)
   for (let i = 0; i < files.length; i++) {
+
+    const fileName = files[i].name;
+    selectedFileNames.value.push(fileName);
     fileNames.value.push(files[i]);
   }
 };
@@ -99,6 +125,16 @@ const handleFileChange = (event) => {
 import axios  from 'axios';
 
 const upload_img = async()=>{
+
+  if(provincia_seleccionada.value== ''){
+    Swal.fire({
+        icon:'error',
+        title: 'Seleccione una provincia',
+        timer: 4000,
+    })
+    return
+  }
+  ShowLoading()
   const formData = new FormData();
   fileNames.value.forEach((file) => {
     // Agregar la imagen al FormData con una clave única
@@ -111,19 +147,51 @@ const upload_img = async()=>{
       },
       withCredentials: true,
     });
+    console.log(response.data.success);
+    console.log(response.data.message);
+    if(response.data.success == true){
+      Swal.fire({
+        icon: "success",
+        title: response.data.message,
+        timer: 4000,
+      })
+      fileNames.value = [];
+      selectedFileNames.value = [];
+    }else{
+      Swal.fire({
+        icon: "error",
+        title: 'hubo un error al hacer la peticion',
+        timer: 4000,
+      })
+    }
   } catch (error) {
     console.error('Error al enviar las imágenes:', error);
+    console.error(error.response.status);
+    if(error.response.status == 404){
+      Swal.fire({
+        icon:'error',
+        title: 'No se encontraro imagenes',
+        timer: 4000,
+      })
+    }else if(error.response.status == 500){
+      Swal.fire({
+        icon:'error',
+        title: 'Error de servidor',
+        timer: 4000,
+      })
+    }
 
   }
-
-  //const data = P_print_upload.upload_imgs(formData,provincia_seleccionada.value);
 
 }
 
 
 const removeFile = (index) => {
-  // Eliminar el archivo correspondiente del arreglo de nombres de archivos
+  selectedFileNames.value.splice(index, 1);
   fileNames.value.splice(index, 1);
+  const input = document.getElementById('formFile_img');
+
+  input.value = '';
 };
 
 const fileInput = ref(null);
@@ -137,6 +205,11 @@ const fileInput = ref(null);
       <button type="submit">Subir Archivo</button>
     </form>
   </div>
+
+
+
+
+
 <div class="body_vue" >
         <div class="content_vue">
             <C_Header></C_Header>
@@ -148,7 +221,7 @@ const fileInput = ref(null);
                   </button>
                   <div class="mt-3">
                     <p>Tipo de archivo: 
-                      <a class="btn btn-primary">
+                      <a class="btn btn-primary" v-if="tipo_selected !== ''">
                         <i class="icon-font" :class="icono_selected"> </i>
                       </a>
                     </p>
@@ -157,17 +230,23 @@ const fileInput = ref(null);
 
               </div>
             </div>
-            <div class="container">
-              <div v-if="tipo_selected == 'xls o xlsx'" class="d-flex justify-content-center">
-                <form class="Type_WH" @submit.prevent="subir_doc" enctype="multipart/form-data">
-                  <div class="mb-3">
-                    <input @change="handleFileUpload" class="form-control" type="file" id="formFile">
-                  </div>
-                  <div class="d-flex justify-content-around">
-                    <button type="submit" :disabled="!selectedFile || !isExcelFile" class="btn btn-success">subir</button>
-                    <button class="btn btn-danger" >Cancelar</button>
-                  </div>
+            <div class="container ">
+              <div v-if="tipo_selected == 'xls o xlsx'" class="d-flex">
+
+                <form class="Type_WH " @submit.prevent="subir_doc" enctype="multipart/form-data">
+                      <div class="d-flex">
+                        <div class="aumento_input_file">
+                          <input  id="archivoInput" @change="handleFileUpload" class="form-control input_file_edit" type="file" >
+                        </div>
+                        <div class="flex-grow-1 d-flex justify-content-end">
+                          <button type="submit" :disabled="!selectedFile || !isExcelFile" class="btn btn-success me-3">subir</button>
+                          <a @click="borrar_data()"class="btn btn-danger" >
+                            <i class="bi bi-trash-fill"></i>
+                          </a>
+                        </div>
+                      </div>
                 </form>
+
               </div>
               <div v-if="tipo_selected == 'jpg'" class="d-flex justify-content-center">
                 <div class="container">
@@ -193,14 +272,15 @@ const fileInput = ref(null);
                         <!-- solo acepte imagenes jpg -->
                         <input class="form-control" type="file" id="formFile_img"  @change="handleFileChange" multiple>
                         <div class="ms-3 mt-2">
-                          <button class="btn btn-primary" @click="upload_img">Enviar</button>
+                          <button :disabled="fileNames.length === 0" class="btn btn-primary" @click="upload_img">Enviar</button>
                         </div>
                       </div>
                     </div>
                     <div class="col-12 col-sm-12">
+
                       <div class="p-3 style_files" v-show="fileNames.length > 0">
                         <ul class="file-list">
-                          <li v-for="(fileName, index) in fileNames" :key="index">
+                          <li v-for="(fileName, index) in selectedFileNames" :key="index">
                             <div class="d-flex justify-content-between mt-2">
                               {{ fileName }}
                               <button class="btn btn-danger" @click="removeFile(index)">
@@ -210,6 +290,7 @@ const fileInput = ref(null);
                           </li>
                         </ul>
                       </div>
+
                     </div>
                   </div>
                 </div>
@@ -270,7 +351,10 @@ const fileInput = ref(null);
     height: 120px;
 }
 .Type_WH{
-  width: 400px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
 }
 .style_files{
   background: rgb(207, 193, 193);
@@ -287,5 +371,12 @@ const fileInput = ref(null);
   text-align: center;
   color: #2c3e50;
   margin-top: 0px;
+}
+.input_file_edit{
+  border: 0.1mm solid rgb(154, 149, 149);
+}
+.aumento_input_file{
+  border: 0px solid black;
+  width: 60%;
 }
 </style>

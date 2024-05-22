@@ -12,33 +12,28 @@ const datos = async ()=>{
 </script>
 <template>
         <div class="body_extend">
-          <div class="border_">
+          <div >
             <C_header></C_header>
           </div>
           <!-- hacer que en ves de que no haya nada mostrar 4 botones con las funciones de cada cosa -->
-          <div class="container-fluid  ontent_style ">
-              <div class="mt-2">
-                <C_Time></C_Time>
-              </div>
-              <div class="centered_qr justify-content-center">
+          <div class="container-fluid ">
+            <div class="mt-4">
+              <C_Time></C_Time>
+            </div>
+            <div >
+              <div v-if="p_session.user !== 'Administrador'" class="centered_qr justify-content-center">
                     <div class="my-auto" >
                       <C_scaner v-if="p_session.user !== 'Administrador'"></C_scaner>
-                      <C_buttons_status v-if="p_session.user === 'Administrador'" ></C_buttons_status>
                     </div>
               </div>
-          </div>
-        </div>
-        <!-- <button @click="datos">llamar</button>
-        <div class="border_r">
-          <div v-for="deportes in p_session.deportistas">
-            <div v-for="tarea in deportes">
-              
-              <div v-html="tarea.qrcode" class="mt-5 mb-5" >
-
+              <div v-if="p_session.user === 'Administrador'" class="container centered_qr justify-content-center">
+                <div class="my-auto">
+                  <C_buttons_status v-if="p_session.user === 'Administrador'" ></C_buttons_status>
+                </div>
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
 
 </template>
 <style>

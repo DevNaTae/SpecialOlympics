@@ -8,10 +8,12 @@ use App\Models\Provincia;
 use App\Models\TipoInvitado;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class InvitadoImport implements ToModel, WithHeadingRow
 {
@@ -29,13 +31,24 @@ class InvitadoImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         $provincia_id= Provincia::select('provincia_id')->where('provincia','LIKE',$row['provincia'])->first();
-        $nameParts = explode(' ',$row['name']);
-        $total_name = ucwords(strtolower($nameParts[0])).$nameParts[1];
-        $fechaNacimiento = Carbon::createFromFormat('d/m/Y', $row['dob'])->format('Y-m-d');
+        $nameParts = explode(', ',$row['name']);
+        $lastname = ucwords(strtolower($nameParts[0]));
+        $name = ucwords(strtolower($nameParts[1]));
+        $fechaNacimiento = $row['dob'] ? Carbon::createFromFormat('d/m/Y', $row['dob'])->format('Y-m-d') : null;
+         // Generar el código QR
+        $cedula = $row['cedula'];
+        $qrCode = QrCode::size(300)->generate($cedula);
+         // Guardar el código QR en el almacenamiento (storage)
+        $fileName = $cedula; // Nombre del archivo basado en la cédula
+        Storage::put('public/qrcodes/' . $fileName, $qrCode);
+        $url_imagen = strtolower("storage/images/".$row['provincia']."/"."$lastname $name $fileName.jpg");
+        $url_imagen = str_replace(' ', '_', $url_imagen);
         return new Invitado([
             'cedula' => $row['cedula'],
-            'nombre' => $row['name'],
+            'nombre' => $name,
+            'apellido' => $lastname,
             'genero' => $row['gen'],
+            'url_imagen' => $url_imagen,
             'edad' => $row['age'],
             'fecha_nacimiento' => $fechaNacimiento,
             'deporte_id' => $this->deportes[$row['deporte']]??null,
@@ -52,11 +65,11 @@ class InvitadoImport implements ToModel, WithHeadingRow
     public function rules(): array
     {
         return [
-            'name' => 'required|regex:/^[a-zA-ZñÑ,_\s]*$/',
+            'name' => 'required',
             'cedula' => ['required','unique:invitados,cedula'],
-            'dob' => 'required|date_format:d/m/Y',
+
             'gen' => 'required|in:M,F',
-            'age' => 'required|numeric',
+
         ];
     }
 }

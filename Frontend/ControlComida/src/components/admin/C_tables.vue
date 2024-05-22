@@ -21,9 +21,12 @@ const query_credentials = reactive({
     invitado_id:'',
     provincia_id:'',
     tipo_invitado_id:'',
+    fecha_nacimiento:'',
+
 })
 
 const handleTipoSeleccionado = async (tipo) => {
+    
   tipoSeleccionado.value = tipo;
   await P_estadoC.get_typeC(tipoSeleccionado.value)
 
@@ -69,6 +72,7 @@ const go_edit_page= (data)=>{
     query_credentials.invitado_id = data.invitado_id;
     query_credentials.provincia_id = data.provincia_id;
     query_credentials.tipo_invitado_id = data.tipo_invitado_id;
+    query_credentials.fecha_nacimiento = data.fecha_nacimiento;
 
     router.push(
             {
@@ -121,84 +125,116 @@ const ShowLoading = () => {
 
 </script>
 <template>
-    
-    <!-- debo hacer un load mientras se pide la peticion -->
-    <div class="container mt-5">
-        <modal_state @tipoSeleccionado="handleTipoSeleccionado"></modal_state>
-        <RouterLink :to="{name:'C_CreateCredentials'}">
-                    <button class="ms-3 btn btn-dark">Crear Credencial</button>
-        </RouterLink>
-    </div>
-
-    <div v-if="P_estadoC.tc_unit === null" class="container d-flex justify-content-center p-4">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
+<div  class="p-2">
+    <div class="container encerrar_invitados mt-3 " >
+        <div class="container mt-5">
+            <modal_state @tipoSeleccionado="handleTipoSeleccionado"></modal_state>
+            <RouterLink :to="{name:'C_CreateCredentials'}">
+                        <button class="ms-3 btn btn-dark">Crear Credencial</button>
+            </RouterLink>
+        </div>
+        <div v-if="P_estadoC.tc_unit === null" class="container d-flex justify-content-center p-4">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div v-else class="container mt-3">
+            <div   >
+                <table class="table ">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col ">
+                            <div class="d-flex justify-content-end">Opciones</div>
+                        </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="type_credential in P_estadoC.tc_unit">
+                            <th scope="row">
+                                <p class=" mt-2">
+                                    {{ type_credential.invitado_id }}
+                                </p>
+                            </th>
+                            <td><i style="font-size: 2.0rem;" class="bi bi-person-circle"></i></td>
+                            <td class="b">
+                                <p class="name_ajust ">
+                                    {{ type_credential.nombre }} {{ type_credential.apellido }}
+                                </p>
+                            </td>
+                            <td>
+                                <div class="d-inline d-flex justify-content-end">
+                                    <button  v-if="false">
+                                        <i class="bi bi-person-check color_wicon "></i>
+                                    </button>
+                                    <button v-if="false">
+                                        <i class="bi bi-person-down color_wicon"></i>
+                                    </button>
+                                    <button @click="go_edit_page(type_credential)" class="button_icon_status_edit ">
+                                        <i class="bi bi-screwdriver color_wicon"></i>
+                                    </button>
+                                    <button v-if="type_credential.activo === true" @click="dismis_type(type_credential.invitado_id)" class="button_icon_status color_wicon">
+                                        <i class="bi bi-person-fill-check"></i>
+                                    </button>
+                                    <button v-if="type_credential.activo === false" @click="dismis_type(type_credential.invitado_id)" class="button_icon_status color_wicon">
+                                        <i class="bi bi-person-fill-x color_wicon" ></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center mb-3">
+                <button class="btn btn-info me-2" @click="prevPage" :disabled="P_estadoC.pagina_inicio === 1">&laquo;</button>
+                <button  class="btn btn-info me-2" v-for="page in pages" @click="gotoPage(page)">
+                    {{ page }}
+                </button>
+                <button class="btn btn-info me-2" @click="nextPage" :disabled="P_estadoC.pagina_actual === P_estadoC.pagina_final">&raquo;</button>
+            </div>
         </div>
     </div>
-    <div v-else class="container mt-3">
-        <table class="table">
-            <thead>
-                <tr>
-                <th scope="col">#</th>
-                <th scope="col">Imagen</th>
-                <th scope="col">Nombre</th>
-                <th scope="col ">
-                    <div class="d-flex justify-content-end">Opciones</div>
-                </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="type_credential in P_estadoC.tc_unit">
-                    <th scope="row">
-                        <p class=" mt-2">
-                            {{ type_credential.invitado_id }}
-                        </p>
-                    </th>
-                    <td><i style="font-size: 2.0rem;" class="bi bi-person-circle"></i></td>
-                    <td class="b">
-                        <p class="name_ajust ">
-                            {{ type_credential.nombre }} {{ type_credential.apellido }} 
-                        </p>
-                    </td>
-                    <td>
-                        <div class="d-inline d-flex justify-content-end">
-                            <button  v-if="false">
-                                <i class="bi bi-person-check color_wicon "></i>
-                            </button>
-                            <button v-if="false">
-                                <i class="bi bi-person-down color_wicon"></i>
-                            </button>
-                            <button @click="go_edit_page(type_credential)" class="button_icon_status ">
-                                <i class="bi bi-screwdriver color_wicon"></i>
-                            </button>
-                            <button v-if="type_credential.activo === true" @click="dismis_type(type_credential.invitado_id)" class="button_icon_status color_wicon">
-                                <i class="bi bi-person-fill-check"></i>
-                            </button>
-                            <button v-if="type_credential.activo === false" @click="dismis_type(type_credential.invitado_id)" class="button_icon_status color_wicon">
-                                <i class="bi bi-person-fill-x color_wicon" ></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <div class="d-flex justify-content-center mb-3">
-            <button class="btn btn-info me-2" @click="prevPage" :disabled="P_estadoC.pagina_inicio === 1">&laquo;</button>
-            <button  class="btn btn-info me-2" v-for="page in pages" @click="gotoPage(page)">
-                {{ page }}
-            </button>
-            <button class="btn btn-info me-2" @click="nextPage" :disabled="P_estadoC.pagina_actual === P_estadoC.pagina_final">&raquo;</button>
-        </div>
-    </div>
+</div>
 
 </template>
 <style>
+.encerrar_invitados{
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.5); 
+    border: 1px solid black !important;
+}
+@media(max-width:600px) {
+    .encerrar_invitados{
+
+        margin-top: 3em;
+        margin-bottom: 3em;
+        box-shadow: 0px 0px 10px 5px black(0,0,0,0.5);
+    }
+}
+@media(max-width:600px){
+    .completo_tabla{
+        border: 0px solid;
+        margin: 5em;
+        margin-bottom: 2em; 
+        box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.5); border-radius: 1em; 
+        padding: 2em;
+    }
+}
+
 .name_ajust {
     white-space: normal; 
     word-wrap: break-word; 
 }
 .button_icon_status{
+    padding: 10px;
+    margin-left: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    background: gray;
+    
+}
+.button_icon_status_edit{
     padding: 10px;
     margin-left: 10px;
     margin-top: 5px;

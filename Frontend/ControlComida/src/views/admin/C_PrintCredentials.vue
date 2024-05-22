@@ -1,19 +1,21 @@
 <script setup>
+import Swal from 'sweetalert2';
 import C_Header from '../../components/C_Header.vue';
 import C_footer from '../../components/C_Footer.vue';
 import { C_print_upload } from '@/stores/Print_Credentials'
 import { C_TiposInvitados } from '@/stores/CRUDS/Tipo_de_invitados';
 import { C_Atletas } from '@/stores/CRUDS/Atleta';
 import { Modal } from 'bootstrap';
-import { ref,reactive,onMounted } from 'vue';
+import { ref,reactive,onMounted,watch,computed } from 'vue';
 
 //pinias
 const P_print_upload = C_print_upload()
 const P_TiposInvitados = C_TiposInvitados()
 const P_Atletas = C_Atletas();
-//
+//variables
 const tiposInvitados = ref({});
-
+const print_paginate_atleta= ref([]);
+//
 onMounted( async()=>{
   const data = await P_TiposInvitados.get_TiposInvitados();
   P_TiposInvitados.TiposInvitados.forEach(tipo => {
@@ -25,10 +27,110 @@ onMounted( async()=>{
     }
   }  
   });
+  await P_print_upload.get_paginateTipes();
+  print_paginate_atleta.value = P_print_upload.print_unit
   // const primerObjeto = Object.values(tiposInvitados.value)[0];
   // first_id (primerObjeto.tipo_id)
+  //llamada del qr
+
+  modifySvgSizes();
+  //llamar provincias
+  await P_print_upload.get_provincia();
+  provincias.value = P_print_upload.provincias;
+
+
 })
+//sweetes alert
+const ShowLoading = () => {
+  const loadingAlert = Swal.fire({
+    title: 'Procesando...',
+    html: '<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>',
+    showConfirmButton: false,
+    allowOutsideClick: false, 
+  });
+
+  const CloseLoading = () => {
+    Swal.close(); // Cerramos la instancia de SweetAlert2
+  };
+
+  return CloseLoading;
+};
+const ShowSuccess = ()=>{
+    Swal.fire({
+        icon: "success",
+        title: 'PDFs Generados: ' + contador.value,
+        allowOutsideClick: false, // Evitar que el usuario cierre la alerta haciendo clic fuera de ella
+        showConfirmButton: false, // No mostrar el botón de confirmación mientras se está cargando
+        timer: 4000,
+
+    })
+}
+const Show_end=()=>{
+  Swal.fire({
+        icon: "success",
+        title: 'Descarga por lote completada' ,
+        allowOutsideClick: false, // Evitar que el usuario cierre la alerta haciendo clic fuera de ella
+        showConfirmButton: false, // No mostrar el botón de confirmación mientras se está cargando
+        timer: 4000,
+
+    })
+}
+const ShowError = () =>{
+    Swal.fire({
+        icon:'error',
+        title: 'Error al intentar hacer un documento',
+        timer: 3000,
+    })
+}
+const ShowLoading_wait = () => {
+  const loadingAlert = Swal.fire({
+    title: 'En espera ',
+    html: '<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>',
+    showConfirmButton: false,
+    allowOutsideClick: false, 
+  });
+
+  const CloseLoading = () => {
+    Swal.close(); // Cerramos la instancia de SweetAlert2
+  };
+
+  return CloseLoading;
+};
+
+
+//
+const select_print = ref('')
+//traer invitados
+const get_paginate_invitados = async()=>{
+  const closeLoadingAlert = ShowLoading();
+  provincia_seleccionada.value = null
+  await P_print_upload.get_paginate_TiposInvitados(1, provincia_seleccionada.value);
+  print_paginate_atleta.value = P_print_upload.print_unit
+  modifySvgSizes();
+  select_print.value = 'Invitados'
+  currentPage.value = 1;
+  next_page.value = 2;
+  predit.value = 0;
+  closeLoadingAlert()
+
+}
+//traer Atletas
+const get_paginate_atletas = async()=>{
+  const closeLoadingAlert = ShowLoading();
+  provincia_seleccionada.value = null
+  await P_print_upload.get_paginateTipes(1,provincia_seleccionada.value);
+  print_paginate_atleta.value = P_print_upload.print_unit
+  modifySvgSizes();
+  select_print.value = 'Atletas'
+  currentPage.value = 1;
+  next_page.value = 2;
+  predit.value = 0;
+  closeLoadingAlert()
+}
+
+
 const seleted_type = async(data)=>{
+  
   console.log(data);
   for (const key in tiposInvitados.value) {
     tiposInvitados.value[key].selected = false;
@@ -38,76 +140,392 @@ const seleted_type = async(data)=>{
   cheked.value = false;
 
 }
+const getImageUrl = (data) => {
+  const baseUrl = P_print_upload.url;
+
+  const imageUrl = data;
+  return new URL(imageUrl, baseUrl).href;
+};
+const getQrUrl = (data) => {
+  const baseUrl = P_print_upload.url;
+  const imageUrl = data;
+  return new URL(imageUrl, baseUrl).href;
+};
+
+
+//pdf
 const cheked = ref(true);
 const posiciones = ['arriba-izquierda', 'arriba-derecha', 'abajo-izquierda', 'abajo-derecha'];
-const credencialesIndex = [1, 2, 3, 4, 5]; // Índices de las credenciales
-
+const credencialesIndex = [1, 2, 3, 4, 5]; 
 import jsPDF from 'jspdf';
 import  html2pdf  from 'html2pdf.js';
-const generarPDF = ()=>{
-  console.log('entre')
-  const contenido = document.getElementById('contenidoParaPDF');
-  html2pdf()
-    .from(contenido)
-    .save();
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+const pdfGenerado = ref(false);
+const generarPDF = async()=>{
+        if(lotes_limit.value === 0){
+          Swal.fire({
+              icon:'error',
+              title: 'No puede ser 0 la impresion de lotes',
+              timer: 3000,
+          })
+          return
+        }
+        const closeLoadingAlert = ShowLoading();
+        const contenido = document.getElementById('contenidoParaPDF');
+        var opt = {
+            margin: 0,
+            filename: 'lotes.pdf',
+            image: { type: 'jpeg', quality: 0.20 },
+            html2canvas: { scale: 2,useCORS: true },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'p' }
+        };
+        pdfGenerado.value = false;
+
+        await html2pdf().set(opt).from(contenido).save();
+
+        pdfGenerado.value = true;
+}
+const contador = ref(0)
+const lotes_limit= ref(1)
+//validar el contador de lotes_limit
+const validarNumero = (event) => {
+  const input = event.target;
+  let valor = input.value.trim();
+  // Reemplazar comas por puntos para asegurar el formato decimal correcto
+  valor = valor.replace(',', '.');
+  // Validar si el valor es un número positivo
+  if (isNaN(valor) || valor < 0) {
+    input.value = '';
+    lotes_limit.value = 0;
+  } else if(valor > P_print_upload.pagina_final){
+    input.value = P_print_upload.pagina_final;
+    lotes_limit.value = P_print_upload.pagina_final;
+  }else{
+    lotes_limit.value = parseFloat(valor);
+  }
+
+}
+
+watch(pdfGenerado, (nuevoEstado) => {
+  if (nuevoEstado) {
+    const timeoutId = setTimeout(()=>{
+        if(contador.value === lotes_limit.value){
+          contador.value = 0;
+          Show_end();
+      }else{
+          contador.value++
+          ShowSuccess();
+          setTimeout(async()=>{
+            nextPage();
+            if(contador.value === lotes_limit.value){
+              contador.value = 0;
+              Show_end();
+              return
+            }else{
+              const timeoutId_1 = setTimeout(()=>{
+                const closeLoadingAlert = ShowLoading_wait();
+                generarPDF();
+              }, 3000)
+            }
+          },3000)
+      }
+    }, 5000)
+  } else {
+    console.log('Generando PDF...');
+  }
+});
+//modificar el qr
+const svgContainers = ref([]);
+
+function modifySvgSizes() {
+  svgContainers.value =[];
+  print_paginate_atleta.value.forEach((item, index) => {
+    const parser = new DOMParser();
+    const svgDocument = parser.parseFromString(item.qr, 'image/svg+xml');
+    const svgElement = svgDocument.documentElement;
+
+    // Modificar el ancho y alto del SVG
+    svgElement.setAttribute('width', '80');
+    svgElement.setAttribute('height', '150');
+    svgContainers.value.push(svgElement);
+
+  });
+}
+//paginacion
+const currentPage = ref(1);
+const next_page = ref(2);
+const predit = ref(0);
+const goToPage = async(data)=>{
+  const closeLoadingAlert = ShowLoading();
+  currentPage.value = data;
+  predit.value= currentPage.value + 1;
+  next_page.value=predit.value;
+  if(select_print.value == 'Invitados'){
+    await P_print_upload.get_paginate_TiposInvitados(currentPage.value,provincia_seleccionada.value);
+  }
+  if(select_print.value == 'Atletas'){
+    await P_print_upload.get_paginateTipes(currentPage.value,provincia_seleccionada.value);
+  }
+  print_paginate_atleta.value = P_print_upload.print_unit
+  modifySvgSizes()
+  closeLoadingAlert()
+
+}
+const previousPage = async() => {
+  // Ir a la página anterior si no estamos en la primera página
+  const closeLoadingAlert = ShowLoading();
+  if (currentPage.value > 1) {
+    currentPage.value--;
+    predit.value= currentPage.value - 1;
+    next_page.value=predit.value;
+
+    if(select_print.value == 'Invitados'){
+      await P_print_upload.get_paginate_TiposInvitados(currentPage.value,provincia_seleccionada.value);
+      print_paginate_atleta.value = P_print_upload.print_unit
+    }
+    if(select_print.value == 'Atletas'){
+      await P_print_upload.get_paginateTipes(currentPage.value,provincia_seleccionada.value);
+      print_paginate_atleta.value = P_print_upload.print_unit
+    }
+    modifySvgSizes()
+
+  }
+  closeLoadingAlert()
+
+};
+
+const nextPage = async() => {
+  // Ir a la página siguiente si no estamos en la última página
+  const closeLoadingAlert = ShowLoading();
+
+  console.log(select_print.value);
+    if (currentPage.value < P_print_upload.pagina_final) {
+      currentPage.value++;
+
+      predit.value= currentPage.value + 1;
+      next_page.value=predit.value;
+
+      if(select_print.value == 'Invitados'){
+        await P_print_upload.get_paginate_TiposInvitados(currentPage.value,provincia_seleccionada.value);
+        print_paginate_atleta.value = P_print_upload.print_unit
+      }
+      if(select_print.value == 'Atletas'){
+        await P_print_upload.get_paginateTipes(currentPage.value,provincia_seleccionada.value);
+        print_paginate_atleta.value = P_print_upload.print_unit
+      }
+      modifySvgSizes()
+
+
+    }
+    closeLoadingAlert()
+};
+//
+const visiblePages = computed(() => {
+  const totalPages = P_print_upload.pagina_final;
+  const current = currentPage.value;
+  const delta = 2;
+  let start = Math.max(current - delta, 1);
+  let end = Math.min(current + delta, totalPages);
+
+  if (end - start < 4) {
+    if (current <= delta) {
+      end = Math.min(5, totalPages);
+    } else if (current >= totalPages - delta) {
+      start = Math.max(totalPages - 4, 1);
+    }
+  }
+
+  return Array.from({ length: (end - start + 1) }, (_, i) => start + i);
+});
+//provincia
+const provincias = ref('');
+const provincia_seleccionada = ref(null);
+
+const provincia_sett = async()=>{
+  console.log('Valor seleccionado:', provincia_seleccionada.value);
+  if(select_print.value == 'Invitados'){
+    currentPage.value = 1;
+    await P_print_upload.get_paginate_TiposInvitados(currentPage.value, provincia_seleccionada.value);
+    print_paginate_atleta.value = P_print_upload.print_unit
+    modifySvgSizes();
+    currentPage.value = 1;
+    next_page.value = 2;
+    predit.value = 0;
+
+  }
+  if(select_print.value =='Atletas'){
+    currentPage.value = 1;
+    await P_print_upload.get_paginateTipes(currentPage.value, provincia_seleccionada.value);
+    print_paginate_atleta.value = P_print_upload.print_unit
+    modifySvgSizes();
+    currentPage.value = 1;
+    next_page.value = 2;
+    predit.value = 0;
+
+  }
+} 
+const shouldShow = computed(()=>{
+  return select_print.value === '' || print_paginate_atleta.value.length === 0;
+
+})
+const placeholderImage = 'http://localhost:5173/@fs/C:/xampp/htdocs/SpecialOlympics/Frontend/ControlComida/src/assets/imgs/Yo.jpg'; 
+
+function handleImageError(event) {
+  const imgElement = event.target;
+  imgElement.src = placeholderImage;
 }
 </script>
 <template>
-<div class="body_vue">
-        <div class="content_vue ">
+<div class="body_vue relleno_r" style="background-color: white;"> <!--bloque general, fondo de ventana generar PDF-->
+        <div class="content_vue ">  <!--the same-->
             <C_Header></C_Header>
-            <div class="container-fluid border_o mt-5 ">
+            <div class="container-fluid mt-5 " style="width: 95%; margin-bottom: 2em; padding:2em; box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.5); border-radius: 1em; "><!--bloque anaranjado exterior-->
               <div class="row">
-                <div class="col-4 border_v">
-                  <div class="border_y">
-                    <h2>Opciones a Imprimir:</h2>
+
+<!--inicio del cuadro de opciones-->                
+              <!-- <div class="cuadro-izquierdo">   -->
+                <div class="col-4 border_v" style="border: 5px; padding-right: 2em;"><!--cuadro morado izquierdo-->
+                  <div class="border_y" style="border: 0px;"> <!--cuadro amarillo izquierdo-->
+                    <h2 style="border-bottom: 2px solid black; padding-bottom: 10px;">Opciones a imprimir:</h2>
+                    
+                    <div class="botones-primeros">
                     <div class="d-flex justify-content-center mb-2">
-                      <button class="btn btn-primary me-2">
+                      <button @click="get_paginate_atletas"  class="btn btn-primary me-2">
                         Atletas
                       </button>
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      <button @click="get_paginate_invitados" type="button" class="btn btn-primary" >
                         Invitados
                       </button>
                     </div>
-                    <div class="border_o">
-                      <button class="btn btn-info" @click="generarPDF">Generar PDF</button>
-                      <h3>Pagina Actual:</h3>
-                      <h3>Pagina Siguiente:</h3>
-                      <h3>Pagina final:</h3>
+                    </div>
+                    
+                    <div v-if="!select_print == ''"  class="border_o" style="border: 0px;"> <!--bloque anaranjado izquierdo-->
+                      <div class="d-flex mt-2 mb-2">
+                        <button class="btn btn-info" @click="generarPDF">Generar PDF</button>
+                      </div>
+
+                      <div  class="container-fluid">
+                        <div class="row">
+                          <div class="col-5">
+                            <h5>
+                                <p>Rango de lotes:</p>
+                                <input @input="validarNumero" v-model="lotes_limit" type="number" class="input_edit_print rounded" min="1" :max="P_print_upload.pagina_final"> 
+                            </h5>
+                          </div>
+                          <div class="col-7">
+                            <div >
+                                <div >
+                                    <h5>Provincia Seleccionada:</h5>
+                                      <select 
+                                      v-model="provincia_seleccionada" 
+                                      class="form-select border_black" 
+                                      aria-label="Default select example"
+                                      @change="provincia_sett"
+                                      >
+                                        <option :value="null" selected>Ninguna</option>
+                                        <option v-for="datos in provincias"
+                                        :value="datos.provincia_id"
+                                        >
+                                        {{ datos.provincia }}
+                                        </option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      <h3>Pagina Actual:{{ currentPage }}</h3>
+                      <h3>Pagina Siguiente: {{ currentPage < P_print_upload.pagina_final ? currentPage + 1 : P_print_upload.pagina_final }} </h3>
+                      <h3>Pagina final: {{ P_print_upload.pagina_final }}</h3>
                     </div>
 
                   </div>
-                  <div class="d-flex justify-content-center">
-                    <nav aria-label="Page navigation example">
-                      <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                      </ul>
-                    </nav>
+                  <div v-if="!select_print == ''" class="d-flex justify-content-center border_black" style="border: 0px;"><!--cuadro negro izquierdo-->
+                    <!-- paginacion -->
+                    <button @click="previousPage" :disabled="currentPage === 1" style="border-top-left-radius: 10px; border-bottom-left-radius: 10px;">
+                      Anterior
+                    </button>
+                    <button v-for="pageNumber in visiblePages" :key="pageNumber" @click="goToPage(pageNumber)">
+                      {{ pageNumber }}
+                    </button>
+                    <button @click="nextPage" :disabled="currentPage === P_print_upload.pagina_final" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">
+                      Siguiente
+                    </button>
                   </div>
                 </div>
-                <div class="col-8 border_black">
-                  <div v-if="!cheked == true" class="base_edit_print d-flex justify-content-center align-items-center border_v">
+              <!-- </div> -->
+<!--fin del cuadro de opciones-->
+
+
+<!--inicio del cuadro de impresion-->
+              <!-- <div class="cuadro-derecho"> -->
+                <div class="col-8" style="border-left: 2px solid black;"><!--bloque negro derecho-->
+                  <div v-if="shouldShow" class="base_edit_print d-flex justify-content-center align-items-center border_v">
                       <i class="bi bi-files font_print"></i>
                   </div>
-                  <div class="border_v">
+                  <div class="border_v" style="border: 0px;"><!--bloque morado derecho-->
+                  <div class="hoja-a4" v-if="select_print == 'Atletas' && print_paginate_atleta.length !== 0" id="contenidoParaPDF">
+                    <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
+                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_image" @error="handleImageError"  class="imagen" >
+                      <div class="texto" style="top: 29.5em; left: 11em;">{{ index.name }}  {{ index.lastname }}</div>
+                      <div class="texto" style="top: 31.5em; left: 9em; color:#2092d1; width: 70%;">DEPORTE: {{ index.sport }}</div>
+                      <div class="texto" style="top: 27.5em; left: 20em; color:#2092d1">{{ index.province }}</div>
 
-                  <div class="hoja-a4 mt-2" id="contenidoParaPDF">
-                    <div v-for="(index, i) in credencialesIndex" :key="i" :class="`contenedor ${posiciones[i % 4]}`" >
-                        <img src="../../assets/imgs/Yo.jpg" alt="Imagen" class="imagen" style="top: 6.9em; left: 8.6em;">
-                        <div class="texto" style="top: 29.9em; left: 11em;">JOSE MARIA DE LAS MERCEDES LOURDES</div>
-                        <div class="texto" style="top: 32.9em; left: 11em; color:#2092d1">DEPORTE: ATLETISMO</div>
-                        <div class="texto2" style="top: 13em; left: 3em; color: white;">ATLETA</div>
-                        <div class="texto2" style="top: 13em; left: -1.9em; color: white;"></div>
-                        <img src="../../assets/imgs/Yo.jpg" alt="Imagen" class="qr" style="top:27em; left: 19.7em;">
+                      <!-- el peto -->
+                      <!-- provicional hasta que llegue el sportman id -->
+                      <div class="texto peto">
+                        <button class="btn btn-warning peto_sett">
+                         {{ index.id }}
+                        </button>
+                      </div>
+                      <!-- actividades deportivas -->
+                      <div class="texto3" style="top: 33.6em; left: 5em; color:#2092d1">ACTIVIDAD(ES) DEPORTIVA:</div>
+                      <div class="texto " style="top: 32.6em; left: 13em; color:#2092d1;width: 62%;">
+                        <div class="d-flex mt-2 ">
+                          <div   class=" ms-2 d-inline "   v-for="event in index.events">
+                            <a style="font-weight: 700;" >{{ event.activity }}</a>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- qr -->
+                      <div class=" d-flex qr"    v-if="svgContainers[i]" style="top:25em; left: 19.3em;" >
+                        <div class="" v-html="svgContainers[i].outerHTML"></div>
+                      </div>
+                      <div class="texto2" style="top: 17.2em; left: 2em;">ATLETA</div>
                     </div>
                   </div>
+                  <div  v-if="select_print == 'Invitados' && print_paginate_atleta.length !== 0" class="hoja-a4" id="contenidoParaPDF" >
+                    <img src="https://specialolimpics--production-jistoria.sierranegra.cloud/storage/images/oe._los_rios/amador_anderson_1207139005.jpg" class="imagen" style="top: 6.9em; left: 8.6em;">
 
+                    <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
+                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_imagen" class="imagen" >
+                      <div class="texto medid_img" style="top: 29.9em; left: 11em; ">{{ index.nombre }}  {{ index.apellido }}</div>
+
+                      <div class="texto mb-2 medid_img" style="top: 34.5em; left: 11em; color:#2092d1;">
+                        Cedula:
+                        {{ index.cedula }}
+                      </div>
+                      <div class="texto mb-2 medid_img" style="top: 32.5em; left: 11em; color:#2092d1;">
+                        {{ index.provincia }}
+                      </div>
+                      <!-- <div v-html="index.qr" class="qr" style="top:27em; left: 19.7em;" hidden></div> -->
+                      <div class=" d-flex qr"    v-if="svgContainers[i]" style="top:25em; left: 19.3em;" >
+                        <div class="" v-html="svgContainers[i].outerHTML"></div>
+                      </div>
+
+                      <div class="texto2" style="top: 17.2em; left: 2em;">
+                        <a>{{ index.tipo_invitado }}</a>
+                      </div>
+                    </div>
+                    
+                  </div>
                   </div>
                 </div>
+              <!-- </div> -->
+<!--fin del cuadro de impresion-->
               </div>
             </div>
         </div>
@@ -143,23 +561,32 @@ const generarPDF = ()=>{
     </div>
 </template>
 <style scoped>
+.svg-container {
+  width: 100px;
+  height: 100px;
+}
+
+
 /* tarjeta */
 .hoja-a4 {
             width: 210mm; /* Ancho de una hoja A4 */
-            height: 297mm; /* Altura de una hoja A4 */
+            height: 296.3mm; /* Altura de una hoja A4 por defecto 297*/
             background-color: white; /* Color de fondo de la hoja */
-            border: 1px solid black; /* Borde para simular el borde de la hoja */
-            margin: 20px auto; /* Margen para centrar la hoja en la página */
+            border: 0px solid black; /* Borde para simular el borde de la hoja */
+            margin: 0px auto; /* Margen para centrar la hoja en la página */
             position: relative; /* Posición relativa para los contenedores internos */
             overflow: hidden; /* Ocultar el contenido que se salga de la hoja */
             max-width: 210mm;
             max-height: auto;
+            /* adicion mia */
+            margin-top: 0;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
         }
 
         /* Estilo para los contenedores internos */
         .contenedor {
             width: 50%; /* Cada contenedor ocupa el 50% del ancho de la hoja */
-            height: 51%; /* Cada contenedor ocupa el 50% del alto de la hoja */
+            height: 50%; /* Cada contenedor ocupa el 50% del alto de la hoja */
             border: 1px dashed gray; /* Borde punteado para los contenedores */
             box-sizing: border-box; /* Incluir el borde en el tamaño total del contenedor */
             position: absolute;
@@ -185,13 +612,13 @@ const generarPDF = ()=>{
         }
 
         .abajo-izquierda {
-            bottom: 0;
-            left: 0;
+            bottom: 0px;
+            left: 0px;
             
         }
 
         .abajo-derecha {
-            bottom: 0;
+            bottom: 0px;
             right: 0;
             
         }
@@ -200,26 +627,49 @@ const generarPDF = ()=>{
             position: absolute; /* Posición absoluta para poder mover el texto */
             color: black; /* Color del texto */
             font-size: 70%; /* Tamaño de fuente */
-            font-weight: bold; /* Negrita */
+            font-weight: 800; /* Negrita */
             pointer-events: none; /* Evitar que el texto afecte los eventos del ratón */
             text-align: center; /* Justificar el texto al centro */
-            width: 50%; /* Hacer que el texto ocupe todo el ancho del contenedor */
+            width: 56%; /* Hacer que el texto ocupe todo el ancho del contenedor */
             font-family: "Montserrat Alternates", sans-serif;
             color: #8c2b92;
         }
 
         .texto2 {
             position: absolute; /* Posición absoluta para poder mover el texto */
-            color: black; /* Color del texto */
-            font-size: 40px; /* Tamaño de fuente */
+            color: rgb(255, 255, 255); /* Color del texto */
+            font-size: 30px; /* Tamaño de fuente */
             font-weight: bold; /* Negrita */
             pointer-events: none; /* Evitar que el texto afecte los eventos del ratón */
             text-align: center; /* Justificar el texto al centro */
-            width: 50%; /* Hacer que el texto ocupe todo el ancho del contenedor */
+            width: 80%; /* Hacer que el texto ocupe todo el ancho del contenedor */
             font-family: "GFS Neohellenic", sans-serif;
-            color: #8c2b92;
         }
-
+        .texto3 {
+            position: absolute; /* Posición absoluta para poder mover el texto */
+            color: black; /* Color del texto */
+            font-size: 70%; /* Tamaño de fuente */
+            font-weight: 900; /* Negrita */
+            pointer-events: none; /* Evitar que el texto afecte los eventos del ratón */
+            text-align: left; /* Justificar el texto al centro */
+            width: 40%; /* Hacer que el texto ocupe todo el ancho del contenedor */
+            font-family: "Montserrat Alternates", sans-serif;
+            color: #8c2b92;
+            
+        }
+        .texto4 {
+            position: absolute; /* Posición absoluta para poder mover el texto */
+            color: black; /* Color del texto */
+            font-size: 70%; /* Tamaño de fuente */
+            font-weight: bold; /* Negrita */
+            pointer-events: none; /* Evitar que el texto afecte los eventos del ratón */
+            text-align: left; /* Justificar el texto al centro */
+            width: 30%; /* Hacer que el texto ocupe todo el ancho del contenedor */
+            font-family: "Montserrat Alternates", sans-serif;
+            color: #8c2b92;
+            max-width: 50px;
+            
+        }
         .imagen {
             position: absolute; /* Posición absoluta para poder mover la imagen */
             pointer-events: auto; /* Permitir que la imagen afecte los eventos del ratón */
@@ -227,7 +677,9 @@ const generarPDF = ()=>{
             max-height: 100%; /* Asegurar que la imagen no exceda el alto del contenedor */
             width: 10em;
             height: 10.3em;
-            border-radius: 4.5vh;
+            border-radius: 100px;
+            top: 6.2em; left: 11.8em;
+            
         }
 
         .qr {
@@ -238,6 +690,32 @@ const generarPDF = ()=>{
             width: 10.5vh;
             height: 10.5vh;
         }
+        .medid_img{
+          width: 218px;
+        }
+
+        .botones-primeros{
+          display: flex;
+          justify-items: left;
+        }
+
+        .botones-primeros button {
+          margin-top: 5px;
+          margin-bottom: 5px;
+        }
+        .peto{
+          position: absolute; /* Posición absoluta para poder mover el texto */
+          top: 27em; 
+          left: 0em; 
+          color:#2092d1;
+
+        }
+        .peto_sett{
+          width: 65px;
+          height: 50px;
+          font-size: 1.7rem;
+        }
+        
 /*  */
 .body_vue{
   border: 0px solid red;
@@ -250,19 +728,22 @@ const generarPDF = ()=>{
   flex: 1;
 }
 .footer_vue{
-  background-color: #c9ae45;
+  background-color: #049DD9;
   color: #fff;
   text-align: center;
   padding: 20px;
   
 }
 .base_edit_print{
-  border: 5px solid red;
+  border: 0px solid red;
   width: auto;
   height: 70vh;
 }
 .font_print{
   font-size: 5.0rem;
+}
+.input_edit_print {
+  border: 3px solid black;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

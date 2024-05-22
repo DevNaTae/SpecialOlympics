@@ -23,7 +23,6 @@ export const C_ActividadesD = defineStore('ActividadesDeportivas',{
                 })
                 const jsonData = await response.json();
                 this.actividadesDeportivas = jsonData;
-                console.log(jsonData);
                 return jsonData;
             }catch (error) {
                 console.log(error.response);

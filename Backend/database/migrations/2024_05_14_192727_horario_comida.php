@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deportes', function (Blueprint $table) {
-            $table->id('deporte_id');
-            $table->string('deporte');
-            $table->string('descripcion');
-            $table->string('icon');
-            $table->boolean('activo')->default(true);
-            $table->timestamps();
+        Schema::create('horario_comida', function (Blueprint $table) {
+            $table->id();
+            $table->string('horario', 50);
+            $table->date('fecha');
+            $table->time('hora_inicio')->nullable();
+            $table->time('hora_fin')->nullable();
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_deportes');
+        //
     }
 };

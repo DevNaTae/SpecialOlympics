@@ -10,7 +10,7 @@ import C_footer from '@/components/C_Footer.vue';
     <div class="body_vue">
         <div class="content_vue">
             <C_Header></C_Header>
-
+            
         </div>
         <footer class="footer_vue">
             <C_footer></C_footer>

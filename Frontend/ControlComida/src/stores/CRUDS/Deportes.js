@@ -6,7 +6,7 @@ export const C_Deportes = defineStore('Deportes',{
         {
             deportes:[],
             url:'https://specialolimpics--production-jistoria.sierranegra.cloud'
-
+            //url:'http://127.0.0.1:8000',
         }
     ),
     actions:{
