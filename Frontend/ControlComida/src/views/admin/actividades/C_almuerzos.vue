@@ -41,6 +41,7 @@ const selectedDate_id = ref('');
 const showAssignDiv = () => {
     showAssign.value = true;
     showDelete.value = false;
+    showExcel.value = false;
     selectedUser.value = '';
     selectedDate.value = '';
     selectedTimeStart.value = '';

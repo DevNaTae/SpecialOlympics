@@ -189,25 +189,39 @@ export const C_print_upload = defineStore('print_upload',{
         },
         //paginar invitador
         async get_paginate_TiposInvitados(page=1,provincias){
+            try {
+                const baseUrl = this.url;
+                const path = '/api/dashboard/credentials_guest';
+                const url = new URL(path,baseUrl);
+                console.log(url);
+                const data_enviar ={
+                    page: page,
+                    provincia_id: provincias,
+                }
+                Object.keys(data_enviar).forEach(key=>{
+                    if(data_enviar[key] === null || data_enviar[key]=== undefined){
+                        data_enviar[key] = '';
+                    }
+                    url.searchParams.append(key, data_enviar[key])
+                })
+                const response = await fetch(url,{
+                    method:'GET',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json',
+                    },
+                    credentials:'include',
+                })
+                console.log(response);
+                const jsonData = await response.json();
+                this.pagina_actual = jsonData.current_page;
+                this.pagina_inicio = jsonData.from
+                this.pagina_final = jsonData.last_page
+                this.print_unit = jsonData.invitados;
+            } catch (error) {
+                
+            }
 
-            const response = await fetch(`${this.url}/api/dashboard/credentials_guest/?page=${page}`,{
-                method:'GET',
-                headers:{
-                    'Content-Type':'application/json',
-                    'Accept': 'application/json',
-                },
-                credentials:'include',
-            })
-            console.log(response);
-            const jsonData = await response.json();
-            // console.log('la pagina en la que estas es'+ jsonData.current_page);
-            // console.log('la ultima pagina es'+jsonData.last_page);
-            // console.log('desde el inicio'+jsonData.from);
-            console.log(jsonData)
-            this.pagina_actual = jsonData.current_page;
-            this.pagina_inicio = jsonData.from
-            this.pagina_final = jsonData.last_page
-            this.print_unit = jsonData.invitados;
         },
 
     },

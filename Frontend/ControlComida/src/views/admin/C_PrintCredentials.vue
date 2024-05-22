@@ -103,7 +103,8 @@ const select_print = ref('')
 //traer invitados
 const get_paginate_invitados = async()=>{
   const closeLoadingAlert = ShowLoading();
-  await P_print_upload.get_paginate_TiposInvitados();
+  provincia_seleccionada.value = null
+  await P_print_upload.get_paginate_TiposInvitados(1, provincia_seleccionada.value);
   print_paginate_atleta.value = P_print_upload.print_unit
   modifySvgSizes();
   select_print.value = 'Invitados'
@@ -116,7 +117,8 @@ const get_paginate_invitados = async()=>{
 //traer Atletas
 const get_paginate_atletas = async()=>{
   const closeLoadingAlert = ShowLoading();
-  await P_print_upload.get_paginateTipes(1);
+  provincia_seleccionada.value = null
+  await P_print_upload.get_paginateTipes(1,provincia_seleccionada.value);
   print_paginate_atleta.value = P_print_upload.print_unit
   modifySvgSizes();
   select_print.value = 'Atletas'
@@ -124,8 +126,9 @@ const get_paginate_atletas = async()=>{
   next_page.value = 2;
   predit.value = 0;
   closeLoadingAlert()
-
 }
+
+
 const seleted_type = async(data)=>{
   
   console.log(data);
@@ -237,7 +240,6 @@ watch(pdfGenerado, (nuevoEstado) => {
 //modificar el qr
 const svgContainers = ref([]);
 
-
 function modifySvgSizes() {
   svgContainers.value =[];
   print_paginate_atleta.value.forEach((item, index) => {
@@ -262,10 +264,10 @@ const goToPage = async(data)=>{
   predit.value= currentPage.value + 1;
   next_page.value=predit.value;
   if(select_print.value == 'Invitados'){
-    await P_print_upload.get_paginate_TiposInvitados(currentPage.value);
+    await P_print_upload.get_paginate_TiposInvitados(currentPage.value,provincia_seleccionada.value);
   }
   if(select_print.value == 'Atletas'){
-    await P_print_upload.get_paginateTipes(currentPage.value);
+    await P_print_upload.get_paginateTipes(currentPage.value,provincia_seleccionada.value);
   }
   print_paginate_atleta.value = P_print_upload.print_unit
   modifySvgSizes()
@@ -281,11 +283,11 @@ const previousPage = async() => {
     next_page.value=predit.value;
 
     if(select_print.value == 'Invitados'){
-      await P_print_upload.get_paginate_TiposInvitados(currentPage.value);
+      await P_print_upload.get_paginate_TiposInvitados(currentPage.value,provincia_seleccionada.value);
       print_paginate_atleta.value = P_print_upload.print_unit
     }
     if(select_print.value == 'Atletas'){
-      await P_print_upload.get_paginateTipes(currentPage.value);
+      await P_print_upload.get_paginateTipes(currentPage.value,provincia_seleccionada.value);
       print_paginate_atleta.value = P_print_upload.print_unit
     }
     modifySvgSizes()
@@ -307,11 +309,11 @@ const nextPage = async() => {
       next_page.value=predit.value;
 
       if(select_print.value == 'Invitados'){
-        await P_print_upload.get_paginate_TiposInvitados(currentPage.value);
+        await P_print_upload.get_paginate_TiposInvitados(currentPage.value,provincia_seleccionada.value);
         print_paginate_atleta.value = P_print_upload.print_unit
       }
       if(select_print.value == 'Atletas'){
-        await P_print_upload.get_paginateTipes(currentPage.value);
+        await P_print_upload.get_paginateTipes(currentPage.value,provincia_seleccionada.value);
         print_paginate_atleta.value = P_print_upload.print_unit
       }
       modifySvgSizes()
@@ -340,30 +342,43 @@ const visiblePages = computed(() => {
 });
 //provincia
 const provincias = ref('');
-const provincia_seleccionada = ref('');
+const provincia_seleccionada = ref(null);
 
-const provincia_sett = ()=>{
+const provincia_sett = async()=>{
   console.log('Valor seleccionado:', provincia_seleccionada.value);
+  if(select_print.value == 'Invitados'){
+    currentPage.value = 1;
+    await P_print_upload.get_paginate_TiposInvitados(currentPage.value, provincia_seleccionada.value);
+    print_paginate_atleta.value = P_print_upload.print_unit
+    modifySvgSizes();
+    currentPage.value = 1;
+    next_page.value = 2;
+    predit.value = 0;
+
+  }
+  if(select_print.value =='Atletas'){
+    currentPage.value = 1;
+    await P_print_upload.get_paginateTipes(currentPage.value, provincia_seleccionada.value);
+    print_paginate_atleta.value = P_print_upload.print_unit
+    modifySvgSizes();
+    currentPage.value = 1;
+    next_page.value = 2;
+    predit.value = 0;
+
+  }
 } 
+const shouldShow = computed(()=>{
+  return select_print.value === '' || print_paginate_atleta.value.length === 0;
+
+})
+const placeholderImage = 'http://localhost:5173/@fs/C:/xampp/htdocs/SpecialOlympics/Frontend/ControlComida/src/assets/imgs/Yo.jpg'; 
+
+function handleImageError(event) {
+  const imgElement = event.target;
+  imgElement.src = placeholderImage;
+}
 </script>
 <template>
-<div class="border_blue">
-  Provincia Seleccionada
-    <select 
-    v-model="provincia_seleccionada" 
-    class="form-select" 
-    aria-label="Default select example"
-    @change="provincia_sett"
-    >
-      <option v-for="datos in provincias"
-      :value="datos.provincia_id"
-      >
-      {{ datos.provincia }}
-      </option>
-    </select>
-</div>
-
-
 <div class="body_vue relleno_r" style="background-color: white;"> <!--bloque general, fondo de ventana generar PDF-->
         <div class="content_vue ">  <!--the same-->
             <C_Header></C_Header>
@@ -387,21 +402,48 @@ const provincia_sett = ()=>{
                     </div>
                     </div>
                     
-                    <div v-if="select_print !== ''" class="border_o" style="border: 0px;"> <!--bloque anaranjado izquierdo-->
+                    <div v-if="!select_print == ''"  class="border_o" style="border: 0px;"> <!--bloque anaranjado izquierdo-->
                       <div class="d-flex mt-2 mb-2">
                         <button class="btn btn-info" @click="generarPDF">Generar PDF</button>
                       </div>
-                      <h5>
-                          <p>Rango de lotes</p>
-                          <input @input="validarNumero" v-model="lotes_limit" type="number" class="input_edit_print rounded" min="1" :max="P_print_upload.pagina_final"> 
-                      </h5>
+
+                      <div  class="container-fluid">
+                        <div class="row">
+                          <div class="col-5">
+                            <h5>
+                                <p>Rango de lotes:</p>
+                                <input @input="validarNumero" v-model="lotes_limit" type="number" class="input_edit_print rounded" min="1" :max="P_print_upload.pagina_final"> 
+                            </h5>
+                          </div>
+                          <div class="col-7">
+                            <div >
+                                <div >
+                                    <h5>Provincia Seleccionada:</h5>
+                                      <select 
+                                      v-model="provincia_seleccionada" 
+                                      class="form-select border_black" 
+                                      aria-label="Default select example"
+                                      @change="provincia_sett"
+                                      >
+                                        <option :value="null" selected>Ninguna</option>
+                                        <option v-for="datos in provincias"
+                                        :value="datos.provincia_id"
+                                        >
+                                        {{ datos.provincia }}
+                                        </option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
                       <h3>Pagina Actual:{{ currentPage }}</h3>
                       <h3>Pagina Siguiente: {{ currentPage < P_print_upload.pagina_final ? currentPage + 1 : P_print_upload.pagina_final }} </h3>
                       <h3>Pagina final: {{ P_print_upload.pagina_final }}</h3>
                     </div>
 
                   </div>
-                  <div v-if="select_print !== ''" class="d-flex justify-content-center border_black" style="border: 0px;"><!--cuadro negro izquierdo-->
+                  <div v-if="!select_print == ''" class="d-flex justify-content-center border_black" style="border: 0px;"><!--cuadro negro izquierdo-->
                     <!-- paginacion -->
                     <button @click="previousPage" :disabled="currentPage === 1" style="border-top-left-radius: 10px; border-bottom-left-radius: 10px;">
                       Anterior
@@ -421,18 +463,17 @@ const provincia_sett = ()=>{
 <!--inicio del cuadro de impresion-->
               <!-- <div class="cuadro-derecho"> -->
                 <div class="col-8" style="border-left: 2px solid black;"><!--bloque negro derecho-->
-                  <div v-if="select_print == ''" class="base_edit_print d-flex justify-content-center align-items-center border_v">
+                  <div v-if="shouldShow" class="base_edit_print d-flex justify-content-center align-items-center border_v">
                       <i class="bi bi-files font_print"></i>
                   </div>
                   <div class="border_v" style="border: 0px;"><!--bloque morado derecho-->
-
-                  <div class="hoja-a4" v-if="select_print == 'Atletas'" id="contenidoParaPDF">
-                    <img src="https://specialolimpics--production-jistoria.sierranegra.cloud/storage/images/oe._los_rios/amador_anderson_1207139005.jpg" class="imagen" style="top: 6.9em; left: 8.6em;">
-
+                  <div class="hoja-a4" v-if="select_print == 'Atletas' && print_paginate_atleta.length !== 0" id="contenidoParaPDF">
                     <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
-                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_image" class="imagen" >
+                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_image" @error="handleImageError"  class="imagen" >
                       <div class="texto" style="top: 29.5em; left: 11em;">{{ index.name }}  {{ index.lastname }}</div>
-                      <div class="texto" style="top: 32em; left: 11em; color:#2092d1">DEPORTE: {{ index.sport }}</div>
+                      <div class="texto" style="top: 31.5em; left: 9em; color:#2092d1; width: 70%;">DEPORTE: {{ index.sport }}</div>
+                      <div class="texto" style="top: 27.5em; left: 20em; color:#2092d1">{{ index.province }}</div>
+
                       <!-- el peto -->
                       <!-- provicional hasta que llegue el sportman id -->
                       <div class="texto peto">
@@ -441,8 +482,8 @@ const provincia_sett = ()=>{
                         </button>
                       </div>
                       <!-- actividades deportivas -->
-                      <div class="texto3" style="top: 33.9em; left: 5em; color:#2092d1">ACTIVIDAD(ES) DEPORTIVA:</div>
-                      <div class="texto " style="top: 33.9em; left: 15em; color:#2092d1;">
+                      <div class="texto3" style="top: 33.6em; left: 5em; color:#2092d1">ACTIVIDAD(ES) DEPORTIVA:</div>
+                      <div class="texto " style="top: 32.6em; left: 13em; color:#2092d1;width: 62%;">
                         <div class="d-flex mt-2 ">
                           <div   class=" ms-2 d-inline "   v-for="event in index.events">
                             <a style="font-weight: 700;" >{{ event.activity }}</a>
@@ -456,7 +497,7 @@ const provincia_sett = ()=>{
                       <div class="texto2" style="top: 17.2em; left: 2em;">ATLETA</div>
                     </div>
                   </div>
-                  <div  v-if="select_print == 'Invitados'" class="hoja-a4" id="contenidoParaPDF" >
+                  <div  v-if="select_print == 'Invitados' && print_paginate_atleta.length !== 0" class="hoja-a4" id="contenidoParaPDF" >
                     <img src="https://specialolimpics--production-jistoria.sierranegra.cloud/storage/images/oe._los_rios/amador_anderson_1207139005.jpg" class="imagen" style="top: 6.9em; left: 8.6em;">
 
                     <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
@@ -485,9 +526,6 @@ const provincia_sett = ()=>{
                 </div>
               <!-- </div> -->
 <!--fin del cuadro de impresion-->
-
-
-
               </div>
             </div>
         </div>
@@ -592,7 +630,7 @@ const provincia_sett = ()=>{
             font-weight: 800; /* Negrita */
             pointer-events: none; /* Evitar que el texto afecte los eventos del ratón */
             text-align: center; /* Justificar el texto al centro */
-            width: 55%; /* Hacer que el texto ocupe todo el ancho del contenedor */
+            width: 56%; /* Hacer que el texto ocupe todo el ancho del contenedor */
             font-family: "Montserrat Alternates", sans-serif;
             color: #8c2b92;
         }
@@ -673,8 +711,8 @@ const provincia_sett = ()=>{
 
         }
         .peto_sett{
-          width: 80px;
-          height: 60px;
+          width: 65px;
+          height: 50px;
           font-size: 1.7rem;
         }
         
