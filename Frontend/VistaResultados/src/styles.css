@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 300;
+}
+*::selection {
+  background-color: var(--color-amber);
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+:root {
+  --color-brillant-rose: #f24ba7;
+  --color-brillant-rose-hover: #f02d99;
+  --color-celestial-blue: #049dd9;
+  --color-celestial-blue-hover: #0482b4;
+  --color-amber: #f2b705;
+  --color-amber-hover: #c89704;
+  --color-davy-grey: #595959;
+  --color-davy-grey-hover: #474747;
+  --color-white-smoke: #f2f2f2;
+  --color-white-smoke-hover: #e0e0e0;
+  --color-background-light: #ffffff;
+  --color-text-light: #000000;
+  --color-background-dark: #121212;
+  --color-text-dark: #ffffff;
+}
+
+[data-bs-theme="dark"] {
+  color-scheme: dark;
+  --background-color: var(--color-background-dark);
+  --text-color: var(--color-text-dark);
+  --sideb-background-color: #333333;
+}
