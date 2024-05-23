@@ -13,13 +13,15 @@ export const C_print_upload = defineStore('print_upload',{
             pagina_inicio:'',
             pagina_final:'',
             print_unit:'',
+            url_env:import.meta.env.VITE_API_URL,
+
         }
     ),
     actions:{
         async get_qr(data){
             console.log(data);
             try {
-                const response = await fetch (`${this.url}/api/eats/${data}`,{
+                const response = await fetch (`${this.url_env}/api/eats/${data}`,{
                     method:'GET',
                     headers:{
                         //'X-Requested-With': 'XMLHttpRequest',
@@ -46,7 +48,7 @@ export const C_print_upload = defineStore('print_upload',{
         async food_promise(data){
             console.log(data)
             try {
-                const response = await fetch(`${this.url}/api/eats_mark/${data}`,{
+                const response = await fetch(`${this.url_env}/api/eats_mark/${data}`,{
                     method:'POST',
                     headers:{
                         //'X-Requested-With': 'XMLHttpRequest',
@@ -70,7 +72,7 @@ export const C_print_upload = defineStore('print_upload',{
         },
         async get_provincia(){
             try {
-                const response = await fetch (`${this.url}/api/dashboard/get_provincia`,{
+                const response = await fetch (`${this.url_env}/api/dashboard/get_provincia`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -89,7 +91,7 @@ export const C_print_upload = defineStore('print_upload',{
         async upload_xls(data){
             try {
                 console.log(data);
-                const response = await axios.post(`${this.url}/api/dashboard/deportista_import`,data,{
+                const response = await axios.post(`${this.url_env}/api/dashboard/deportista_import`,data,{
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },
@@ -108,7 +110,7 @@ export const C_print_upload = defineStore('print_upload',{
             console.log(formData);
             console.log(id);
             try {
-                const response = await fetch(`${this.url}/api/dashboard/deportista_images/${id}`,{
+                const response = await fetch(`${this.url_env}/api/dashboard/deportista_images/${id}`,{
                     method:'POST',
                     headers:{
                         'Content-Type': 'multipart/form-data',
@@ -127,7 +129,7 @@ export const C_print_upload = defineStore('print_upload',{
         //paginar atletas
         async get_paginateTipes(page=1,provincias){
             //armado de la url
-            const baseUrl = this.url;
+            const baseUrl = this.url_env;
             const path = '/api/dashboard/credentials_athlete';
             const url = new URL(path,baseUrl);
             console.log(url);
@@ -190,7 +192,7 @@ export const C_print_upload = defineStore('print_upload',{
         //paginar invitador
         async get_paginate_TiposInvitados(page=1,provincias){
             try {
-                const baseUrl = this.url;
+                const baseUrl = this.url_env;
                 const path = '/api/dashboard/credentials_guest';
                 const url = new URL(path,baseUrl);
                 console.log(url);

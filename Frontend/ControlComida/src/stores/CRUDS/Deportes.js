@@ -5,14 +5,16 @@ export const C_Deportes = defineStore('Deportes',{
     state: ()=>(
         {
             deportes:[],
-            url:'https://specialolimpics--production-jistoria.sierranegra.cloud'
+            url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
             //url:'http://127.0.0.1:8000',
+            url_env:import.meta.env.VITE_API_URL,
+
         }
     ),
     actions:{
         async get_Deportes(){
             try{
-                const response = await fetch (`${this.url}/api/dashboard/get_deporte`,{
+                const response = await fetch (`${this.url_env}/api/dashboard/get_deporte`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -32,7 +34,7 @@ export const C_Deportes = defineStore('Deportes',{
         async post_Deportes(formdata){
             console.log(formdata);
             try{
-                const response = await fetch (`${this.url}/api/dashboard/store_deporte` ,{
+                const response = await fetch (`${this.url_env}/api/dashboard/store_deporte` ,{
                     method:'POST',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
@@ -52,7 +54,7 @@ export const C_Deportes = defineStore('Deportes',{
         },
         async put_Deportes(formdata, id){
             try{
-                const response = await fetch (`${this.url}/api/dashboard/update_deporte/${id}` ,{
+                const response = await fetch (`${this.url_env}/api/dashboard/update_deporte/${id}` ,{
                     method:'PUT',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
@@ -73,7 +75,7 @@ export const C_Deportes = defineStore('Deportes',{
         },
         async delete_Deportes(id){
             try{
-                const response = await fetch (`${this.url}/api/dashboard/delete_deporte/${id}` ,{
+                const response = await fetch (`${this.url_env}/api/dashboard/delete_deporte/${id}` ,{
                     method:'DELETE',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',

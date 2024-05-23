@@ -9,14 +9,16 @@ export const  C_Atletas = defineStore('Atletas',{
             pagina_final:null,
             pagina_actual:null,
             url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
-            url2:'http://127.0.0.1:8000'
+            url2:'http://127.0.0.1:8000',
+            url_env:import.meta.env.VITE_API_URL,
+
         }
     ),
     actions:{
         //ESTE GET ES MIO DIEGO NO LO TOMES EN CUENTA
         async get_deportistas(){
             try {
-                const response = await fetch (`${this.url}/api/dashboard/sportman_pluck`,{
+                const response = await fetch (`${this.url_env}/api/dashboard/sportman_pluck`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -33,7 +35,7 @@ export const  C_Atletas = defineStore('Atletas',{
         },
         async post_atletas(formdata){
             try {
-                const response = await fetch (`${this.url}/api/dashboard/sportman` ,{
+                const response = await fetch (`${this.url_env}/api/dashboard/sportman` ,{
                     method:'POST',
                     headers:{
                         'Content-Type':'application/json',
@@ -50,7 +52,7 @@ export const  C_Atletas = defineStore('Atletas',{
         },
         async get_atletas(deporte , search , page=1 , provincia ){
             try {
-                const baseUrl = this.url;
+                const baseUrl = this.url_env;
                 const path = "/api/dashboard/sportman";
                 const url = new URL(path, baseUrl);
                 console.log(url);
@@ -88,7 +90,7 @@ export const  C_Atletas = defineStore('Atletas',{
         },
         async get_atleta_edit(id){
             try {
-                const response = await fetch (`${this.url}/api/dashboard/sportman/${id}/edit`,{
+                const response = await fetch (`${this.url_env}/api/dashboard/sportman/${id}/edit`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -103,7 +105,7 @@ export const  C_Atletas = defineStore('Atletas',{
         },
         async put_atleta(formData, id){
             try {
-                const response = await fetch(`${this.url}/api/dashboard/sportman/${id}`,{
+                const response = await fetch(`${this.url_env}/api/dashboard/sportman/${id}`,{
                     method:'PUT',
                     mode:'cors',
                     headers:{
@@ -121,7 +123,7 @@ export const  C_Atletas = defineStore('Atletas',{
         },
         async dismis_atleta(id){
             try {
-                const response = await fetch (`https://specialolimpics--production-jistoria.sierranegra.cloud/api/dashboard/sportman_active/${id}`,{
+                const response = await fetch (`${this.url_env}/api/dashboard/sportman_active/${id}`,{
                     method:'POST',
                     headers:{
                         'Content-Type':'application/json',
@@ -137,10 +139,12 @@ export const  C_Atletas = defineStore('Atletas',{
             }
         },
         async post_actividades_deportivas(data){
-            console.log(data.deporte_id);
+            console.log(data.atleta_id);
             console.log(data.actividad_id);
+            const ids = data.actividad_id;
+            //console.log(ids);
             try {
-                const response = await fetch(`${this.url}/api/dashboard/sportman_activities/${data.deporte_id}`,{
+                const response = await fetch(`${this.url_env}/api/dashboard/sportman_activities/${data.atleta_id}`,{
                     method:'POST',
                     headers:{
                         'Content-Type':'application/json',
@@ -149,7 +153,7 @@ export const  C_Atletas = defineStore('Atletas',{
                     credentials:'include',
                     body:JSON.stringify(
                         {
-                            ids:data.actividad_id
+                            ids
                         }
                     ),
 

@@ -6,6 +6,7 @@ export const C_ActividadesD = defineStore('ActividadesDeportivas',{
         {
             actividadesDeportivas:[],
             url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
+            url_env:import.meta.env.VITE_API_URL,
 
         }
     ),
@@ -13,7 +14,7 @@ export const C_ActividadesD = defineStore('ActividadesDeportivas',{
         async get_ActividadesD(id){
             try{
                 console.log(id)
-                const response = await fetch (`${this.url}/api/dashboard/get_ad_f/${id}`,{
+                const response = await fetch (`${this.url_env}/api/dashboard/get_ad_f/${id}`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -31,7 +32,7 @@ export const C_ActividadesD = defineStore('ActividadesDeportivas',{
         },
         async post_ActividadesD(formdata){
             try{
-                const response = await fetch (`${this.url}/api/dashboard/store_ad`,{
+                const response = await fetch (`${this.url_env}/api/dashboard/store_ad`,{
                     method:'POST',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
@@ -51,7 +52,7 @@ export const C_ActividadesD = defineStore('ActividadesDeportivas',{
         async put_ActividadesD(formdata,id){
             console.log(id);
             try{
-                const response = await fetch (`${this.url}/api/dashboard/update_ad/${id}`,{
+                const response = await fetch (`${this.url_env}/api/dashboard/update_ad/${id}`,{
                     method:'PUT',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
@@ -70,7 +71,7 @@ export const C_ActividadesD = defineStore('ActividadesDeportivas',{
         },
         async delete_ActividadesD(id){
             try{
-                const response = await fetch (`${this.url}/api/dashboard/delete_ad/${id}`,{
+                const response = await fetch (`${this.url_env}/api/dashboard/delete_ad/${id}`,{
                     method:'DELETE',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',

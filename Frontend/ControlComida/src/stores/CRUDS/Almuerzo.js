@@ -9,6 +9,7 @@ export const C_Almuerzo = defineStore('Almuerzo',{
             DateLunch:[],
             //url:'http://127.0.0.1:8000'
             url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
+            url_env:import.meta.env.VITE_API_URL,
 
 
         }
@@ -16,7 +17,7 @@ export const C_Almuerzo = defineStore('Almuerzo',{
     actions:{
         async getAlmuerzo(){
             try {
-                const response = await fetch (`${this.url}/api/dashboard/lunch_get`,{
+                const response = await fetch (`${this.url_env}/api/dashboard/lunch_get`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -34,7 +35,7 @@ export const C_Almuerzo = defineStore('Almuerzo',{
         },
         async getDateLunch(){
             try {
-                const response = await fetch (`${this.url}/api/dashboard/lunch_date`,{
+                const response = await fetch (`${this.url_env}/api/dashboard/lunch_date`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -53,7 +54,7 @@ export const C_Almuerzo = defineStore('Almuerzo',{
         async postAlmuerzo(formdata){
             console.log(formdata);
             try {
-                const response = await fetch(`${this.url}/api/dashboard/lunch_store`,{
+                const response = await fetch(`${this.url_env}/api/dashboard/lunch_store`,{
                     method:'POST',
                     headers:{
                         //'X-Requested-With': 'XMLHttpRequest',
@@ -74,7 +75,7 @@ export const C_Almuerzo = defineStore('Almuerzo',{
         async deleteAlmuerzo(formdata){
             console.log(formdata);
             try {
-                const response = await fetch(`${this.url}/api/dashboard/lunch_delete`,{
+                const response = await fetch(`${this.url_env}/api/dashboard/lunch_delete`,{
                     method:'DELETE',
                     headers:{
                         'Content-Type':'application/json',
@@ -93,7 +94,7 @@ export const C_Almuerzo = defineStore('Almuerzo',{
         async Excel_lunch(data){
             console.log('id selecionado '+ data);
             try {
-                const response = await axios.post(`${this.url}/api/dashboard/launch_export`, 
+                const response = await axios.post(`${this.url_env}/api/dashboard/launch_export`, 
                 { horario_id: data },
                 {
                     withCredentials: true, // Esto asegura que las cookies sean enviadas

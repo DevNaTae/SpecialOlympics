@@ -108,6 +108,7 @@ const get_paginate_invitados = async()=>{
   print_paginate_atleta.value = P_print_upload.print_unit
   modifySvgSizes();
   select_print.value = 'Invitados'
+  lotes_limit.value = 0;
   currentPage.value = 1;
   next_page.value = 2;
   predit.value = 0;
@@ -122,6 +123,7 @@ const get_paginate_atletas = async()=>{
   print_paginate_atleta.value = P_print_upload.print_unit
   modifySvgSizes();
   select_print.value = 'Atletas'
+  lotes_limit.value = 0;
   currentPage.value = 1;
   next_page.value = 2;
   predit.value = 0;
@@ -350,6 +352,7 @@ const provincia_sett = async()=>{
     currentPage.value = 1;
     await P_print_upload.get_paginate_TiposInvitados(currentPage.value, provincia_seleccionada.value);
     print_paginate_atleta.value = P_print_upload.print_unit
+    lotes_limit.value = 0;
     modifySvgSizes();
     currentPage.value = 1;
     next_page.value = 2;
@@ -360,6 +363,7 @@ const provincia_sett = async()=>{
     currentPage.value = 1;
     await P_print_upload.get_paginateTipes(currentPage.value, provincia_seleccionada.value);
     print_paginate_atleta.value = P_print_upload.print_unit
+    lotes_limit.value = 0;
     modifySvgSizes();
     currentPage.value = 1;
     next_page.value = 2;

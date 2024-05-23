@@ -9,13 +9,14 @@ export const C_session = defineStore('session',{
             verif:false,
             deportistas:'',
             url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
+            url_env:import.meta.env.VITE_API_URL,
 
         }
     ),
     actions:{
         async init_session(formdata){
             try {
-                const response = await axios.post(`${this.url}/api/login`,formdata,{
+                const response = await axios.post(`${this.url_env}/api/login`,formdata,{
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -34,7 +35,7 @@ export const C_session = defineStore('session',{
         async logout(){
             console.log('entre')
             try {
-                const response = await axios.post(`${this.url}/api/logout`,null,{
+                const response = await axios.post(`${this.url_env}/api/logout`,null,{
                     withCredentials: true
                 })
                 this.verif = false;
@@ -46,7 +47,7 @@ export const C_session = defineStore('session',{
         },
         async get_session(){
             try {
-                const response = await fetch (`${this.url}/api/get_session`,{
+                const response = await fetch (`${this.url_env}/api/get_session`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -66,7 +67,7 @@ export const C_session = defineStore('session',{
         },
         async data_qr(){
             try {
-                const response = await fetch (`${this.url}/api/data_qr`,{
+                const response = await fetch (`${this.url_env}/api/data_qr`,{
                     method:'GET',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',

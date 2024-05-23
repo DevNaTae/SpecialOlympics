@@ -130,6 +130,8 @@ const actividad_selecionada = ref([]);
 const selectedName = ref([]);
 const actividadesConId = ref([]);
 const actividades_selectivas = async(data)=>{
+    console.log(data.id);
+    Atleta_credentials.atleta_id = data.id;
     Atleta_credentials.deporte_id = data.deporte_id;
     Atleta_credentials.actividad_id = [];
     if (Object.keys(Actividades_deportivas.value).length === 0){
@@ -190,6 +192,7 @@ const selectedCount = ref(0);
 const Atleta_credentials = reactive({
     actividad_id:[],
     deporte_id:'',
+    atleta_id:''
 })
 const seleted_type = async(data,atleta)=>{
 console.log(data);
@@ -232,7 +235,7 @@ if(index !== -1){
 
 const save_actividades = async()=>{
     await P_Atletas.post_actividades_deportivas(Atleta_credentials);
-    actividades_selectivas(Atleta_credentials.deporte_id)
+    actividades_selectivas(Atleta_credentials)
 }
 </script>
 <template>

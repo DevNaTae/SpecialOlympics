@@ -150,7 +150,7 @@ const Atletas_post= async ()=>{
     formdata.append('actividad_id', Atleta_credentials.actividad_id);
     formdata.append('activo', Atleta_credentials.activo);
             try{
-                const response = await fetch (`https://specialolimpics--production-jistoria.sierranegra.cloud/api/dashboard/sportman` ,{
+                const response = await fetch (`${P_Atletas.url_env}/api/dashboard/sportman` ,{
                     method:'POST',
                     headers:{
                         'Accept': 'application/json',
@@ -200,7 +200,6 @@ const pre_carga = ()=>{
 </script>
 <template>
     <!-- Tambies debes enviar fecha de nacimiento -->
-
     <div class="body_vue">
         <div class="content_vue">
             <C_Header></C_Header>
