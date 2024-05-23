@@ -89,6 +89,7 @@ const subir_doc = async()=>{
   ShowLoading()
   const data = await P_print_upload.upload_xls(formData)
   //console.log(data.response)
+  borrar_data();
   if(data.response){
     if(data.response.status == 422){
       const row = data.response.data.message[0].row;
