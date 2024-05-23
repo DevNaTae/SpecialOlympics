@@ -159,9 +159,9 @@ const posiciones = ['arriba-izquierda', 'arriba-derecha', 'abajo-izquierda', 'ab
 const credencialesIndex = [1, 2, 3, 4, 5]; 
 import jsPDF from 'jspdf';
 import  html2pdf  from 'html2pdf.js';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+//import pdfMake from 'pdfmake/build/pdfmake';
+//import pdfFonts from 'pdfmake/build/vfs_fonts';
+//pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const pdfGenerado = ref(false);
 const generarPDF = async()=>{
@@ -469,6 +469,7 @@ function handleImageError(event) {
                   <div class="border_v" style="border: 0px;"><!--bloque morado derecho-->
                   <div class="hoja-a4" v-if="select_print == 'Atletas' && print_paginate_atleta.length !== 0" id="contenidoParaPDF">
                     <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
+                      
                       <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_image" @error="handleImageError"  class="imagen" >
                       <div class="texto" style="top: 29.5em; left: 11em;">{{ index.name }}  {{ index.lastname }}</div>
                       <div class="texto" style="top: 31.5em; left: 9em; color:#2092d1; width: 70%;">DEPORTE: {{ index.sport }}</div>
@@ -478,7 +479,7 @@ function handleImageError(event) {
                       <!-- provicional hasta que llegue el sportman id -->
                       <div class="texto peto">
                         <button class="btn btn-warning peto_sett">
-                         {{ index.id }}
+                         {{ index.sportsman_number ? index.sportsman_number : '000' }}
                         </button>
                       </div>
                       <!-- actividades deportivas -->
@@ -494,14 +495,14 @@ function handleImageError(event) {
                       <div class=" d-flex qr"    v-if="svgContainers[i]" style="top:25em; left: 19.3em;" >
                         <div class="" v-html="svgContainers[i].outerHTML"></div>
                       </div>
-                      <div class="texto2" style="top: 17.2em; left: 2em;">ATLETA</div>
+                      <div class="texto2" style="top: 26.2em; left: 4em;">ATLETA</div>
                     </div>
                   </div>
                   <div  v-if="select_print == 'Invitados' && print_paginate_atleta.length !== 0" class="hoja-a4" id="contenidoParaPDF" >
                     <img src="https://specialolimpics--production-jistoria.sierranegra.cloud/storage/images/oe._los_rios/amador_anderson_1207139005.jpg" class="imagen" style="top: 6.9em; left: 8.6em;">
 
                     <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
-                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_imagen" class="imagen" >
+                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_imagen"  @error="handleImageError" class="imagen" >
                       <div class="texto medid_img" style="top: 29.9em; left: 11em; ">{{ index.nombre }}  {{ index.apellido }}</div>
 
                       <div class="texto mb-2 medid_img" style="top: 34.5em; left: 11em; color:#2092d1;">
@@ -516,7 +517,7 @@ function handleImageError(event) {
                         <div class="" v-html="svgContainers[i].outerHTML"></div>
                       </div>
 
-                      <div class="texto2" style="top: 17.2em; left: 2em;">
+                      <div class="texto2" style="top: 26.2em; left: 3.2em;">
                         <a>{{ index.tipo_invitado }}</a>
                       </div>
                     </div>
@@ -638,7 +639,7 @@ function handleImageError(event) {
         .texto2 {
             position: absolute; /* Posición absoluta para poder mover el texto */
             color: rgb(255, 255, 255); /* Color del texto */
-            font-size: 30px; /* Tamaño de fuente */
+            font-size: 20px; /* Tamaño de fuente */
             font-weight: bold; /* Negrita */
             pointer-events: none; /* Evitar que el texto afecte los eventos del ratón */
             text-align: center; /* Justificar el texto al centro */
@@ -713,7 +714,7 @@ function handleImageError(event) {
         .peto_sett{
           width: 65px;
           height: 50px;
-          font-size: 1.7rem;
+          font-size: 1.6rem;
         }
         
 /*  */

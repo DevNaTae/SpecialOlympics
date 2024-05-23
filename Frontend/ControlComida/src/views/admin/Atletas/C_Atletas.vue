@@ -130,6 +130,8 @@ const actividad_selecionada = ref([]);
 const selectedName = ref([]);
 const actividadesConId = ref([]);
 const actividades_selectivas = async(data)=>{
+    Atleta_credentials.deporte_id = data.deporte_id;
+    Atleta_credentials.actividad_id = [];
     if (Object.keys(Actividades_deportivas.value).length === 0){
         await P_ActividadesD.get_ActividadesD(data.deporte_id)
         P_ActividadesD.actividadesDeportivas.forEach(tipo => {
@@ -186,10 +188,11 @@ const actividades_selectivas = async(data)=>{
 const selectedCount = ref(0);
 //selected name ya esta referenciado arriba
 const Atleta_credentials = reactive({
-    actividad_id:[]
+    actividad_id:[],
+    deporte_id:'',
 })
-const seleted_type = async(data)=>{
-
+const seleted_type = async(data,atleta)=>{
+console.log(data);
 if (data.selected) {
   data.selected = false;
   selectedCount.value--;
@@ -226,11 +229,14 @@ if(index !== -1){
 
 }
 };
-const save_actividades = ()=>{
 
+const save_actividades = async()=>{
+    await P_Atletas.post_actividades_deportivas(Atleta_credentials);
+    actividades_selectivas(Atleta_credentials.deporte_id)
 }
 </script>
 <template>
+
     <div class="body_vue">
         <div class="content_vue">
             <C_Header></C_Header>
@@ -267,6 +273,7 @@ const save_actividades = ()=>{
                     </thead>
                     <tbody>
                         <tr v-for="Atletas in P_Atletas.Atleta_unit">
+                            
                             <th scope="row">
                                 <p class=" mt-2">
                                     {{ Atletas.id }}
@@ -283,12 +290,9 @@ const save_actividades = ()=>{
                                         <button  v-if="false">
                                             <i class="bi bi-person-check color_wicon "></i>
                                         </button>
-                                        <button hidden @click="actividades_selectivas(Atletas)" type="button" data-bs-toggle="modal" :data-bs-target="'#exampleModal_'+Atletas.id" class="button_icon_status_sett_AD"  v-if="true" >
+                                        <button  @click="actividades_selectivas(Atletas)" type="button" data-bs-toggle="modal" :data-bs-target="'#exampleModal_'+Atletas.id" class="button_icon_status_sett_AD"  v-if="true" >
                                             <i class="bi bi-clipboard-fill"></i>
-                                            <i class="bi bi-0-circle-fill"></i>                                     
-                                            <i class="bi bi-1-circle-fill"></i>
-                                            <i class="bi bi-2-circle-fill"></i>
-                                            <i class="bi bi-3-circle-fill"></i>
+
                                         </button>
                                         <div class="modal fade" :id="'exampleModal_'+Atletas.id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-lg modal-dialog modal-dialog-scrollable">
@@ -314,7 +318,7 @@ const save_actividades = ()=>{
                                                             <div class="d-flex justify-content-between mt-2 mb-3">
                                                                 {{ data.ActividadD_nombre }}
                                                                 <div class="form-check">
-                                                                    <a :disabled="data.selected && selectedCount >= 3 && !data.selected" class="btn btn-dark" @click="seleted_type(data)">
+                                                                    <a :disabled="data.selected && selectedCount >= 3 && !data.selected" class="btn btn-dark" @click="seleted_type(data, Atletas)">
                                                                         <i v-if="data.selected == false"  class="bi bi-circle"></i>
                                                                         <i v-else class="bi bi-check-circle-fill"></i>
                                                                     </a>

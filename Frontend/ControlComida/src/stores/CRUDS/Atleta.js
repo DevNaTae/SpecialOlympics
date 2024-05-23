@@ -50,7 +50,7 @@ export const  C_Atletas = defineStore('Atletas',{
         },
         async get_atletas(deporte , search , page=1 , provincia ){
             try {
-                const baseUrl = "https://specialolimpics--production-jistoria.sierranegra.cloud";
+                const baseUrl = this.url;
                 const path = "/api/dashboard/sportman";
                 const url = new URL(path, baseUrl);
                 console.log(url);
@@ -60,7 +60,7 @@ export const  C_Atletas = defineStore('Atletas',{
                     search:search,
                     provincia:provincia,
                 }
-                console.log(data_enviar);
+                //console.log(data_enviar);
                 Object.keys(data_enviar).forEach(key=>{
                     if(data_enviar[key] === null || data_enviar[key]=== undefined){
                         data_enviar[key] = '';
@@ -136,5 +136,28 @@ export const  C_Atletas = defineStore('Atletas',{
                 console.log(error);
             }
         },
+        async post_actividades_deportivas(data){
+            console.log(data.deporte_id);
+            console.log(data.actividad_id);
+            try {
+                const response = await fetch(`${this.url}/api/dashboard/sportman_activities/${data.deporte_id}`,{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json',
+                    },
+                    credentials:'include',
+                    body:JSON.stringify(
+                        {
+                            ids:data.actividad_id
+                        }
+                    ),
+
+                })
+                console.log(response);
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
 })
