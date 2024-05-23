@@ -479,7 +479,7 @@ function handleImageError(event) {
                       <!-- provicional hasta que llegue el sportman id -->
                       <div class="texto peto">
                         <button class="btn btn-warning peto_sett">
-                         {{ index.sportsman_number }}
+                         {{ index.sportsman_number ? index.sportsman_number : '000' }}
                         </button>
                       </div>
                       <!-- actividades deportivas -->
@@ -714,7 +714,7 @@ function handleImageError(event) {
         .peto_sett{
           width: 65px;
           height: 50px;
-          font-size: 1.7rem;
+          font-size: 1.6rem;
         }
         
 /*  */
