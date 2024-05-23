@@ -3,35 +3,88 @@
   class="carousel slide"
   data-bs-ride="carousel"
 >
-  <div class="carousel-inner" style="height: 200px">
-    <div class="carousel-item active">
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="2500">
       <img
-        style="min-height: 200px"
-        src="assets/img1.jpeg"
+        src="assets/im05.jpeg"
+        class="d-block img-fluid object-fit-cover w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item" data-bs-interval="2500">
+      <img
+        src="assets/im02.jpeg"
         class="d-block img-fluid object-fit-cover h-auto w-100"
         alt="..."
       />
     </div>
-    <div class="carousel-item">
+    <div class="carousel-item" data-bs-interval="2500">
       <img
-        style="min-height: 200px"
-        src="assets/img2.jpeg"
-        class="d-block img-fluid object-fit-cover h-auto w-100"
-        alt="..."
-      />
-    </div>
-    <div class="carousel-item">
-      <img
-        style="min-height: 200px"
-        src="assets/img3.jpeg"
+        src="assets/im03.jpeg"
         class="d-block img-fluid object-fit-cover h-auto w-100 my-auto"
         alt="..."
       />
     </div>
-    <div class="carousel-item">
+    <div class="carousel-item" data-bs-interval="2500">
       <img
-        style="min-height: 200px"
-        src="assets/img4.jpeg"
+        src="assets/im06.jpeg"
+        class="d-block img-fluid object-fit-cover h-auto w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item" data-bs-interval="2500">
+      <img
+        src="assets/im07.jpeg"
+        class="d-block img-fluid object-fit-cover h-auto w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item" data-bs-interval="2500">
+      <img
+        src="assets/im08.jpeg"
+        class="d-block img-fluid object-fit-cover h-auto w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item" data-bs-interval="2500">
+      <img
+        src="assets/im09.jpeg"
+        class="d-block img-fluid object-fit-cover h-auto w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item" data-bs-interval="2500">
+      <img
+        src="assets/im10.jpeg"
+        class="d-block img-fluid object-fit-cover h-auto w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item" data-bs-interval="2500">
+      <img
+        src="assets/im11.jpeg"
+        class="d-block img-fluid object-fit-cover h-auto w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item" data-bs-interval="2500">
+      <img
+        src="assets/im12.jpeg"
+        class="d-block img-fluid object-fit-cover h-auto w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item" data-bs-interval="2500">
+      <img
+        src="assets/im13.jpeg"
+        class="d-block img-fluid object-fit-cover h-auto w-100"
+        alt="..."
+      />
+    </div>
+
+    <div class="carousel-item" data-bs-interval="2500">
+      <img
+        src="assets/im15.jpeg"
         class="d-block img-fluid object-fit-cover h-auto w-100"
         alt="..."
       />
@@ -56,6 +109,7 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
+
 <main class="container-fluid">
   <section class="section services-section" id="services">
     <div class="container">
@@ -68,6 +122,13 @@
               especiales 2024.
             </p>
           </div>
+        </div>
+        <div class="col-lg-6 d-flex justify-content-center align-items-start">
+          <img
+            src="/assets/iconLC.webp"
+            height="180px"
+            style="padding-bottom: 45px"
+          />
         </div>
       </div>
       <div class="row">
@@ -135,3 +196,67 @@
     </div>
   </section>
 </main>
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
+
+<footer class="footer_area section_padding_130_0">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-6 col-lg-4">
+        <div class="single-footer-widget section_padding_0_130">
+          <div class="footer-logo mb-3"></div>
+          <p class="text-muted">Copyright &copy; FCVT</p>
+
+          <div class="copywrite-text mb-5">
+            <p class="mb-0">
+              Desarrollado por
+              <a class="ml-1" href="https://devnat.me">Devnat</a>
+            </p>
+          </div>
+
+          <div class="footer_social_area">
+            <a
+              href="https://www.facebook.com/OlimpiadasEspeciales"
+              data-toggle="tooltip"
+              data-placement="top"
+              title=""
+              data-original-title="Facebook"
+              ><i class="fa fa-facebook"></i></a
+            ><a
+              href="https://www.instagram.com/olimpiadasespeciales/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title=""
+              data-original-title="Instagram"
+              ><i class="fa fa-instagram"></i></a
+            ><a
+              href="https://www.olimpiadasespeciales.org/"
+              data-toggle="tooltip"
+              data-placement="top"
+              title=""
+              data-original-title="link"
+              ><i class="fa fa-link"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-lg d-flex justify-content-end">
+        <div class="single-footer-widget section_padding_0_130">
+          <h5 class="widget-title">Olimpiadas especiales</h5>
+
+          <div class="footer_menu">
+            <ul>
+              <li><a routerLink="/athlete">Atletas</a></li>
+              <li><a routerLink="/calendar">Calendario</a></li>
+              <li><a routerLink="/award">Medallero</a></li>
+              <li><a routerLink="/result">Resultados</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

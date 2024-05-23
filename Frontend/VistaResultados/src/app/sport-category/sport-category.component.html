@@ -26,7 +26,7 @@
       data-aos="fade-up"
     >
       @for (categorySport of categorySports; track $index) {
-      <div class="col my-3" *ngIf="categorySport.sport == sport.id">
+      <div class="col my-3" *ngIf="categorySport.sport?.id == sport.id">
         <div
           class="card border-hover-primary hover-scale"
           [routerLink]="['/sport', sport.id, categorySport.id]"
