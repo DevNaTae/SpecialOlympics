@@ -13,7 +13,6 @@ export const C_ActividadesD = defineStore('ActividadesDeportivas',{
     actions:{
         async get_ActividadesD(id){
             try{
-                console.log(id)
                 const response = await fetch (`${this.url_env}/api/dashboard/get_ad_f/${id}`,{
                     method:'GET',
                     headers:{
@@ -50,7 +49,6 @@ export const C_ActividadesD = defineStore('ActividadesDeportivas',{
             }
         },
         async put_ActividadesD(formdata,id){
-            console.log(id);
             try{
                 const response = await fetch (`${this.url_env}/api/dashboard/update_ad/${id}`,{
                     method:'PUT',

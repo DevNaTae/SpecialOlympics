@@ -23,16 +23,15 @@ export const C_Lugares = defineStore('Lugares',{
                     },
                     credentials:'include',
                 })
-                console.log(response);
+                // console.log(response);
                 const jsonData = await response.json();
-                console.log(jsonData);
+                // console.log(jsonData);
                 this.lugares = jsonData
             } catch (error) {
                 console.log(error);
             }
         },
         async post_Lugares(formdata){
-            console.log('llegue')
             try {
                 const response = await fetch(`${this.url_env}/api/dashboard/store_lugar`,{
                     method:'POST',
@@ -44,7 +43,7 @@ export const C_Lugares = defineStore('Lugares',{
                     credentials:'include',
                     body: JSON.stringify(formdata)
                 })
-                console.log(response);
+                // console.log(response);
                 const jsonData = await response.json();
                 return jsonData
             } catch (error) {
@@ -71,7 +70,7 @@ export const C_Lugares = defineStore('Lugares',{
             }
         },
         async dismiss_Lugares(id){
-            console.log(id);
+            // console.log(id);
             try {
                 const response = await fetch (`${this.url_env}/api/dashboard/delete_lugar/${id}`,{
                     method:'DELETE',

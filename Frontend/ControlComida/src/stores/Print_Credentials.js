@@ -19,7 +19,6 @@ export const C_print_upload = defineStore('print_upload',{
     ),
     actions:{
         async get_qr(data){
-            console.log(data);
             try {
                 const response = await fetch (`${this.url_env}/api/eats/${data}`,{
                     method:'GET',
@@ -33,11 +32,11 @@ export const C_print_upload = defineStore('print_upload',{
                 // console.log(response.status)
                 if(response.status === 404){
                     const jsonData = await response.json();
-                    console.log(jsonData);
+                    // console.log(jsonData);
                     return jsonData;
                 }
                 const jsonData = await response.json();
-                console.log(jsonData)
+                // console.log(jsonData)
                 this.deportista = jsonData.data
                 return true
             } catch (error) {
@@ -46,7 +45,7 @@ export const C_print_upload = defineStore('print_upload',{
             }
         },
         async food_promise(data){
-            console.log(data)
+            // console.log(data)
             try {
                 const response = await fetch(`${this.url_env}/api/eats_mark/${data}`,{
                     method:'POST',
@@ -90,14 +89,14 @@ export const C_print_upload = defineStore('print_upload',{
         },
         async upload_xls(data){
             try {
-                console.log(data);
+                // console.log(data);
                 const response = await axios.post(`${this.url_env}/api/dashboard/deportista_import`,data,{
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },
                     withCredentials: true,
                 })
-                console.log(response);
+                // console.log(response);
                 return response
             } catch (error) {
                 console.log(error);
@@ -107,8 +106,8 @@ export const C_print_upload = defineStore('print_upload',{
             // return true
         },
         async upload_imgs(formData,id){
-            console.log(formData);
-            console.log(id);
+            // console.log(formData);
+            // console.log(id);
             try {
                 const response = await fetch(`${this.url_env}/api/dashboard/deportista_images/${id}`,{
                     method:'POST',
@@ -132,7 +131,6 @@ export const C_print_upload = defineStore('print_upload',{
             const baseUrl = this.url_env;
             const path = '/api/dashboard/credentials_athlete';
             const url = new URL(path,baseUrl);
-            console.log(url);
             const data_enviar ={
                 page: page,
                 provincia_id: provincias,
@@ -156,7 +154,7 @@ export const C_print_upload = defineStore('print_upload',{
                 // console.log('la pagina en la que estas es'+ jsonData.current_page);
                 // console.log('la ultima pagina es'+jsonData.last_page);
                 // console.log('desde el inicio'+jsonData.from);
-                console.log(jsonData.atletas)
+                // console.log(jsonData.atletas)
                 this.pagina_actual = jsonData.current_page;
                 this.pagina_inicio = jsonData.from
                 this.pagina_final = jsonData.last_page
@@ -166,28 +164,6 @@ export const C_print_upload = defineStore('print_upload',{
             }
             return true
             //
-            try {
-                const response = await fetch(`${this.url}/api/dashboard/credentials_athlete/?page=${page}`,{
-                    method:'GET',
-                    headers:{
-                        'Content-Type':'application/json',
-                        'Accept': 'application/json',
-                    },
-                    credentials:'include',
-                })
-                console.log(response);
-                const jsonData = await response.json();
-                // console.log('la pagina en la que estas es'+ jsonData.current_page);
-                // console.log('la ultima pagina es'+jsonData.last_page);
-                // console.log('desde el inicio'+jsonData.from);
-                console.log(jsonData.atletas)
-                this.pagina_actual = jsonData.current_page;
-                this.pagina_inicio = jsonData.from
-                this.pagina_final = jsonData.last_page
-                this.print_unit = jsonData.atletas;
-            } catch (error) {
-                
-            }
         },
         //paginar invitador
         async get_paginate_TiposInvitados(page=1,provincias){
@@ -195,7 +171,6 @@ export const C_print_upload = defineStore('print_upload',{
                 const baseUrl = this.url_env;
                 const path = '/api/dashboard/credentials_guest';
                 const url = new URL(path,baseUrl);
-                console.log(url);
                 const data_enviar ={
                     page: page,
                     provincia_id: provincias,
@@ -214,7 +189,7 @@ export const C_print_upload = defineStore('print_upload',{
                     },
                     credentials:'include',
                 })
-                console.log(response);
+                // console.log(response);
                 const jsonData = await response.json();
                 this.pagina_actual = jsonData.current_page;
                 this.pagina_inicio = jsonData.from

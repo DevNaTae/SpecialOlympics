@@ -45,14 +45,12 @@ export const C_Almuerzo = defineStore('Almuerzo',{
                 })
                 const jsonData = await response.json();
                 this.DateLunch = jsonData;
-                console.log(jsonData);
                 return jsonData;
             } catch (error) {
                 console.log(error);
             }
         },
         async postAlmuerzo(formdata){
-            console.log(formdata);
             try {
                 const response = await fetch(`${this.url_env}/api/dashboard/lunch_store`,{
                     method:'POST',
@@ -65,7 +63,6 @@ export const C_Almuerzo = defineStore('Almuerzo',{
                     body: JSON.stringify(formdata)
                 })
                 const jsonData = await response.json();
-                console.log(jsonData);
                 return jsonData;
             } catch (error) {
 
@@ -73,7 +70,6 @@ export const C_Almuerzo = defineStore('Almuerzo',{
             }
         },
         async deleteAlmuerzo(formdata){
-            console.log(formdata);
             try {
                 const response = await fetch(`${this.url_env}/api/dashboard/lunch_delete`,{
                     method:'DELETE',
@@ -85,14 +81,12 @@ export const C_Almuerzo = defineStore('Almuerzo',{
                     body: JSON.stringify(formdata)
                 })
                 const jsonData = await response.json();
-                console.log(jsonData);
                 return jsonData;
             } catch (error) {
                 console.log(error);
             }
         },
         async Excel_lunch(data){
-            console.log('id selecionado '+ data);
             try {
                 const response = await axios.post(`${this.url_env}/api/dashboard/launch_export`, 
                 { horario_id: data },

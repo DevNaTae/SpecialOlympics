@@ -39,10 +39,10 @@ export const C_Sportman = defineStore('Estado_personal',{
                 credentials:'include',
             })
             const jsonData = await response.json();
-            console.log('la pagina en la que estas es'+ jsonData.current_page);
-            console.log('la ultima pagina es'+jsonData.last_page);
-            console.log('desde el inicio'+jsonData.from);
-            console.log(jsonData)
+            // console.log('la pagina en la que estas es'+ jsonData.current_page);
+            // console.log('la ultima pagina es'+jsonData.last_page);
+            // console.log('desde el inicio'+jsonData.from);
+            // console.log(jsonData)
             this.pagina_actual = jsonData.current_page;
             this.pagina_inicio = jsonData.from
             this.pagina_final = jsonData.last_page
@@ -61,7 +61,7 @@ export const C_Sportman = defineStore('Estado_personal',{
                     credentials:'include',
                     body: JSON.stringify(formdata)
                 })
-                console.log(response);
+                // console.log(response);
                 const jsonData = await response.json();
                 return jsonData
             } catch (error) {

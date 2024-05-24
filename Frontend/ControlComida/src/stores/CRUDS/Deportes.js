@@ -32,7 +32,7 @@ export const C_Deportes = defineStore('Deportes',{
             }
         },
         async post_Deportes(formdata){
-            console.log(formdata);
+            // console.log(formdata);
             try{
                 const response = await fetch (`${this.url_env}/api/dashboard/store_deporte` ,{
                     method:'POST',

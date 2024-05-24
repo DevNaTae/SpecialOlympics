@@ -55,7 +55,6 @@ export const  C_Atletas = defineStore('Atletas',{
                 const baseUrl = this.url_env;
                 const path = "/api/dashboard/sportman";
                 const url = new URL(path, baseUrl);
-                console.log(url);
                 const data_enviar={
                     deporte: deporte,
                     page :page,
@@ -139,8 +138,8 @@ export const  C_Atletas = defineStore('Atletas',{
             }
         },
         async post_actividades_deportivas(data){
-            console.log(data.atleta_id);
-            console.log(data.actividad_id);
+            // console.log(data.atleta_id);
+            // console.log(data.actividad_id);
             const ids = data.actividad_id;
             //console.log(ids);
             try {
@@ -158,7 +157,6 @@ export const  C_Atletas = defineStore('Atletas',{
                     ),
 
                 })
-                console.log(response);
             } catch (error) {
                 console.log(error);
             }

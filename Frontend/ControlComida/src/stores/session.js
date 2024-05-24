@@ -22,7 +22,7 @@ export const C_session = defineStore('session',{
                     },
                     withCredentials: true,
                 })
-                console.log(response.data.user.role);
+                // console.log(response.data.user.role);
                 this.user=response.data.user.role;
                 this.verif=true;
                 return true  
@@ -33,7 +33,6 @@ export const C_session = defineStore('session',{
 
         },
         async logout(){
-            console.log('entre')
             try {
                 const response = await axios.post(`${this.url_env}/api/logout`,null,{
                     withCredentials: true
@@ -59,7 +58,7 @@ export const C_session = defineStore('session',{
                 if(response.status== 200){
                     this.verif = true;
                 }
-                console.log(jsonData.user.role);
+                // console.log(jsonData.user.role);
                 this.user = jsonData.user.role;
             } catch (error) {
                 
@@ -78,7 +77,7 @@ export const C_session = defineStore('session',{
                 })
                 const jsonData = await response.json();
                 this.deportistas = jsonData
-                console.log(jsonData);
+                // console.log(jsonData);
             } catch (error) {
                 
             }

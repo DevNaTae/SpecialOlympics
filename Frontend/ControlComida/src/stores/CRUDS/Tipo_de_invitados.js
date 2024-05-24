@@ -30,7 +30,7 @@ export const C_TiposInvitados = defineStore('TiposInvitados',{
             }
         },
         async post_TiposInvitados(formdata){
-            console.log(formdata)
+            // console.log(formdata)
             try {
                 const response = await fetch(`${this.url_env}/api/dashboard/store_tg`,{
                     method:'POST',
@@ -46,7 +46,7 @@ export const C_TiposInvitados = defineStore('TiposInvitados',{
                         }    
                     )
                 })
-                console.log(response);
+                // console.log(response);
                 const jsonData = await response.json();
                 return jsonData
             } catch (error) {
