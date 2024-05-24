@@ -20,7 +20,7 @@ onMounted(async()=>{
     }  
     });
     const primerObjeto = Object.values(tiposDeportes.value)[0];
-    console.log(primerObjeto.deporte_id)
+    // console.log(primerObjeto.deporte_id)
     first_id (primerObjeto.deporte_id)
 })
 

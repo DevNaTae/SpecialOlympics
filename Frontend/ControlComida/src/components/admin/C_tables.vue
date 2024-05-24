@@ -56,13 +56,13 @@ const prevPage = () => {
   }
 };
 const go_edit_page= (data)=>{
-    console.log(data.invitado_id);
-    console.log(data.cedula);
-    console.log(data.nombre);
-    console.log(data.apellido);
-    console.log(data.edad);
-    console.log(data.genero)
-    console.log(data.activo)
+    // console.log(data.invitado_id);
+    // console.log(data.cedula);
+    // console.log(data.nombre);
+    // console.log(data.apellido);
+    // console.log(data.edad);
+    // console.log(data.genero)
+    // console.log(data.activo)
     query_credentials.cedula = data.cedula;
     query_credentials.nombre = data.nombre;
     query_credentials.apellido = data.apellido;
@@ -86,7 +86,7 @@ const dismis_type = async(data)=>{
     const closeLoadingAlert = ShowLoading();
 
     const message = await P_estadoC.dismiss_personal(data);
-    console.log(message);
+    // console.log(message);
     if(message.success == "false"){
         await Swal.fire({
             title: 'Error',
