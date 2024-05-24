@@ -133,7 +133,7 @@ const get_paginate_atletas = async()=>{
 
 const seleted_type = async(data)=>{
   
-  console.log(data);
+  // console.log(data);
   for (const key in tiposInvitados.value) {
     tiposInvitados.value[key].selected = false;
   }
@@ -236,7 +236,7 @@ watch(pdfGenerado, (nuevoEstado) => {
       }
     }, 5000)
   } else {
-    console.log('Generando PDF...');
+    // console.log('Generando PDF...');
   }
 });
 //modificar el qr
@@ -303,7 +303,7 @@ const nextPage = async() => {
   // Ir a la página siguiente si no estamos en la última página
   const closeLoadingAlert = ShowLoading();
 
-  console.log(select_print.value);
+  // console.log(select_print.value);
     if (currentPage.value < P_print_upload.pagina_final) {
       currentPage.value++;
 
@@ -347,7 +347,7 @@ const provincias = ref('');
 const provincia_seleccionada = ref(null);
 
 const provincia_sett = async()=>{
-  console.log('Valor seleccionado:', provincia_seleccionada.value);
+  // console.log('Valor seleccionado:', provincia_seleccionada.value);
   if(select_print.value == 'Invitados'){
     currentPage.value = 1;
     await P_print_upload.get_paginate_TiposInvitados(currentPage.value, provincia_seleccionada.value);

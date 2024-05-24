@@ -89,7 +89,7 @@ const TInvitado_delete = async (id)=>{
     if (result.isConfirmed) {
       const closeLoadingAlert = ShowLoading();
       const message =  await P_invitados.dismiss_TiposInvitados(id);
-      console.log(message)
+      // console.log(message)
       if(message.error){
         await Swal.fire({
           title: 'Error',

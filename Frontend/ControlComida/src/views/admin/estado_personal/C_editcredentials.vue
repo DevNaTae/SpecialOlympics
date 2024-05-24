@@ -65,7 +65,7 @@ onMounted(async()=>{
 
 })
 const provincia_sett = ()=>{
-  console.log('Valor seleccionado:', provincia_seleccionada.value);
+//   console.log('Valor seleccionado:', provincia_seleccionada.value);
   query_credentials.provincia_id = provincia_seleccionada.value;
 } 
 const tipo_invitado_sett = ()=>{
@@ -74,7 +74,7 @@ const tipo_invitado_sett = ()=>{
 const credentials_update = async()=>{
     const closeLoadingAlert = ShowLoading();
     const data = await P_estadoC.put_personal(query_credentials, id_invitado.value)
-    console.log(data);
+    // console.log(data);
     if(data.success == "false"){
         await Swal.fire({
             title: 'Error',

@@ -130,7 +130,7 @@ const actividad_selecionada = ref([]);
 const selectedName = ref([]);
 const actividadesConId = ref([]);
 const actividades_selectivas = async(data)=>{
-    console.log(data.id);
+    // console.log(data.id);
     Atleta_credentials.atleta_id = data.id;
     Atleta_credentials.deporte_id = data.deporte_id;
     Atleta_credentials.actividad_id = [];
@@ -195,7 +195,7 @@ const Atleta_credentials = reactive({
     atleta_id:''
 })
 const seleted_type = async(data,atleta)=>{
-console.log(data);
+// console.log(data);
 if (data.selected) {
   data.selected = false;
   selectedCount.value--;

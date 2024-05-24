@@ -57,7 +57,7 @@ onMounted( async ()=>{
   provincias.value = P_print_upload.provincias;
 })
 const provincia_sett = ()=>{
-  console.log('Valor seleccionado:', provincia_seleccionada.value);
+  console.log(provincia_seleccionada.value);
 } 
 
 
@@ -114,7 +114,7 @@ const selectedFileNames = ref([]);
 
 const handleFileChange = (event) => {
   const files = event.target.files;
-  console.log(files[0].name)
+  // console.log(files[0].name)
   for (let i = 0; i < files.length; i++) {
 
     const fileName = files[i].name;
@@ -148,8 +148,8 @@ const upload_img = async()=>{
       },
       withCredentials: true,
     });
-    console.log(response.data.success);
-    console.log(response.data.message);
+    // console.log(response.data.success);
+    // console.log(response.data.message);
     if(response.data.success == true){
       Swal.fire({
         icon: "success",

@@ -44,7 +44,7 @@ const food_petition = async () => {
             router.push({ name: 'C_status' });
         }, 2000);
       } else {
-        console.log(data);
+        // console.log(data);
         Swal.fire('Error', data , 'error');
       }
     } catch (error) {
@@ -71,9 +71,9 @@ const food_setting = reactive({
 onMounted(() => {
   //console.log(route.query.Datos_deportista)
   const data = JSON.parse(route.query.Datos_deportista)
-  console.log(data);
+//   console.log(data);
   dataArray.value = data;
-  console.log(dataArray.value.nombre)
+//   console.log(dataArray.value.nombre)
   food_setting.url_image = dataArray.value.url_image;
   food_setting.nombre = dataArray.value.nombre;
   food_setting.apellido = dataArray.value.apellido;

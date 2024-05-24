@@ -194,7 +194,7 @@ const setData = async (selectedUser,selectedDate, selectedTimeStart, selectedTim
                     }
                     closeLoadingAlert();
                 });
-                console.log(response)
+                // console.log(response)
             } catch (error) {
                 console.log(error);
             }
@@ -202,7 +202,7 @@ const setData = async (selectedUser,selectedDate, selectedTimeStart, selectedTim
         case '2':
             try {
                 const response = await storeInvitado.get_personal();
-                console.log(response)
+                // console.log(response)
                 await Swal.fire({
                     title: '¿Estás seguro?',
                     text: 'Asignaras almuerzos a '+response.length+' invitados',
