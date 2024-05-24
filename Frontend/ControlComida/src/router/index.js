@@ -25,7 +25,7 @@ import C_CreateAtletas from '@/views/admin/Atletas/C_CreateAtletas.vue';
 import C_Resultados from '@/views/admin/Resultados/C_Resultados.vue';
 import C_almuerzos from '@/views/admin/actividades/C_almuerzos.vue';
 const router = createRouter({
-  history: createWebHistory('/Control&Security/'), // Establece '/Control&Security' como la base de la historia
+  history: createWebHistory('/sysadmin/'), // Establece '/Control&Security' como la base de la historia
   routes: [
     {
       path: '/',

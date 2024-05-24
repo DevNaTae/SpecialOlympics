@@ -481,9 +481,9 @@ function handleImageError(event) {
 
                       <!-- el peto -->
                       <!-- provicional hasta que llegue el sportman id -->
-                      <div class="texto peto">
+                      <div class="texto peto" v-if="index.sportsman_number !== null">
                         <button class="btn btn-warning peto_sett">
-                         {{ index.sportsman_number ? index.sportsman_number : '000' }}
+                         {{ index.sportsman_number }}
                         </button>
                       </div>
                       <!-- actividades deportivas -->

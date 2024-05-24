@@ -1,5 +1,4 @@
-import './assets/css/borders.css'
-import './assets/css/main_v.css'
+import './assets/base.css'
 // import './assets/plugins/qrCode.min.js'
 
 import { createApp } from 'vue'
