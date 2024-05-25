@@ -199,7 +199,7 @@ const remove_select = (data) => {
 };
 const previewImage = ref(null);
 const getImageUrl = () => {
-  const baseUrl =  P_Atletas.url;
+  const baseUrl =  P_Atletas.url_env;
   const imageUrl = Atleta_credentials.url_imagen;
   return new URL(imageUrl, baseUrl).href;
 };
@@ -239,9 +239,6 @@ const handleFileInputChange = (event) => {
                                                 <img class="img_base_edit_place" :src="previewImage" alt="Preview" />
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="d-flex justify-content-center">
-                                        <input class="form-control edit_whimge mb-2" type="file" @change="handleFileInputChange" accept="image/*" />
                                     </div>
                                 </div>
                             </div>
@@ -367,6 +364,11 @@ const handleFileInputChange = (event) => {
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-2 mb-2">
+                                    <button class="btn btn-info ">
+                                        Guardar Cambios
+                                    </button>
                                 </div>
                             </div>
                         </div>

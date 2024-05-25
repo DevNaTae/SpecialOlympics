@@ -145,6 +145,7 @@ export const  C_Atletas = defineStore('Atletas',{
             try {
                 const response = await fetch(`${this.url_env}/api/dashboard/sportman_activities/${data.atleta_id}`,{
                     method:'POST',
+                    method:'POST',
                     headers:{
                         'Content-Type':'application/json',
                         'Accept': 'application/json',

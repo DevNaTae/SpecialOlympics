@@ -7,11 +7,13 @@ import { C_TiposInvitados } from '@/stores/CRUDS/Tipo_de_invitados';
 import { C_Atletas } from '@/stores/CRUDS/Atleta';
 import { Modal } from 'bootstrap';
 import { ref,reactive,onMounted,watch,computed } from 'vue';
+import { C_Deportes } from '@/stores/CRUDS/Deportes';
 
 //pinias
 const P_print_upload = C_print_upload()
 const P_TiposInvitados = C_TiposInvitados()
 const P_Atletas = C_Atletas();
+const P_deportes = C_Deportes();
 //variables
 const tiposInvitados = ref({});
 const print_paginate_atleta= ref([]);
@@ -37,6 +39,12 @@ onMounted( async()=>{
   //llamar provincias
   await P_print_upload.get_provincia();
   provincias.value = P_print_upload.provincias;
+  //llamar a deportes
+  await P_deportes.get_Deportes();
+  deportes.value = P_deportes.deportes;
+  //llamar a tipos de invitados
+  await P_TiposInvitados.get_TiposInvitados();
+  t_invitados.value = P_TiposInvitados.TiposInvitados;
 
 
 })
@@ -104,7 +112,17 @@ const select_print = ref('')
 const get_paginate_invitados = async()=>{
   const closeLoadingAlert = ShowLoading();
   provincia_seleccionada.value = null
-  await P_print_upload.get_paginate_TiposInvitados(1, provincia_seleccionada.value);
+  Deporte_invitado_seleccionado.value = null;
+  const data = await P_print_upload.get_paginate_TiposInvitados(1, provincia_seleccionada.value);
+  if(data ==false ){
+    Swal.fire({
+        icon:'error',
+        title: 'Error de servidor',
+        timer: 3000,
+    })
+  }
+  await P_TiposInvitados.get_TiposInvitados();
+  t_invitados.value = P_TiposInvitados.TiposInvitados;
   print_paginate_atleta.value = P_print_upload.print_unit
   modifySvgSizes();
   select_print.value = 'Invitados'
@@ -119,8 +137,18 @@ const get_paginate_invitados = async()=>{
 const get_paginate_atletas = async()=>{
   const closeLoadingAlert = ShowLoading();
   provincia_seleccionada.value = null
-  await P_print_upload.get_paginateTipes(1,provincia_seleccionada.value);
+  Deporte_invitado_seleccionado.value = null;
+  const data = await P_print_upload.get_paginateTipes(1,provincia_seleccionada.value);
   print_paginate_atleta.value = P_print_upload.print_unit
+  if(data ==false ){
+    Swal.fire({
+        icon:'error',
+        title: 'Error de servidor',
+        timer: 3000,
+    })
+  }
+  await P_deportes.get_Deportes();
+  deportes.value = P_deportes.deportes;
   modifySvgSizes();
   select_print.value = 'Atletas'
   lotes_limit.value = 0;
@@ -180,8 +208,8 @@ const generarPDF = async()=>{
         var opt = {
             margin: 0,
             filename: 'lotes.pdf',
-            image: { type: 'jpeg', quality: 0.20 },
-            html2canvas: { scale: 2,useCORS: true },
+            image: { type: 'png', quality: 1 },
+            html2canvas: { scale: 4 ,useCORS: true },
             jsPDF: { unit: 'in', format: 'a4', orientation: 'p' }
         };
         pdfGenerado.value = false;
@@ -266,10 +294,10 @@ const goToPage = async(data)=>{
   predit.value= currentPage.value + 1;
   next_page.value=predit.value;
   if(select_print.value == 'Invitados'){
-    await P_print_upload.get_paginate_TiposInvitados(currentPage.value,provincia_seleccionada.value);
+    await P_print_upload.get_paginate_TiposInvitados(currentPage.value, provincia_seleccionada.value, Deporte_invitado_seleccionado.value);
   }
   if(select_print.value == 'Atletas'){
-    await P_print_upload.get_paginateTipes(currentPage.value,provincia_seleccionada.value);
+    await P_print_upload.get_paginateTipes(currentPage.value, provincia_seleccionada.value, Deporte_invitado_seleccionado.value);
   }
   print_paginate_atleta.value = P_print_upload.print_unit
   modifySvgSizes()
@@ -285,11 +313,11 @@ const previousPage = async() => {
     next_page.value=predit.value;
 
     if(select_print.value == 'Invitados'){
-      await P_print_upload.get_paginate_TiposInvitados(currentPage.value,provincia_seleccionada.value);
+      await P_print_upload.get_paginate_TiposInvitados(currentPage.value, provincia_seleccionada.value, Deporte_invitado_seleccionado.value);
       print_paginate_atleta.value = P_print_upload.print_unit
     }
     if(select_print.value == 'Atletas'){
-      await P_print_upload.get_paginateTipes(currentPage.value,provincia_seleccionada.value);
+      await P_print_upload.get_paginateTipes(currentPage.value, provincia_seleccionada.value, Deporte_invitado_seleccionado.value);
       print_paginate_atleta.value = P_print_upload.print_unit
     }
     modifySvgSizes()
@@ -311,11 +339,11 @@ const nextPage = async() => {
       next_page.value=predit.value;
 
       if(select_print.value == 'Invitados'){
-        await P_print_upload.get_paginate_TiposInvitados(currentPage.value,provincia_seleccionada.value);
+        await P_print_upload.get_paginate_TiposInvitados(currentPage.value, provincia_seleccionada.value, Deporte_invitado_seleccionado.value);
         print_paginate_atleta.value = P_print_upload.print_unit
       }
       if(select_print.value == 'Atletas'){
-        await P_print_upload.get_paginateTipes(currentPage.value,provincia_seleccionada.value);
+        await P_print_upload.get_paginateTipes(currentPage.value, provincia_seleccionada.value, Deporte_invitado_seleccionado.value);
         print_paginate_atleta.value = P_print_upload.print_unit
       }
       modifySvgSizes()
@@ -345,12 +373,50 @@ const visiblePages = computed(() => {
 //provincia
 const provincias = ref('');
 const provincia_seleccionada = ref(null);
+//deportes
+const deportes = ref('');
 
+//tipos de invitados
+const t_invitados = ref('');
+//como los dos son un tipo que requiere de una variable puede ser dependiente de su esta
+const Deporte_invitado_seleccionado = ref(null);
+//datos computados para rendereziar el v-for
+
+
+//
+const Deporte_invitado_sett = async()=>{
+  if(select_print.value == 'Invitados'){
+    console.log('invitado_seleccionado '+Deporte_invitado_seleccionado.value);
+    currentPage.value = 1;
+    await P_print_upload.get_paginate_TiposInvitados(currentPage.value, provincia_seleccionada.value, Deporte_invitado_seleccionado.value)
+    print_paginate_atleta.value = P_print_upload.print_unit
+    lotes_limit.value = 0;
+    modifySvgSizes();
+    currentPage.value = 1;
+    next_page.value = 2;
+    predit.value = 0;
+    
+  }
+  if(select_print.value == 'Atletas'){
+    console.log('invitado seleccionado '+Deporte_invitado_seleccionado.value);
+    currentPage.value = 1;
+    await P_print_upload.get_paginateTipes(currentPage.value, provincia_seleccionada.value, Deporte_invitado_seleccionado.value);
+    print_paginate_atleta.value = P_print_upload.print_unit
+    lotes_limit.value = 0;
+    modifySvgSizes();
+    currentPage.value = 1;
+    next_page.value = 2;
+    predit.value = 0;
+  }
+}
+
+
+//
 const provincia_sett = async()=>{
   // console.log('Valor seleccionado:', provincia_seleccionada.value);
   if(select_print.value == 'Invitados'){
     currentPage.value = 1;
-    await P_print_upload.get_paginate_TiposInvitados(currentPage.value, provincia_seleccionada.value);
+    await P_print_upload.get_paginate_TiposInvitados(currentPage.value, provincia_seleccionada.value, Deporte_invitado_seleccionado.value);
     print_paginate_atleta.value = P_print_upload.print_unit
     lotes_limit.value = 0;
     modifySvgSizes();
@@ -361,7 +427,7 @@ const provincia_sett = async()=>{
   }
   if(select_print.value =='Atletas'){
     currentPage.value = 1;
-    await P_print_upload.get_paginateTipes(currentPage.value, provincia_seleccionada.value);
+    await P_print_upload.get_paginateTipes(currentPage.value, provincia_seleccionada.value, Deporte_invitado_seleccionado.value);
     print_paginate_atleta.value = P_print_upload.print_unit
     lotes_limit.value = 0;
     modifySvgSizes();
@@ -381,8 +447,13 @@ function handleImageError(event) {
   const imgElement = event.target;
   imgElement.src = placeholderImage;
 }
+
+
 </script>
 <template>
+<!-- {{ t_invitados }}
+{{ deportes }} -->
+<!-- {{ Deporte_invitado_seleccionado }} -->
 <div class="body_vue relleno_r" style="background-color: white;"> <!--bloque general, fondo de ventana generar PDF-->
         <div class="content_vue ">  <!--the same-->
             <C_Header></C_Header>
@@ -405,21 +476,19 @@ function handleImageError(event) {
                       </button>
                     </div>
                     </div>
-                    
                     <div v-if="!select_print == ''"  class="border_o" style="border: 0px;"> <!--bloque anaranjado izquierdo-->
                       <div class="d-flex mt-2 mb-2">
                         <button class="btn btn-info" @click="generarPDF">Generar PDF</button>
                       </div>
-
                       <div  class="container-fluid">
-                        <div class="row">
-                          <div class="col-5">
+                        <div class="row mb-3">
+                          <div class="col-12">
                             <h5>
                                 <p>Rango de lotes:</p>
                                 <input @input="validarNumero" v-model="lotes_limit" type="number" class="input_edit_print rounded" min="1" :max="P_print_upload.pagina_final"> 
                             </h5>
                           </div>
-                          <div class="col-7">
+                          <div class="col-6">
                             <div >
                                 <div >
                                     <h5>Provincia Seleccionada:</h5>
@@ -439,11 +508,49 @@ function handleImageError(event) {
                                   </div>
                               </div>
                           </div>
+                          <div class="col-6 ">
+                            <div>
+                              <div>
+                                <h5 v-if="select_print == 'Atletas'">
+                                  Seleccione deporte
+                                </h5>
+                        
+                                <h5 v-else-if="select_print == 'Invitados'">
+                                  Seleccione tipo de invitado
+                                </h5>
+                                    <select v-if="select_print == 'Atletas'"
+                                    v-model="Deporte_invitado_seleccionado"
+                                    class="form-select border_black" 
+                                    aria-label="Default select example"
+                                    @change="Deporte_invitado_sett"
+                                    >
+                                    <option :value="null" selected>Ninguno</option>
+                                    <option v-for="datos_D_T in deportes" :value="datos_D_T.deporte_id">
+                                      {{ datos_D_T.deporte }}
+                                    </option>
+                                    </select>
+                                    <select v-else-if="select_print == 'Invitados'"
+                                    v-model="Deporte_invitado_seleccionado"
+                                    class="form-select border_black" 
+                                    aria-label="Default select example"
+                                    @change="Deporte_invitado_sett"
+                                    >
+                                    <option :value="null" selected>Ninguno</option>
+                                    <option v-for="datos_D_T in t_invitados" :value="datos_D_T.tipo_invitado_id">
+                                      {{ datos_D_T.tipo_invitado_nombre }}
+                                    </option>
+                                    </select>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <h3>Pagina Actual:{{ currentPage }}</h3>
-                      <h3>Pagina Siguiente: {{ currentPage < P_print_upload.pagina_final ? currentPage + 1 : P_print_upload.pagina_final }} </h3>
-                      <h3>Pagina final: {{ P_print_upload.pagina_final }}</h3>
+
+                      <div class="row ms-1">
+                        <h3>Pagina Actual:{{ currentPage }}</h3>
+                        <h3>Pagina Siguiente: {{ currentPage < P_print_upload.pagina_final ? currentPage + 1 : P_print_upload.pagina_final }} </h3>
+                        <h3>Pagina final: {{ P_print_upload.pagina_final }}</h3>
+                      </div>
                     </div>
 
                   </div>
@@ -473,8 +580,8 @@ function handleImageError(event) {
                   <div class="border_v" style="border: 0px;"><!--bloque morado derecho-->
                   <div class="hoja-a4" v-if="select_print == 'Atletas' && print_paginate_atleta.length !== 0" id="contenidoParaPDF">
                     <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
-                      
-                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_image" @error="handleImageError"  class="imagen" >
+                      <img class="cotainer_img_print"  src="../../assets/imgs/Card_1.jpeg">
+                      <img :src="P_print_upload.url_env+`/`+index.url_image" @error="handleImageError"  class="imagen" >
                       <div class="texto" style="top: 29.5em; left: 11em;">{{ index.name }}  {{ index.lastname }}</div>
                       <div class="texto" style="top: 31.5em; left: 9em; color:#2092d1; width: 70%;">DEPORTE: {{ index.sport }}</div>
                       <div class="texto" style="top: 27.5em; left: 20em; color:#2092d1">{{ index.province }}</div>
@@ -503,29 +610,28 @@ function handleImageError(event) {
                     </div>
                   </div>
                   <div  v-if="select_print == 'Invitados' && print_paginate_atleta.length !== 0" class="hoja-a4" id="contenidoParaPDF" >
-                    <img src="https://specialolimpics--production-jistoria.sierranegra.cloud/storage/images/oe._los_rios/amador_anderson_1207139005.jpg" class="imagen" style="top: 6.9em; left: 8.6em;">
 
-                    <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
-                      <img :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/`+index.url_imagen"  @error="handleImageError" class="imagen" >
-                      <div class="texto medid_img" style="top: 29.9em; left: 11em; ">{{ index.nombre }}  {{ index.apellido }}</div>
+                      <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
+                        <img class="cotainer_img_print"  src="../../assets/imgs/Card_1.jpeg">
+                        <img :src="P_print_upload.url_env+`/`+index.url_imagen"  @error="handleImageError" class="imagen" >
+                        <div class="texto medid_img" style="top: 29.9em; left: 11em; ">{{ index.nombre }}  {{ index.apellido }}</div>
+                        
+                        <div class="texto mb-2 medid_img" style="top: 34.5em; left: 11em; color:#2092d1;">
+                          Cedula:
+                          {{ index.cedula }}
+                        </div>
+                        <div class="texto mb-2 medid_img" style="top: 32.5em; left: 11em; color:#2092d1;">
+                          {{ index.provincia }}
+                        </div>
+                        <!-- <div v-html="index.qr" class="qr" style="top:27em; left: 19.7em;" hidden></div> -->
+                        <div class=" d-flex qr"    v-if="svgContainers[i]" style="top:25em; left: 19.3em;" >
+                          <div class="" v-html="svgContainers[i].outerHTML"></div>
+                        </div>
 
-                      <div class="texto mb-2 medid_img" style="top: 34.5em; left: 11em; color:#2092d1;">
-                        Cedula:
-                        {{ index.cedula }}
+                        <div class="texto2" style="top: 26.2em; left: 3.2em;">
+                          <a>{{ index.tipo_invitado }}</a>
+                        </div>
                       </div>
-                      <div class="texto mb-2 medid_img" style="top: 32.5em; left: 11em; color:#2092d1;">
-                        {{ index.provincia }}
-                      </div>
-                      <!-- <div v-html="index.qr" class="qr" style="top:27em; left: 19.7em;" hidden></div> -->
-                      <div class=" d-flex qr"    v-if="svgContainers[i]" style="top:25em; left: 19.3em;" >
-                        <div class="" v-html="svgContainers[i].outerHTML"></div>
-                      </div>
-
-                      <div class="texto2" style="top: 26.2em; left: 3.2em;">
-                        <a>{{ index.tipo_invitado }}</a>
-                      </div>
-                    </div>
-                    
                   </div>
                   </div>
                 </div>
@@ -570,7 +676,10 @@ function handleImageError(event) {
   width: 100px;
   height: 100px;
 }
+.cotainer_img_print{
+  width: 100%;
 
+}
 
 /* tarjeta */
 .hoja-a4 {
@@ -596,7 +705,7 @@ function handleImageError(event) {
             box-sizing: border-box; /* Incluir el borde en el tamaño total del contenedor */
             position: absolute;
             background-size: cover; /* Posición absoluta para superponer los contenedores */
-            background-image: url('../../assets/imgs/Card.jpg');
+            /* background-image: url('../../assets/imgs/Card_1.jpeg'); */
             overflow: hidden; /* Ocultar el contenido que se salga del contenedor */
             display: flex; /* Para centrar el texto verticalmente */
             justify-content: center; /* Para centrar el texto horizontalmente */

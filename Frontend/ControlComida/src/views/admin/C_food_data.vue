@@ -124,7 +124,7 @@ onMounted(() => {
                                 <div class="col-12 col-sm-12 ">
                                     <div class="d-flex justify-content-center">
                                         <img v-if="food_setting.url_image === null" class="img_food_state " src="../../assets/imgs/Yo.jpg"> 
-                                        <img v-else class="img_food_state " :src="`https://specialolimpics--production-jistoria.sierranegra.cloud/${food_setting.url_image}`"> 
+                                        <img v-else class="img_food_state " :src="P_print_upload.url_env+`/`+food_setting.url_image"> 
 
                                     </div>
                                 </div>

@@ -126,7 +126,7 @@ export const C_print_upload = defineStore('print_upload',{
 
         },
         //paginar atletas
-        async get_paginateTipes(page=1,provincias){
+        async get_paginateTipes(page=1,provincias,deporte){
             //armado de la url
             const baseUrl = this.url_env;
             const path = '/api/dashboard/credentials_athlete';
@@ -134,6 +134,7 @@ export const C_print_upload = defineStore('print_upload',{
             const data_enviar ={
                 page: page,
                 provincia_id: provincias,
+                deporte_id: deporte,
             }
             Object.keys(data_enviar).forEach(key=>{
                 if(data_enviar[key] === null || data_enviar[key]=== undefined){
@@ -161,12 +162,16 @@ export const C_print_upload = defineStore('print_upload',{
                 this.print_unit = jsonData.atletas;
             } catch (error) {
                 console.log(error);
+                return false
             }
-            return true
+            
             //
         },
         //paginar invitador
-        async get_paginate_TiposInvitados(page=1,provincias){
+        async get_paginate_TiposInvitados(page=1,provincias,tipo_invitado){
+            console.log(page);
+            console.log(provincias);
+            console.log(tipo_invitado);
             try {
                 const baseUrl = this.url_env;
                 const path = '/api/dashboard/credentials_guest';
@@ -174,6 +179,7 @@ export const C_print_upload = defineStore('print_upload',{
                 const data_enviar ={
                     page: page,
                     provincia_id: provincias,
+                    tipo_invitado_id: tipo_invitado,
                 }
                 Object.keys(data_enviar).forEach(key=>{
                     if(data_enviar[key] === null || data_enviar[key]=== undefined){
@@ -181,6 +187,7 @@ export const C_print_upload = defineStore('print_upload',{
                     }
                     url.searchParams.append(key, data_enviar[key])
                 })
+                console.log(url);
                 const response = await fetch(url,{
                     method:'GET',
                     headers:{
@@ -196,7 +203,7 @@ export const C_print_upload = defineStore('print_upload',{
                 this.pagina_final = jsonData.last_page
                 this.print_unit = jsonData.invitados;
             } catch (error) {
-                
+                return false
             }
 
         },
