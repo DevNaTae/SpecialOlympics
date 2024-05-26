@@ -51,6 +51,7 @@ export const C_Almuerzo = defineStore('Almuerzo',{
             }
         },
         async postAlmuerzo(formdata){
+            console.log(formdata);
             try {
                 const response = await fetch(`${this.url_env}/api/dashboard/lunch_store`,{
                     method:'POST',

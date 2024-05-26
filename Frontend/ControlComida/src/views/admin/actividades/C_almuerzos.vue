@@ -216,6 +216,8 @@ const setData = async (selectedUser,selectedDate, selectedTimeStart, selectedTim
                         const response2 = await storeAlmuerzo.postAlmuerzo({
                             array: response.map((invitado) => invitado.invitado_id),
                             horario_comida_id: selectedDate,
+                            time_start: selectedTimeStart,
+                            time_end: selectedTimeEnd,
                             type: 2
                         });
                         if(response2.success===true){
