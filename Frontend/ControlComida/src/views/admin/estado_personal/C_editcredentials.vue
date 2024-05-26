@@ -28,6 +28,7 @@ const query_credentials = reactive({
     provincia_id:'',
     tipo_invitado_id:'',
     fecha_nacimiento:'',
+    url_imagen: '',
 
 })
 
@@ -37,12 +38,14 @@ const provincias = ref('');
 onMounted(async()=>{
     const closeLoadingAlert = ShowLoading();
     const data = JSON.parse(route.query.Datos_deportista)
+    console.log(data);
     query_credentials.cedula = data.cedula;
     query_credentials.nombre = data.nombre;
     query_credentials.apellido = data.apellido;
     query_credentials.edad = data.edad;
     query_credentials.genero = data.genero;
     query_credentials.activo = data.activo;
+    query_credentials.url_imagen = data.url_imagen
     id_invitado.value = data.invitado_id;
     query_credentials.provincia_id = data.provincia_id;
     query_credentials.tipo_invitado_id = data.tipo_invitado_id;
@@ -118,6 +121,7 @@ const ShowLoading = () => {
 
 </script>
 <template>
+
     <div class="body_vue">
     <div class="content_vue">
         <C_Header></C_Header>
@@ -129,7 +133,7 @@ const ShowLoading = () => {
                         <div class="d-flex align-items-center" style="height: 100% ;">
                             <div  class="mx-auto">
                                 <div class="d-flex justify-content-center">
-                                    <i class="img_base_edit bi bi-person-circle"></i>
+                                    <img :src="P_print_upload.url_env+`/`+query_credentials.url_imagen"  @error="handleImageError" class="img_base_edit_place" >
                                 </div>
                             </div>
                         </div>

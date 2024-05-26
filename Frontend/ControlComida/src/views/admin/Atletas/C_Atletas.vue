@@ -10,6 +10,7 @@ import modal_atletas from '@/components/admin/Atletas/modal_atletas.vue';
 import { C_Atletas } from '@/stores/CRUDS/Atleta';
 import { C_Deportes } from '@/stores/CRUDS/Deportes';
 import { C_ActividadesD } from '@/stores/CRUDS/Activididades_deportivas'
+import { Modal } from 'bootstrap';
 //Pinias
 const P_Atletas = C_Atletas();
 const P_Deportes = C_Deportes();
@@ -130,63 +131,74 @@ const actividad_selecionada = ref([]);
 const selectedName = ref([]);
 const actividadesConId = ref([]);
 const actividades_selectivas = async(data)=>{
-    // console.log(data.id);
-    Atleta_credentials.atleta_id = data.id;
-    Atleta_credentials.deporte_id = data.deporte_id;
+    console.log(data);
+    // console.log('id del deporte es '+data.deporte_id)
+    // console.log(data.actividades_deportivas)
+    Actividades_deportivas.value = {};
+    selectedName.value = [];
+    selectedCount.value = 0;
     Atleta_credentials.actividad_id = [];
-    if (Object.keys(Actividades_deportivas.value).length === 0){
-        await P_ActividadesD.get_ActividadesD(data.deporte_id)
-        P_ActividadesD.actividadesDeportivas.forEach(tipo => {
+    //
+    await P_ActividadesD.get_ActividadesD(data.deporte_id)
+    P_ActividadesD.actividadesDeportivas.forEach(tipo => {
             Actividades_deportivas.value[tipo.actividad_id] = {
             ActividadD_id: tipo.actividad_id,
             ActividadD_nombre: tipo.actividad,
             selected: false,
             }  
-        });
-        actividadesConId.value = data.actividades_deportivas.map(actividad=>{
+    });
+    actividadesConId.value = data.actividades_deportivas.map(actividad=>{
             return {
                 ActividadD_id: actividad.actividad_id,
                 ActividadD_nombre: actividad.actividad,
                 selected: false,
             };
-        })
-        actividadesConId.value.forEach(actividad => {
+    })
+    actividadesConId.value.forEach(actividad => {
             if (Actividades_deportivas.value.hasOwnProperty(actividad.ActividadD_id)) {
                 const actividadDeportiva = Actividades_deportivas.value[actividad.ActividadD_id];
                 seleted_type(actividadDeportiva);
             }
-        });
-    }else{
-        Actividades_deportivas.value={};
-        selectedName.value =[];
-        actividadesConId.value=[];
-        selectedCount.value = 0;
-        //funcion
-        await P_ActividadesD.get_ActividadesD(data.deporte_id)
-        P_ActividadesD.actividadesDeportivas.forEach(tipo => {
-            Actividades_deportivas.value[tipo.actividad_id] = {
-            ActividadD_id: tipo.actividad_id,
-            ActividadD_nombre: tipo.actividad,
-            selected: false,
-            }  
-        });
-        actividadesConId.value = data.actividades_deportivas.map(actividad=>{
-            return {
-                ActividadD_id: actividad.actividad_id,
-                ActividadD_nombre: actividad.actividad,
-                selected: false,
-            };
-        })
-        actividadesConId.value.forEach(actividad => {
-            if (Actividades_deportivas.value.hasOwnProperty(actividad.ActividadD_id)) {
-                const actividadDeportiva = Actividades_deportivas.value[actividad.ActividadD_id];
-                seleted_type(actividadDeportiva);
-            }
-        });
-    }
-
+    });
+    //seteo de los datos
+    Atleta_credentials.deporte_id = data.deporte_id;
+    Atleta_credentials.atleta_id = data.id;
 
 }
+const seleted_type = async(data)=>{
+    //console.log(data);
+    if(data.selected === false){
+        if (selectedCount.value < 3) {
+            selectedCount.value++
+            data.selected = true;
+            selectedName.value.push({
+                ActividadD_id: data.ActividadD_id,
+                Nombre: data.ActividadD_nombre,
+            });
+            const index_1 = selectedName.value.findIndex((t) => t.ActividadD_id === data.ActividadD_id);
+            Atleta_credentials.actividad_id.push(selectedName.value[index_1].ActividadD_id)
+        }
+    }else{
+        data.selected = false;
+        selectedCount.value--;
+        const index = selectedName.value.findIndex((t) => t.ActividadD_id === data.ActividadD_id);
+        if (index !== -1) {
+            Atleta_credentials.actividad_id.splice(index, 1)
+            selectedName.value.splice(index, 1);
+        }
+    }
+}
+const remove_select = (data) => {
+    // Eliminar el archivo correspondiente del arreglo de nombres de archivos
+    const index = selectedName.value.findIndex((t) => t.ActividadD_id === data);
+    if(index !== -1){
+      selectedName.value.splice(index, 1);
+      Actividades_deportivas.value[data].selected = !Actividades_deportivas.value[data].selected;
+      Atleta_credentials.actividad_id.splice(index, 1)
+      selectedCount.value--;
+    
+    }
+};
 const selectedCount = ref(0);
 //selected name ya esta referenciado arriba
 const Atleta_credentials = reactive({
@@ -194,48 +206,18 @@ const Atleta_credentials = reactive({
     deporte_id:'',
     atleta_id:''
 })
-const seleted_type = async(data,atleta)=>{
-// console.log(data);
-if (data.selected) {
-  data.selected = false;
-  selectedCount.value--;
-  const index = selectedName.value.findIndex((t) => t.ActividadD_id === data.ActividadD_id);
-  if (index !== -1) {
-      Atleta_credentials.actividad_id.splice(index, 1)
-      selectedName.value.splice(index, 1);
-  }
-} else {
-  if (selectedCount.value < 3) {
-    data.selected = true;
-    selectedName.value.push({
-      ActividadD_id: data.ActividadD_id,
-      Nombre: data.ActividadD_nombre,
-    });
-    //hacerle push al atlteas credentials
-    const index_1 = selectedName.value.findIndex((t) => t.ActividadD_id === data.ActividadD_id);
-    // console.log(index_1);
-    // console.log(selectedName.value[index_1].ActividadD_id);
-    Atleta_credentials.actividad_id.push(selectedName.value[index_1].ActividadD_id)
-    selectedCount.value++;
-  }
-}
 
-}
-const remove_select = (data) => {
-// Eliminar el archivo correspondiente del arreglo de nombres de archivos
-const index = selectedName.value.findIndex((t) => t.ActividadD_id === data);
-if(index !== -1){
-  selectedName.value.splice(index, 1);
-  Actividades_deportivas.value[data].selected = !Actividades_deportivas.value[data].selected;
-  Atleta_credentials.actividad_id.splice(index, 1)
-  selectedCount.value--;
-
-}
-};
-
-const save_actividades = async()=>{
+const save_actividades = async(data)=>{
     await P_Atletas.post_actividades_deportivas(Atleta_credentials);
-    actividades_selectivas(Atleta_credentials)
+    await P_Atletas.get_atletas(DeporteSeleccionado.value);
+    Swal.fire({
+        icon: "success",
+        title:'Actividad deportiva actualizada',
+        timer: 3000,
+
+    })
+    Modal.getInstance(document.getElementById('exampleModal_'+data)).hide();
+    
 }
 </script>
 <template>
@@ -293,9 +275,9 @@ const save_actividades = async()=>{
                                         <button  v-if="false">
                                             <i class="bi bi-person-check color_wicon "></i>
                                         </button>
+
                                         <button  @click="actividades_selectivas(Atletas)" type="button" data-bs-toggle="modal" :data-bs-target="'#exampleModal_'+Atletas.id" class="button_icon_status_sett_AD"  v-if="true" >
                                             <i class="bi bi-clipboard-fill"></i>
-
                                         </button>
                                         <div class="modal fade" :id="'exampleModal_'+Atletas.id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-lg modal-dialog modal-dialog-scrollable">
@@ -304,7 +286,8 @@ const save_actividades = async()=>{
                                                     <h1 class="modal-title fs-5" id="exampleModalLabel">Actividades Deportivas</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <div class="modal-body">
+                                                <div class="modal-body" v-if="true">
+
                                                     <div v-if="selectedCount !== 0" class="mt-2 " style="background: whitesmoke; padding: 10px;">
                                                         <h2 >Actividades Seleccionadas</h2>
                                                         <div v-for="(ActividadesS ,index ) in selectedName" key="index">
@@ -329,14 +312,19 @@ const save_actividades = async()=>{
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                    <button type="button" class="btn btn-primary" @click.prevent="save_actividades">Asignar Actividades</button>
+                                                    <button type="button" class="btn btn-primary" @click.prevent="save_actividades(Atletas.id)">Asignar Actividades</button>
                                                 </div>
                                                 </div>
                                             </div>
                                         </div>
+
+
+
+                                        
                                         <button @click="go_edit_page(Atletas)" class="button_icon_status_edit ">
                                             <i class="bi bi-screwdriver color_wicon"></i>
                                         </button>

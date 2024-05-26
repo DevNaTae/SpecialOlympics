@@ -1,6 +1,6 @@
 <script setup>
 import modal_state from './modal_state.vue';
-import { defineProps, reactive } from 'vue';
+import { defineProps, reactive,watch } from 'vue';
 import { ref,computed } from 'vue';
 import { onMounted } from 'vue';
 import { C_Sportman } from '@/stores/CRUDS/Estado_personal'; 
@@ -22,6 +22,7 @@ const query_credentials = reactive({
     provincia_id:'',
     tipo_invitado_id:'',
     fecha_nacimiento:'',
+    url_imagen:'',
 
 })
 
@@ -42,17 +43,19 @@ const pages = computed(()=>{
     return result;
 })
 const gotoPage = async(id) =>{
-    await P_estadoC.get_typeC(tipoSeleccionado.value,id)
+    await P_estadoC.get_typeC(tipoSeleccionado.value,id,searchQuery.value)
 }
 const nextPage = async() => {
   if (P_estadoC.pagina_actual  < P_estadoC.pagina_final) {
     P_estadoC.pagina_actual++;
-    await P_estadoC.get_typeC(tipoSeleccionado.value,P_estadoC.pagina_actual)
+    await P_estadoC.get_typeC(tipoSeleccionado.value,P_estadoC.pagina_actual,searchQuery.value)
   }
 };
-const prevPage = () => {
+const prevPage = async() => {
   if (P_estadoC.pagina_actual > 1) {
     P_estadoC.pagina_actual--;
+    await P_estadoC.get_typeC(tipoSeleccionado.value,P_estadoC.pagina_actual,searchQuery.value)
+
   }
 };
 const go_edit_page= (data)=>{
@@ -73,6 +76,7 @@ const go_edit_page= (data)=>{
     query_credentials.provincia_id = data.provincia_id;
     query_credentials.tipo_invitado_id = data.tipo_invitado_id;
     query_credentials.fecha_nacimiento = data.fecha_nacimiento;
+    query_credentials.url_imagen = data.url_imagen;
 
     router.push(
             {
@@ -122,6 +126,18 @@ const ShowLoading = () => {
   // Devolvemos la función CloseLoading para que pueda ser utilizada fuera de la función ShowLoading.
   return CloseLoading;
 };
+//buscador
+let lastSearchQuery = '';
+const searchQuery = ref('');
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+const capitalizedSearchQuery = computed(() => capitalizeFirstLetter(searchQuery.value));
+
+watch(capitalizedSearchQuery, async(newValue, oldValue) => {
+  //console.log('Nueva consulta de búsqueda:', newValue);
+  await P_estadoC.get_typeC(tipoSeleccionado.value,1, newValue);
+});
 
 </script>
 <template>
@@ -133,11 +149,17 @@ const ShowLoading = () => {
                         <button class="ms-3 btn btn-dark">Crear Credencial</button>
             </RouterLink>
         </div>
+        <div class="container mt-3">
+                <form class="d-flex" role="search">
+                <input v-model="searchQuery" class="form-control me-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+        </div>
         <div v-if="P_estadoC.tc_unit === null" class="container d-flex justify-content-center p-4">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-        </div>
+        </div>        
         <div v-else class="container mt-3">
             <div   >
                 <table class="table ">

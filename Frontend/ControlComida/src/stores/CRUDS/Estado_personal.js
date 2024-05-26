@@ -29,8 +29,22 @@ export const C_Sportman = defineStore('Estado_personal',{
             return jsonData;
             //console.log(jsonData);
         },
-        async get_typeC(data,page=1){
-            const response = await fetch (`${this.url_env}/api/dashboard/get_guestf/${data}?page=${page}`,{
+        async get_typeC(data,page=1,search){
+            const baseUrl = this.url_env;
+            const path = "/api/dashboard/get_guestf";
+            const url = new URL(path, baseUrl);
+            const data_enviar={
+                tipo_invitado_id: data,
+                page :page,
+                search:search,
+            }
+            Object.keys(data_enviar).forEach(key=>{
+                if(data_enviar[key] === null || data_enviar[key]=== undefined){
+                    data_enviar[key] = '';
+                }
+                url.searchParams.append(key, data_enviar[key])
+            })
+            const response = await fetch (url,{
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -49,17 +63,28 @@ export const C_Sportman = defineStore('Estado_personal',{
             this.tc_unit=jsonData.data;
 
         },
-        async post_personal(formdata){
+        async post_personal(data_sett){
+            let data = new FormData();
+            data.append('cedula',data_sett.cedula);
+            data.append('nombre', data_sett.nombre);
+            data.append('apellido',data_sett.apellido);
+            data.append('edad',data_sett.edad);
+            data.append('genero',data_sett.genero);
+            data.append('activo',data_sett.activo);
+            data.append('provincia_id',data_sett.provincia_id);
+            data.append('tipo_invitado_id',data_sett.tipo_invitado_id);
+            data.append('fecha_nacimiento',data_sett.fecha_nacimiento);
+            data.append('imagen',data_sett.imagen);
+            
             try {
                 const response = await fetch(`${this.url_env}/api/dashboard/store_guest`,{
                     method:'POST',
                     headers:{
                         // 'X-Requested-With': 'XMLHttpRequest',
-                        'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
                     credentials:'include',
-                    body: JSON.stringify(formdata)
+                    body: data
                 })
                 // console.log(response);
                 const jsonData = await response.json();

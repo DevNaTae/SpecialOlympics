@@ -1,7 +1,7 @@
 <script setup>
 import Swal from 'sweetalert2';
 import { RouterLink, useRoute, useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,watch } from 'vue';
 import { reactive } from 'vue';
 import C_Header from '@/components/C_Header.vue';
 import C_footer from '@/components/C_Footer.vue';
@@ -197,6 +197,18 @@ const pre_carga = ()=>{
     Atleta_credentials.genero='M'
     Atleta_credentials.provincia_id ='4'
 }
+const capitalizeFirstLetter = () => {
+  if (Atleta_credentials.nombre.length > 0) {
+    Atleta_credentials.nombre = Atleta_credentials.nombre.charAt(0).toUpperCase() + Atleta_credentials.nombre.slice(1);
+  }
+};
+
+// Opción adicional: usando watch para observar cambios en el input
+watch(Atleta_credentials, (newValue, oldValue) => {
+  if (newValue.length > 0 && newValue.charAt(0) !== oldValue.charAt(0).toUpperCase()) {
+    Atleta_credentials.nombre = newValue.charAt(0).toUpperCase() + newValue.slice(1);
+  }
+});
 </script>
 <template>
     <!-- Tambies debes enviar fecha de nacimiento -->
@@ -240,7 +252,7 @@ const pre_carga = ()=>{
                                     <div class="col-12 col-sm-6">
                                         <div class="mb-3">
                                             <label for="exampleInputEmail1" class="form-label">Nombre</label>
-                                            <input v-model="Atleta_credentials.nombre" type="text" class="form-control" id="exampleInputEmail1" >
+                                            <input v-model="Atleta_credentials.nombre" @input="capitalizeFirstLetter" type="text" class="form-control" id="exampleInputEmail1" >
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-6">

@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, useRoute, useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,watch } from 'vue';
 import { reactive } from 'vue';
 import { C_Sportman } from '@/stores/CRUDS/Estado_personal';
 import { C_TiposInvitados } from '@/stores/CRUDS/Tipo_de_invitados';
@@ -45,6 +45,7 @@ const data_sett= reactive({
     provincia_id:'',
     tipo_invitado_id:'',
     fecha_nacimiento:'',
+    imagen:null,
 
 })
 const credencials_post = async()=>{
@@ -105,8 +106,50 @@ const validateCedula = () => {
 
 
 };
+//imagen
+const imageFile = ref(null);
+const previewImage = ref(null);
+const handleFileInputChange = async(event) => {
+  const file = event.target.files[0]; // Obtener solo el primer archivo seleccionado
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      previewImage.value = reader.result;
+    };
+    reader.readAsDataURL(file);
+    //Atleta_credentials.imagen = file;
+    imageFile.value =  file;
+    data_sett.imagen = imageFile.value;
+    console.log(data_sett.imagen )
+  }
+};
+const Pre_carga = ()=>{
+    data_sett.cedula =  1316612603;
+    data_sett.nombre = 'dato_1';
+    data_sett.edad = 80;
+    data_sett.fecha_nacimiento = '2000-12-05';
+    data_sett.genero = 'M';
+    data_sett.activo = true;
+
+}
+
+
+const capitalizeFirstLetter = () => {
+  if (data_sett.nombre.length > 0) {
+    data_sett.nombre = data_sett.nombre.charAt(0).toUpperCase() + data_sett.nombre.slice(1);
+  }
+};
+
+// Opción adicional: usando watch para observar cambios en el input
+watch(data_sett, (newValue, oldValue) => {
+  if (newValue.length > 0 && newValue.charAt(0) !== oldValue.charAt(0).toUpperCase()) {
+    data_sett.nombre = newValue.charAt(0).toUpperCase() + newValue.slice(1);
+  }
+});
 </script>
 <template>
+
+
     <div class="body_vue">
         <div class="content_vue">
             <C_Header></C_Header>
@@ -115,10 +158,22 @@ const validateCedula = () => {
                     <h2>Tipo de Invitado:</h2>
                 <div class="row  ">
                     <div class="col-12 col-sm-3 base_dataEdit_top rounded ">
-                        <div class="d-flex align-items-center" style="height: 100% ;">
+                        <div class="d-flex align-items-center " style="height: 100% ;">
                             <div  class="mx-auto">
-                                <div class="d-flex justify-content-center">
-                                    <i class="img_base_edit bi bi-person-circle"></i>
+                                <div>
+                                    <div v-if="previewImage == null" class="d-flex justify-content-center">
+                                        <img  class="img_base_edit_place" src="../../../assets/imgs/Yo.jpg">
+                                    </div>
+                                    <div v-if="true" >
+                                        <div v-if="previewImage" >
+                                            <div class="d-flex justify-content-center">
+                                                <img class="img_base_edit_place" :src="previewImage" alt="Preview" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center p-3">
+                                        <input class="form-control edit_whimge mb-2" type="file" @change="handleFileInputChange" accept="image/*" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -138,7 +193,7 @@ const validateCedula = () => {
                                 <div class="col-12 col-sm-6">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Nombre</label>
-                                        <input v-model="data_sett.nombre" type="text" class="form-control" id="exampleInputEmail1" >
+                                        <input v-model="data_sett.nombre" @input="capitalizeFirstLetter()" type="text" class="form-control" id="exampleInputEmail1" >
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6">
