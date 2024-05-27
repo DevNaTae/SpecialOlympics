@@ -185,7 +185,7 @@ watch(data_sett, (newValue, oldValue) => {
                                 <div class="col-12 col-sm-6">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Cedula</label>
-                                        <input  v-model="data_sett.cedula" type="text" class="form-control"  @input="validateCedula"   maxlength="10"  required>
+                                        <input  v-model="data_sett.cedula" type="text" class="form-control"  @input="validateCedula"   maxlength="10"  >
                                     </div>
                                 </div>
                             </div>

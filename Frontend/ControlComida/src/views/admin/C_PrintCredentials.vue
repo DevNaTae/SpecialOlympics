@@ -582,9 +582,9 @@ function handleImageError(event) {
                     <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
                       <img class="cotainer_img_print"  src="../../assets/imgs/Card_1.jpeg">
                       <img :src="P_print_upload.url_env+`/`+index.url_image" @error="handleImageError"  class="imagen" >
-                      <div class="texto" style="top: 29.5em; left: 11em;">{{ index.name }}  {{ index.lastname }}</div>
-                      <div class="texto" style="top: 31.5em; left: 9em; color:#2092d1; width: 70%;">DEPORTE: {{ index.sport }}</div>
-                      <div class="texto" style="top: 27.5em; left: 20em; color:#2092d1">{{ index.province }}</div>
+                      <div class="texto" style="top: 22em; left: 9em; font-size: 90%;">{{ index.name }}  {{ index.lastname }}</div>
+                      <div class="texto" style="top: 23.8em; left: 7em; color:#2092d1; width: 70%; font-size: 90%;">DEPORTE: {{ index.sport }}</div>
+                      <div class="texto" style="top: 20.5em; left: 15em; color:#2092d1; font-size: 90%;">{{ index.province }}</div>
 
                       <!-- el peto -->
                       <!-- provicional hasta que llegue el sportman id -->
@@ -614,13 +614,9 @@ function handleImageError(event) {
                       <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
                         <img class="cotainer_img_print"  src="../../assets/imgs/Card_1.jpeg">
                         <img :src="P_print_upload.url_env+`/`+index.url_imagen"  @error="handleImageError" class="imagen" >
-                        <div class="texto medid_img" style="top: 29.9em; left: 11em; ">{{ index.nombre }}  {{ index.apellido }}</div>
+                        <div class="texto medid_img" style="top: 22.9em; left: 9em;font-size: 90%; ">{{ index.nombre }}  {{ index.apellido }}</div>
                         
-                        <div class="texto mb-2 medid_img" style="top: 34.5em; left: 11em; color:#2092d1;">
-                          Cedula:
-                          {{ index.cedula }}
-                        </div>
-                        <div class="texto mb-2 medid_img" style="top: 32.5em; left: 11em; color:#2092d1;">
+                        <div class="texto mb-2 medid_img" style="top: 25.4em; left: 9em; color:#2092d1; font-size: 90%;">
                           {{ index.provincia }}
                         </div>
                         <!-- <div v-html="index.qr" class="qr" style="top:27em; left: 19.7em;" hidden></div> -->
