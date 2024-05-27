@@ -53,7 +53,7 @@ class Invitado extends Model
             'qr' => Storage::exists($qrFilePath) ? Storage::get($qrFilePath) : null,
             'apellido' => $this->apellido,
             'url_imagen' => $this->url_imagen,
-            'provincia' => $this->provincia->provincia,
+            'provincia' => $this->provincia->provincia ?? null,
             'tipo_invitado' => $this->tipoInvitado->tipo_invitado_nombre,
         ];
     }
