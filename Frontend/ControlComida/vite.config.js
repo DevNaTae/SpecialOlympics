@@ -8,7 +8,14 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
-  //base: '/sysadmin/',
+  base: '/sysadmin/',
+  build:{
+    rollupOptions:{
+      entryFileNames: 'assets/[name]-[hash].js',
+      chunkFileNames: 'assets/[name]-[hash].js',
+      assetFileNames: 'assets/[name]-[hash][extname]',
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

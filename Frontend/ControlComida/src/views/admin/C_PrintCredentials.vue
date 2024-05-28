@@ -614,7 +614,7 @@ function handleImageError(event) {
                       <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
                         <img class="cotainer_img_print"  src="../../assets/imgs/Card_1.jpeg">
                         <img :src="P_print_upload.url_env+`/`+index.url_imagen"  @error="handleImageError" class="imagen" >
-                        <div class="texto medid_img" style="top: 22.9em; left: 9em;font-size: 90%; ">{{ index.nombre }}  {{ index.apellido }}</div>
+                        <div class="texto medid_img" style="top: 16.4em; left: 5.9em;font-size: 130%; ">{{ index.nombre }}  {{ index.apellido }}</div>
                         
                         <div class="texto mb-2 medid_img" style="top: 25.4em; left: 9em; color:#2092d1; font-size: 90%;">
                           {{ index.provincia }}
@@ -624,7 +624,7 @@ function handleImageError(event) {
                           <div class="" v-html="svgContainers[i].outerHTML"></div>
                         </div>
 
-                        <div class="texto2" style="top: 26.2em; left: 3.2em;">
+                        <div class="texto2 " style="top: 23.69em; left: 2.7em;font-size: 22px;">
                           <a>{{ index.tipo_invitado }}</a>
                         </div>
                       </div>
