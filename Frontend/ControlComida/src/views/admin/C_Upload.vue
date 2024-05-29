@@ -142,7 +142,7 @@ const upload_img = async()=>{
     formData.append('images[]', file);
   });
   try {
-    const response = await axios.post(`${P_print_upload.url_env}/api/dashboard/deportista_images/${provincia_seleccionada.value}`, formData, {
+    const response = await axios.post(`${P_print_upload.url_env}api/dashboard/deportista_images/${provincia_seleccionada.value}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data' // Establecer el tipo de contenido como FormData
       },

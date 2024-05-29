@@ -103,11 +103,12 @@ export const  C_Atletas = defineStore('Atletas',{
             }
         },
         async put_atleta(formData, id){
+            console.log(formData);
             try {
                 const response = await fetch(`${this.url_env}api/dashboard/sportman/${id}`,{
                     method:'PUT',
-                    mode:'cors',
                     headers:{
+                        'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
                     credentials:'include',
@@ -117,6 +118,7 @@ export const  C_Atletas = defineStore('Atletas',{
                 return jsonData
             } catch (error) {
                 console.log(error);
+                
             }
            
         },

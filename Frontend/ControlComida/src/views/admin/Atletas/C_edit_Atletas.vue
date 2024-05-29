@@ -136,8 +136,27 @@ const ShowLoading = () => {
   return CloseLoading;
 };
 const Atleta_update = ()=>{
-    console.log('me active')
-    P_Atletas.put_atleta(Atleta_credentials,id_atleta.value)
+    
+    const closeLoadingAlert = ShowLoading();
+    const data = P_Atletas.put_atleta(Atleta_credentials,id_atleta.value)
+    if(data.success == "false"){
+        await Swal.fire({
+            title: 'Error',
+            text: data.error,
+            icon: 'error',
+            confirmButtonText: 'Entendido'
+        });
+        return;
+    }else{
+        await Swal.fire({
+        title: 'Atleta editado',
+        text: 'Atleta editado exitosamente',
+        icon: 'success',
+        confirmButtonText: 'Entendido'
+        });
+        router.go(-1)
+    }
+    closeLoadingAlert()
 }
 //funciones
 const provincia_sett = ()=>{
@@ -152,7 +171,7 @@ const deporte_sett = async()=>{
         ActividadD_nombre: tipo.actividad,
         selected: false
     }));
-    console.log(Actividades_deportivas.value)
+    //console.log(Actividades_deportivas.value)
     //Actividades_deportivas.value =P_ActividadesD.actividadesDeportivas;
 }
 //actividades deportiva
@@ -178,8 +197,8 @@ const seleted_type = async(data)=>{
       });
       //hacerle push al atlteas credentials
       const index_1 = selectedName.value.findIndex((t) => t.ActividadD_id === data.ActividadD_id);
-      console.log(index_1);
-      console.log(selectedName.value[index_1].ActividadD_id);
+      //console.log(index_1);
+      //console.log(selectedName.value[index_1].ActividadD_id);
       Atleta_credentials.actividad_id.push(selectedName.value[index_1].ActividadD_id)
       selectedCount.value++;
     }

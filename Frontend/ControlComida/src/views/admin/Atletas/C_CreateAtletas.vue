@@ -150,7 +150,7 @@ const Atletas_post= async ()=>{
     formdata.append('actividad_id', Atleta_credentials.actividad_id);
     formdata.append('activo', Atleta_credentials.activo);
             try{
-                const response = await fetch (`${P_Atletas.url_env}/api/dashboard/sportman` ,{
+                const response = await fetch (`${P_Atletas.url_env}api/dashboard/sportman` ,{
                     method:'POST',
                     headers:{
                         'Accept': 'application/json',

@@ -38,7 +38,7 @@ const provincias = ref('');
 onMounted(async()=>{
     const closeLoadingAlert = ShowLoading();
     const data = JSON.parse(route.query.Datos_deportista)
-    console.log(data);
+    //console.log(data);
     query_credentials.cedula = data.cedula;
     query_credentials.nombre = data.nombre;
     query_credentials.apellido = data.apellido;

@@ -18,7 +18,9 @@ export const C_session = defineStore('session',{
             try {
                 const response = await axios.post(`${this.url_env}api/login`,formdata,{
                     headers: {
-                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json',
                     },
                     withCredentials: true,
                 })
@@ -49,6 +51,7 @@ export const C_session = defineStore('session',{
                 const response = await fetch (`${this.url_env}api/get_session`,{
                     method:'GET',
                     headers:{
+                        'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
