@@ -18,7 +18,7 @@ export const  C_Atletas = defineStore('Atletas',{
         //ESTE GET ES MIO DIEGO NO LO TOMES EN CUENTA
         async get_deportistas(){
             try {
-                const response = await fetch (`${this.url_env}/api/dashboard/sportman_pluck`,{
+                const response = await fetch (`${this.url_env}api/dashboard/sportman_pluck`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -35,7 +35,7 @@ export const  C_Atletas = defineStore('Atletas',{
         },
         async post_atletas(formdata){
             try {
-                const response = await fetch (`${this.url_env}/api/dashboard/sportman` ,{
+                const response = await fetch (`${this.url_env}api/dashboard/sportman` ,{
                     method:'POST',
                     headers:{
                         'Content-Type':'application/json',
@@ -53,7 +53,7 @@ export const  C_Atletas = defineStore('Atletas',{
         async get_atletas(deporte , search , page=1 , provincia ){
             try {
                 const baseUrl = this.url_env;
-                const path = "/api/dashboard/sportman";
+                const path = "api/dashboard/sportman";
                 const url = new URL(path, baseUrl);
                 const data_enviar={
                     deporte: deporte,
@@ -89,7 +89,7 @@ export const  C_Atletas = defineStore('Atletas',{
         },
         async get_atleta_edit(id){
             try {
-                const response = await fetch (`${this.url_env}/api/dashboard/sportman/${id}/edit`,{
+                const response = await fetch (`${this.url_env}api/dashboard/sportman/${id}/edit`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -104,7 +104,7 @@ export const  C_Atletas = defineStore('Atletas',{
         },
         async put_atleta(formData, id){
             try {
-                const response = await fetch(`${this.url_env}/api/dashboard/sportman/${id}`,{
+                const response = await fetch(`${this.url_env}api/dashboard/sportman/${id}`,{
                     method:'PUT',
                     mode:'cors',
                     headers:{
@@ -122,7 +122,7 @@ export const  C_Atletas = defineStore('Atletas',{
         },
         async dismis_atleta(id){
             try {
-                const response = await fetch (`${this.url_env}/api/dashboard/sportman_active/${id}`,{
+                const response = await fetch (`${this.url_env}api/dashboard/sportman_active/${id}`,{
                     method:'POST',
                     headers:{
                         'Content-Type':'application/json',
@@ -143,7 +143,7 @@ export const  C_Atletas = defineStore('Atletas',{
             const ids = data.actividad_id;
             //console.log(ids);
             try {
-                const response = await fetch(`${this.url_env}/api/dashboard/sportman_activities/${data.atleta_id}`,{
+                const response = await fetch(`${this.url_env}api/dashboard/sportman_activities/${data.atleta_id}`,{
                     method:'POST',
                     method:'POST',
                     headers:{

@@ -441,7 +441,7 @@ const shouldShow = computed(()=>{
   return select_print.value === '' || print_paginate_atleta.value.length === 0;
 
 })
-const placeholderImage = 'http://localhost:5173/@fs/C:/xampp/htdocs/SpecialOlympics/Frontend/ControlComida/src/assets/imgs/Yo.jpg'; 
+const placeholderImage = 'http://localhost:5173/sysadmin/@fs/C:/xampp/htdocs/SpecialOlympics/Frontend/ControlComida/src/assets/imgs/Yo.jpg'; 
 
 function handleImageError(event) {
   const imgElement = event.target;
@@ -502,7 +502,7 @@ function handleImageError(event) {
                                         <option v-for="datos in provincias"
                                         :value="datos.provincia_id"
                                         >
-                                        {{ datos.provincia }}
+                                        {{ datos.provincia }} 
                                         </option>
                                       </select>
                                   </div>
@@ -584,7 +584,7 @@ function handleImageError(event) {
                       <img :src="P_print_upload.url_env+`/`+index.url_image" @error="handleImageError"  class="imagen" >
                       <div class="texto" style="top: 22em; left: 9em; font-size: 90%;">{{ index.name }}  {{ index.lastname }}</div>
                       <div class="texto" style="top: 23.8em; left: 7em; color:#2092d1; width: 70%; font-size: 90%;">DEPORTE: {{ index.sport }}</div>
-                      <div class="texto" style="top: 20.5em; left: 15em; color:#2092d1; font-size: 90%;">{{ index.province }}</div>
+                      <div class="texto" style="top: 21.2em; left: 15em; color:#2092d1; font-size: 87%;">{{ index.province }}</div>
 
                       <!-- el peto -->
                       <!-- provicional hasta que llegue el sportman id -->
@@ -597,7 +597,7 @@ function handleImageError(event) {
                       <div class="texto3" style="top: 33.6em; left: 5em; color:#2092d1">ACTIVIDAD(ES) DEPORTIVA:</div>
                       <div class="texto " style="top: 32.6em; left: 13em; color:#2092d1;width: 62%;">
                         <div class="d-flex mt-2 ">
-                          <div   class=" ms-2 d-inline "   v-for="event in index.events">
+                          <div   class=" ms-2 d-inline " style="margin-top: 7px; margin-right: 9px;"   v-for="event in index.events">
                             <a style="font-weight: 700;" >{{ event.activity }}</a>
                           </div>
                         </div>
@@ -613,7 +613,7 @@ function handleImageError(event) {
 
                       <div v-for="(index, i) in print_paginate_atleta" :key="i" :class="`contenedor ${posiciones[i % 4]}`" style="border: 0px;" >
                         <img class="cotainer_img_print"  src="../../assets/imgs/Card_1.jpeg">
-                        <img :src="P_print_upload.url_env+`/`+index.url_imagen"  @error="handleImageError" class="imagen" >
+                        <img :src="P_print_upload.url_env+`/`+index.url_imagen"   class="imagen" >
                         <div class="texto medid_img" style="top: 16.4em; left: 5.9em;font-size: 130%; ">{{ index.nombre }}  {{ index.apellido }}</div>
                         
                         <div class="texto mb-2 medid_img" style="top: 25.4em; left: 9em; color:#2092d1; font-size: 90%;">

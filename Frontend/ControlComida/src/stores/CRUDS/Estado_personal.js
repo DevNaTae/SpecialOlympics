@@ -17,7 +17,7 @@ export const C_Sportman = defineStore('Estado_personal',{
     ),
     actions:{
         async get_personal(){
-            const response = await fetch (`${this.url_env}/api/dashboard/get_guest`,{
+            const response = await fetch (`${this.url_env}api/dashboard/get_guest`,{
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -31,7 +31,7 @@ export const C_Sportman = defineStore('Estado_personal',{
         },
         async get_typeC(data,page=1,search){
             const baseUrl = this.url_env;
-            const path = "/api/dashboard/get_guestf";
+            const path = "api/dashboard/get_guestf";
             const url = new URL(path, baseUrl);
             const data_enviar={
                 tipo_invitado_id: data,
@@ -77,7 +77,7 @@ export const C_Sportman = defineStore('Estado_personal',{
             data.append('imagen',data_sett.imagen);
             
             try {
-                const response = await fetch(`${this.url_env}/api/dashboard/store_guest`,{
+                const response = await fetch(`${this.url_env}api/dashboard/store_guest`,{
                     method:'POST',
                     headers:{
                         // 'X-Requested-With': 'XMLHttpRequest',
@@ -95,7 +95,7 @@ export const C_Sportman = defineStore('Estado_personal',{
         },
         async put_personal(formdata,id){
             try {
-                const response = await fetch(`${this.url_env}/api/dashboard/update_guest/${id}`,{
+                const response = await fetch(`${this.url_env}api/dashboard/update_guest/${id}`,{
                     method:'PUT',
                     headers:{
                         // 'X-Requested-With': 'XMLHttpRequest',
@@ -113,7 +113,7 @@ export const C_Sportman = defineStore('Estado_personal',{
         },
         async dismiss_personal(id){
             try {
-                const response = await fetch (`${this.url_env}/api/dashboard/delete_guest/${id}`,{
+                const response = await fetch (`${this.url_env}api/dashboard/delete_guest/${id}`,{
                     method:'POST',
                     headers:{
                         // 'X-Requested-With': 'XMLHttpRequest',
