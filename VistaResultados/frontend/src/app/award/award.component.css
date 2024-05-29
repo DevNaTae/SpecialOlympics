@@ -1,0 +1,17 @@
+.card-img-tiles {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  background-color: var(--color-white-smoke);
+  z-index: 5;
+}
+
+.card-img-tiles .main-img > img {
+  display: block;
+  width: 100%;
+}
+
+.letra {
+  color: var(--color-davy-grey-hover);
+}

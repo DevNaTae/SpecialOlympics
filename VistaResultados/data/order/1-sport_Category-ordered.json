@@ -1,0 +1,266 @@
+[
+  {
+    "_id": "6653d6c402bfbcec8d94db62",
+    "name": "AT 50M Carrera"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db63",
+    "name": "AT 100M Carrera"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db64",
+    "name": "AT 200M Carrera"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db65",
+    "name": "AT 400M Carrera"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db66",
+    "name": "AT 800M Carrera"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db67",
+    "name": "AT 1500M Carrera"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db68",
+    "name": "AT 3000M Carrera"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db69",
+    "name": "AT 5000M Carrera"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db6a",
+    "name": "AT 10000M Carrera"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db6b",
+    "name": "AT 110M Vallas"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db6c",
+    "name": "AT 400M Vallas"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db6d",
+    "name": "AT 3000M Obstáculos"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db6e",
+    "name": "AT 4X100 Relevo"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db6f",
+    "name": "AT 4X400 Relevo"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db70",
+    "name": "AT Salto Alto"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db71",
+    "name": "AT Salto Largo"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db72",
+    "name": "AT Salto Triple"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db73",
+    "name": "AT Salto con Pértiga"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db74",
+    "name": "AT Lanzamiento de Peso"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db75",
+    "name": "AT Lanzamiento de Disco"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db76",
+    "name": "AT Lanzamiento Martillo"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db77",
+    "name": "AT Lanzamiento Jabalina"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db78",
+    "name": "AT Lanzamiento Bala"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db79",
+    "name": "AT Lanzamiento Bala Mujeres"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db7a",
+    "name": "FB Football Futsal"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db7b",
+    "name": "TR Triatlón"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db7c",
+    "name": "PL Sentadilla"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db7d",
+    "name": "PL Peso Muerto"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db7e",
+    "name": "PL Masculino Sentadilla"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db7f",
+    "name": "PL Femenino Sentadilla"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db80",
+    "name": "PL Femenino Press de Banca"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db81",
+    "name": "PL Femenino Peso Muerto"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db82",
+    "name": "PL Press de Banca"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db83",
+    "name": "PL Masculino Press de Banca"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db84",
+    "name": "PL Masculino Peso Muerto"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db85",
+    "name": "PL Maculino todos los eventos"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db86",
+    "name": "AQ 25M"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db87",
+    "name": "AQ 25M Libre"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db88",
+    "name": "AQ 50M"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db89",
+    "name": "AQ 100M"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db8a",
+    "name": "AQ 200M"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db8b",
+    "name": "AQ 4X25 Relevos"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db8c",
+    "name": "AQ 4X50 Relevos"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db8d",
+    "name": "AQ 4X50 Relevos Libre"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db8e",
+    "name": "AQ 4X25 Relevos Libre"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db8f",
+    "name": "AQ 25M Pecho"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db90",
+    "name": "AQ 50M Pecho"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db91",
+    "name": "AQ 50M Libre"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db92",
+    "name": "AQ 100M Libre"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db93",
+    "name": "AQ 200M Libre"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db94",
+    "name": "AQ 100M Mariposa"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db95",
+    "name": "AQ 50M Mariposa"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db96",
+    "name": "AQ 25M Espalda"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db97",
+    "name": "AQ 50M Espalda"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db98",
+    "name": "AQ 100M Espalda"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db99",
+    "name": "AQ 400M Libre"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db9a",
+    "name": "AQ 100M Pecho"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db9b",
+    "name": "AQ 200M Combinado"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db9c",
+    "name": "AQ 800M Libre"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db9d",
+    "name": "GY Rhythmic Aro"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db9e",
+    "name": "GY Rhythmic Clavas"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94db9f",
+    "name": "GY Rhythmic Cinta"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94dba0",
+    "name": "GY Rhythmic Pelota"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94dba1",
+    "name": "GY Rhythmic Mazas"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94dba2",
+    "name": "GY Rhythmic Cuerda"
+  },
+  {
+    "_id": "6653d6c402bfbcec8d94dba3",
+    "name": "GY Rhythmic All Around"
+  }
+]

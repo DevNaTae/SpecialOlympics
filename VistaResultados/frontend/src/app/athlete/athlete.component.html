@@ -1,0 +1,238 @@
+<nav
+  id="top"
+  class="mt-3 ms-4"
+  style="--bs-breadcrumb-divider: '>'"
+  aria-label="breadcrumb"
+>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/index" class="text-decoration-none">Inicio</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Atletas</li>
+  </ol>
+</nav>
+<div
+  style="background-color: var(--color-white-smoke)"
+  class="col-11 col-sm-10 col-lg-9 col-xl-8 justify-content-between rounded-3 mt-3 mt-lg-5 container-fluid d-flex flex-column flex-lg-row flex-sm-row py-1 px-4"
+>
+  <div class="my-2">
+    <input
+      style="
+        --bs-focus-ring-color: var(--color-amber);
+        --bs-border-color: var(--color-amber);
+      "
+      class="form-control focus-ring border"
+      type="search"
+      [placeholder]="'Buscar ' + query"
+      aria-label="Search"
+      [(ngModel)]="searchText"
+    />
+  </div>
+  <div
+    class="d-flex flex-shrink-0 flex-sm-shrink-1 my-2 justify-content-evenly align-items-center"
+  >
+    <div
+      class="btn-group-sm me-2 align-content-center"
+      role="group"
+      aria-label="Basic radio toggle button group"
+    >
+      <input
+        type="radio"
+        class="btn-check ji"
+        name="btnradio"
+        id="btnradio1"
+        autocomplete="off"
+        checked
+        (click)="query = 'atleta'"
+      />
+      <label class="btn botonS m-1" for="btnradio1">Atleta</label>
+
+      <input
+        type="radio"
+        class="btn-check ji"
+        name="btnradio"
+        id="btnradio2"
+        autocomplete="off"
+        (click)="query = 'deporte'"
+      />
+      <label class="btn botonS m-1" for="btnradio2">Deporte</label>
+
+      <input
+        type="radio"
+        class="btn-check ji"
+        name="btnradio"
+        id="btnradio3"
+        autocomplete="off"
+        (click)="query = 'provincia'"
+      />
+      <label class="btn botonS m-1" for="btnradio3">Provincia</label>
+    </div>
+  </div>
+</div>
+<div class="container-fluid p-4">
+  <div class="row justify-content-center">
+    <div
+      class="rounded col-md-10 col-sm-11 col-12"
+      style="background-color: var(--color-white-smoke)"
+    >
+      <div
+        class="mt-3 d-flex flex-row justify-content-center align-content-center"
+      >
+        <pagination-controls
+          class="pagination"
+          (pageChange)="p = $event"
+          previousLabel=""
+          nextLabel=""
+          screenReaderCurrentLabel="You're on page"
+          [responsive]="true"
+          [autoHide]="true"
+        ></pagination-controls>
+        <button
+          class="botonT dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Mostrando {{ pageSize }}
+        </button>
+        <ul class="dropdown-menu dropdown-center">
+          <li *ngIf="pageSize != 5 && athletes.length >= 5">
+            <a class="dropdown-item" (click)="changeCant(5)">5</a>
+          </li>
+          <li *ngIf="pageSize != 20 && athletes.length >= 20">
+            <a class="dropdown-item" (click)="changeCant(20)">20</a>
+          </li>
+          <li *ngIf="pageSize != 50 && athletes.length >= 50">
+            <a class="dropdown-item" (click)="changeCant(50)">50</a>
+          </li>
+          <li *ngIf="pageSize != 100 && athletes.length >= 100">
+            <a class="dropdown-item" (click)="changeCant(100)">100</a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="changeCant(athletes.length); p = 1"
+              >Todos ({{ athletes.length }})</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <table class="table table-responsive table-hover mt-3">
+        <thead>
+          <tr>
+            <th scope="col" class="fw-medium">Nombre</th>
+            <th scope="col" class="fw-medium">Provincia</th>
+            <th scope="col" class="fw-medium">Deporte</th>
+          </tr>
+        </thead>
+        <tbody
+          *ngFor="
+            let athlete of filterAthletes()
+              | paginate : { itemsPerPage: pageSize, currentPage: p }
+          "
+          style="font-size: 11px"
+        >
+          <tr>
+            <td>
+              <img
+                onerror="this.src='/assets/iconH.webp'"
+                src="https://firebasestorage.googleapis.com/v0/b/imgspecialolympics.appspot.com/o/athletes%2F{{
+                  getImage(athlete.name!)
+                }}.jpg?alt=media&token=98c861fd-a7f2-4d93-a899-7fa7036c8e62"
+                alt=""
+                class="avatar-sm rounded-circle imagen me-2"
+              /><a
+                style="font-weight: 500"
+                [routerLink]="['/athlete', athlete._id]"
+                [queryParams]="{
+                  name: athlete.name,
+                  age: athlete.age,
+                  dni: athlete.dni,
+                  gender: athlete.gender,
+                  sportsman_number: athlete.sportsman_number,
+                  birthday: athlete.birthday,
+                  address: athlete.address,
+                  SportCategory: stringifyActivity(athlete.SportCategory),
+                }"
+                class="text-body letrq"
+                >{{ athlete.name }}</a
+              >
+            </td>
+            <td class="align-content-center">
+              <span class="letrq">{{
+                athlete.address?.replaceAll("OE. ", "")
+              }}</span>
+            </td>
+            <td class="align-content-center">
+              <ng-container
+                *ngFor="
+                  let sport of getSportNames(athlete.SportCategory!);
+                  let isLast = last
+                "
+              >
+                <div
+                  class="rounded px-1 p-auto d-inline-block letrq"
+                  [ngClass]="{
+                    sport1: sport == 'Fútbol',
+                    sport2: sport == 'Atletismo',
+                    sport3: sport == 'Gimnasia rítmica',
+                    sport4: sport == 'Natación',
+                    sport5: sport == 'Levantamiento de potencia',
+                    sport6: sport == 'Triatlón'
+                  }"
+                >
+                  {{ sport }}
+                </div>
+                <ng-container *ngIf="!isLast"> </ng-container>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div
+        class="mb-3 d-flex flex-row justify-content-center align-content-center"
+      >
+        <pagination-controls
+          class="pagination"
+          (pageChange)="p = $event"
+          previousLabel=""
+          nextLabel=""
+          screenReaderCurrentLabel="You're on page"
+          [responsive]="true"
+          [autoHide]="true"
+        ></pagination-controls>
+        <button
+          class="botonT dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Mostrando {{ pageSize }}
+        </button>
+        <ul class="dropdown-menu dropdown-center">
+          <li *ngIf="pageSize != 5 && athletes.length >= 5">
+            <a class="dropdown-item" (click)="changeCant(5)">5</a>
+          </li>
+          <li *ngIf="pageSize != 20 && athletes.length >= 20">
+            <a class="dropdown-item" (click)="changeCant(20)">20</a>
+          </li>
+          <li *ngIf="pageSize != 50 && athletes.length >= 50">
+            <a class="dropdown-item" (click)="changeCant(50)">50</a>
+          </li>
+          <li *ngIf="pageSize != 100 && athletes.length >= 100">
+            <a class="dropdown-item" (click)="changeCant(100)">100</a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="changeCant(athletes.length); p = 1"
+              >Todos ({{ athletes.length }})</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

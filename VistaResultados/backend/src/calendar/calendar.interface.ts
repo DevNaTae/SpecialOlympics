@@ -1,0 +1,26 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import moongose, { HydratedDocument } from 'mongoose';
+import { Activity } from 'src/activity/activity.interface';
+import { Place } from 'src/place/place.interface';
+
+export type CalendarDocument = HydratedDocument<Calendar>;
+
+@Schema({ collection: 'calendar' })
+export class Calendar {
+  @Prop()
+  date: string;
+
+  @Prop()
+  time: string;
+
+  @Prop({ type: moongose.Schema.Types.ObjectId, ref: 'Place' })
+  place: Place;
+
+  @Prop({ type: moongose.Schema.Types.ObjectId, ref: 'Activity' })
+  activity: Activity;
+
+  @Prop({ default: true })
+  state: boolean;
+}
+
+export const CalendarSchema = SchemaFactory.createForClass(Calendar);

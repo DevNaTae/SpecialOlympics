@@ -1,0 +1,43 @@
+<nav
+  id="top"
+  class="mt-3 ms-4"
+  style="--bs-breadcrumb-divider: '>'"
+  aria-label="breadcrumb"
+>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/index" class="text-decoration-none">Inicio</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a routerLink="/place" class="text-decoration-none">Lugares</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">{{ place.name }}</li>
+  </ol>
+</nav>
+<section class="content-item grey px-3 pt-3 px-sm-5" id="gallery-item">
+  <div class="container shadow">
+    <div class="row">
+      <iframe
+        class="col-sm-8 ifr rounded mt-3"
+        height="500"
+        [src]="getSafeUrl(place.address!)"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+      <div class="col-sm-4 shadow-sm">
+        <h1>{{ place.name }}</h1>
+        <div class="box">
+          <h3 class="mb-2">Líneas de buses para llegar al lugar</h3>
+          <ul class="list-unstyled" *ngFor="let line of place.line">
+            <li>
+              Línea &nbsp;
+              <i class="fa fa-solid fa-{{ line[0] }}"
+                ><i class="fa fa-solid fa-{{ line[1] }}"></i
+              ></i>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

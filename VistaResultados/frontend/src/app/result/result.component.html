@@ -1,0 +1,186 @@
+<nav
+  id="top"
+  class="mt-3 ms-4"
+  style="--bs-breadcrumb-divider: '>'"
+  aria-label="breadcrumb"
+>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/index" class="text-decoration-none">Inicio</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Resultados</li>
+  </ol>
+</nav>
+<div class="container mt-4 px-lg-5 d-block">
+  <h2>1 de Junio</h2>
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div id="tracking-pre"></div>
+      <div id="tracking">
+        @for (result of results; track $index) {
+        <div
+          class="text-center"
+          *ngIf="result.calendar?.date === '1 de Junio'"
+        ></div>
+        <div
+          class="tracking-list mb-3"
+          *ngIf="result.calendar?.date === '1 de Junio'"
+        >
+          <div class="tracking-item">
+            <div class="tracking-icon status-intransit">
+              <img
+                class="img-fluid object-fit-cover rounded-circle"
+                src="https://firebasestorage.googleapis.com/v0/b/imgspecialolympics.appspot.com/o/athletes%2F{{
+                  getImage(result.athlete?.name!)
+                }}.jpg?alt=media&token=98c861fd-a7f2-4d93-a899-7fa7036c8e62"
+                alt=""
+              />
+            </div>
+            <div class="tracking-date">
+              Lugar:<span>{{ result.place }}</span> &nbsp; Tiempo:<span>{{
+                result.time
+              }}</span>
+            </div>
+            <div class="tracking-content">
+              {{ result.athlete?.name
+              }}<span>{{
+                result.calendar?.activity?.SportCategory?.sport?.name
+              }}</span>
+              <span>{{
+                result.calendar?.activity?.SportCategory?.description
+              }}</span>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <h2>2 de Junio</h2>
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div id="tracking-pre"></div>
+      <div id="tracking">
+        @for (result of results; track $index) {
+        <div class="text-center" *ngIf="result.calendar?.date === '2 de Junio'">
+          <h5 class="text-tight">
+            {{ result.calendar?.activity?.SportCategory?.name }}
+          </h5>
+        </div>
+        <div
+          class="tracking-list mb-3"
+          *ngIf="result.calendar?.date === '2 de Junio'"
+        >
+          <div class="tracking-item">
+            <div class="tracking-icon status-intransit">
+              <img
+                class="img-fluid object-fit-cover rounded-circle"
+                src="https://firebasestorage.googleapis.com/v0/b/imgspecialolympics.appspot.com/o/athletes%2F{{
+                  getImage(result.athlete?.name!)
+                }}.jpg?alt=media&token=98c861fd-a7f2-4d93-a899-7fa7036c8e62"
+                alt=""
+              />
+            </div>
+            <div class="tracking-date">
+              Lugar:<span>{{ result.place }}</span> &nbsp; Tiempo:<span>{{
+                result.time
+              }}</span>
+            </div>
+            <div class="tracking-content">
+              {{ result.athlete?.name
+              }}<span>{{
+                result.calendar?.activity?.SportCategory?.name
+              }}</span>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  <h2>3 de Junio</h2>
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div id="tracking-pre"></div>
+      <div id="tracking">
+        @for (result of results; track $index) {
+        <div class="text-center" *ngIf="result.calendar?.date === '3 de Junio'">
+          <h5 class="text-tight">
+            {{ result.calendar?.activity?.SportCategory?.name }}
+          </h5>
+        </div>
+        <div
+          class="tracking-list mb-3"
+          *ngIf="result.calendar?.date === '3 de Junio'"
+        >
+          <div class="tracking-item">
+            <div class="tracking-icon status-intransit">
+              <img
+                class="img-fluid object-fit-cover rounded-circle"
+                src="https://firebasestorage.googleapis.com/v0/b/imgspecialolympics.appspot.com/o/athletes%2F{{
+                  getImage(result.athlete?.name!)
+                }}.jpg?alt=media&token=98c861fd-a7f2-4d93-a899-7fa7036c8e62"
+                alt=""
+              />
+            </div>
+            <div class="tracking-date">
+              Lugar:<span>{{ result.place }}</span> &nbsp; Tiempo:<span>{{
+                result.time
+              }}</span>
+            </div>
+            <div class="tracking-content">
+              {{ result.athlete?.name
+              }}<span>{{
+                result.calendar?.activity?.SportCategory?.name
+              }}</span>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  <h2>4 de Junio</h2>
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div id="tracking-pre"></div>
+      <div id="tracking">
+        @for (result of results; track $index) {
+        <div class="text-center" *ngIf="result.calendar?.date === '4 de Junio'">
+          <h5 class="text-tight">
+            {{ result.calendar?.activity?.SportCategory?.sport?.name }}
+          </h5>
+        </div>
+        <div
+          class="tracking-list mb-3"
+          *ngIf="result.calendar?.date === '4 de Junio'"
+        >
+          <div class="tracking-item">
+            <div class="tracking-icon status-intransit">
+              <img
+                class="img-fluid object-fit-cover rounded-circle"
+                src="https://firebasestorage.googleapis.com/v0/b/imgspecialolympics.appspot.com/o/athletes%2F{{
+                  getImage(result.athlete?.name!)
+                }}.jpg?alt=media&token=98c861fd-a7f2-4d93-a899-7fa7036c8e62"
+                alt=""
+              />
+            </div>
+            <div class="tracking-date">
+              Lugar:<span>{{ result.place }}</span> &nbsp; Tiempo:<span>{{
+                result.time
+              }}</span>
+            </div>
+            <div class="tracking-content">
+              {{ result.athlete?.name
+              }}<span>{{
+                result.calendar?.activity?.SportCategory?.name
+              }}</span>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

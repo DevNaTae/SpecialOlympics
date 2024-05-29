@@ -1,0 +1,47 @@
+<nav
+  id="top"
+  class="mt-3 ms-4"
+  style="--bs-breadcrumb-divider: '>'"
+  aria-label="breadcrumb"
+>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/index" class="text-decoration-none">Inicio</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Lugares</li>
+  </ol>
+</nav>
+<div class="container mt-4 px-4 pb-5 mb-sm-1">
+  <div class="row">
+    @for (place of places; track $index) {
+    <div class="col-md-4 col-sm-6 mb-3">
+      <div class="card border-0 mb-grid-gutter shadow-sm">
+        <a class="card-img-tiles">
+          <div class="main-img">
+            <img
+              style="height: 180px"
+              class="rounded object-fit-cover"
+              src="{{ place.img_url }}"
+              alt="img"
+            />
+          </div>
+        </a>
+        <div class="card-body border mt-n1 py-4 text-center rounded-3">
+          <h6
+            [routerLink]="['/place', place._id]"
+            [queryParams]="{
+              name: place.name,
+              address: place.address,
+              img_url: place.img_url,
+              line: place.line
+            }"
+            class="mb-1 letra"
+          >
+            {{ place.name }}
+          </h6>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>

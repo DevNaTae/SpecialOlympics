@@ -1,0 +1,48 @@
+<nav
+  id="top"
+  class="mt-3 ms-4"
+  style="--bs-breadcrumb-divider: '>'"
+  aria-label="breadcrumb"
+>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/index" class="text-decoration-none">Inicio</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Medallero</li>
+  </ol>
+</nav>
+<div class="container mt-4 px-4 pb-5 mb-sm-1">
+  <div class="row">
+    <div class="col-md-3 col-sm-6 mb-3" *ngFor="let province of awards">
+      <div class="card border-0 mb-grid-gutter shadow-sm">
+        <a class="card-img-tiles">
+          <div class="main-img">
+            <img
+              class="rounded-3 object-fit-"
+              src="{{ province.img_url }}"
+              alt="Clothing"
+            />
+          </div>
+        </a>
+        <div class="card-body border mt-n1 py-4 text-center rounded-3">
+          <h2 class="h5 mb-3 letra">
+            {{ province.name }}
+          </h2>
+
+          <span class="d-block mb-3 font-size-xs letraA">
+            Oro: {{ countOro(province.award) }}
+          </span>
+          <span class="d-block mb-3 font-size-xs letraA">
+            Plata: {{ countPlata(province.award) }}
+          </span>
+          <span class="d-block mb-3 font-size-xs letraA">
+            Bronce: {{ countBronce(province.award) }}
+          </span>
+          <strong class="d-block mb-3 font-size-xs letraA">
+            Total: {{ province.award.length }}
+          </strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
