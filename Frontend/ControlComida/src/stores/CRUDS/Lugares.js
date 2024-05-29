@@ -7,43 +7,43 @@ export const C_Lugares = defineStore('Lugares',{
             prueba:'hola_1',
             lugares:null,
             url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
+            url_env:import.meta.env.VITE_API_URL,
 
         }
     ),
     actions:{
         async get_Lugares(){
             try {
-                const response = await fetch (`${this.url}/api/dashboard/get_lugar`,{
+                const response = await fetch (`${this.url_env}api/dashboard/get_lugar`,{
                     method:'GET',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        // 'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
                     credentials:'include',
                 })
-                console.log(response);
+                // console.log(response);
                 const jsonData = await response.json();
-                console.log(jsonData);
+                // console.log(jsonData);
                 this.lugares = jsonData
             } catch (error) {
                 console.log(error);
             }
         },
         async post_Lugares(formdata){
-            console.log('llegue')
             try {
-                const response = await fetch(`${this.url}/api/dashboard/store_lugar`,{
+                const response = await fetch(`${this.url_env}api/dashboard/store_lugar`,{
                     method:'POST',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        // 'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
                     credentials:'include',
                     body: JSON.stringify(formdata)
                 })
-                console.log(response);
+                // console.log(response);
                 const jsonData = await response.json();
                 return jsonData
             } catch (error) {
@@ -53,10 +53,10 @@ export const C_Lugares = defineStore('Lugares',{
         },
         async put_Lugares(formdata,id){
             try {
-                const response = await fetch(`${this.url}/api/dashboard/update_lugar/${id}`,{
+                const response = await fetch(`${this.url_env}api/dashboard/update_lugar/${id}`,{
                     method:'PUT',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        // 'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
@@ -70,12 +70,12 @@ export const C_Lugares = defineStore('Lugares',{
             }
         },
         async dismiss_Lugares(id){
-            console.log(id);
+            // console.log(id);
             try {
-                const response = await fetch (`${this.url}/api/dashboard/delete_lugar/${id}`,{
+                const response = await fetch (`${this.url_env}api/dashboard/delete_lugar/${id}`,{
                     method:'DELETE',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        // 'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },

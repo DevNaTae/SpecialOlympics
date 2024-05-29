@@ -13,13 +13,14 @@ export const C_print_upload = defineStore('print_upload',{
             pagina_inicio:'',
             pagina_final:'',
             print_unit:'',
+            url_env:import.meta.env.VITE_API_URL,
+
         }
     ),
     actions:{
         async get_qr(data){
-            console.log(data);
             try {
-                const response = await fetch (`${this.url}/api/eats/${data}`,{
+                const response = await fetch (`${this.url_env}api/eats/${data}`,{
                     method:'GET',
                     headers:{
                         //'X-Requested-With': 'XMLHttpRequest',
@@ -31,11 +32,11 @@ export const C_print_upload = defineStore('print_upload',{
                 // console.log(response.status)
                 if(response.status === 404){
                     const jsonData = await response.json();
-                    console.log(jsonData);
+                    // console.log(jsonData);
                     return jsonData;
                 }
                 const jsonData = await response.json();
-                console.log(jsonData)
+                // console.log(jsonData)
                 this.deportista = jsonData.data
                 return true
             } catch (error) {
@@ -44,9 +45,9 @@ export const C_print_upload = defineStore('print_upload',{
             }
         },
         async food_promise(data){
-            console.log(data)
+            // console.log(data)
             try {
-                const response = await fetch(`${this.url}/api/eats_mark/${data}`,{
+                const response = await fetch(`${this.url_env}api/eats_mark/${data}`,{
                     method:'POST',
                     headers:{
                         //'X-Requested-With': 'XMLHttpRequest',
@@ -70,7 +71,7 @@ export const C_print_upload = defineStore('print_upload',{
         },
         async get_provincia(){
             try {
-                const response = await fetch (`${this.url}/api/dashboard/get_provincia`,{
+                const response = await fetch (`${this.url_env}api/dashboard/get_provincia`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -88,14 +89,14 @@ export const C_print_upload = defineStore('print_upload',{
         },
         async upload_xls(data){
             try {
-                console.log(data);
-                const response = await axios.post(`${this.url}/api/dashboard/deportista_import`,data,{
+                // console.log(data);
+                const response = await axios.post(`${this.url_env}api/dashboard/deportista_import`,data,{
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },
                     withCredentials: true,
                 })
-                console.log(response);
+                // console.log(response);
                 return response
             } catch (error) {
                 console.log(error);
@@ -105,10 +106,10 @@ export const C_print_upload = defineStore('print_upload',{
             // return true
         },
         async upload_imgs(formData,id){
-            console.log(formData);
-            console.log(id);
+            // console.log(formData);
+            // console.log(id);
             try {
-                const response = await fetch(`${this.url}/api/dashboard/deportista_images/${id}`,{
+                const response = await fetch(`${this.url_env}api/dashboard/deportista_images/${id}`,{
                     method:'POST',
                     headers:{
                         'Content-Type': 'multipart/form-data',
@@ -125,15 +126,16 @@ export const C_print_upload = defineStore('print_upload',{
 
         },
         //paginar atletas
-        async get_paginateTipes(page=1,provincias){
+        async get_paginateTipes(page=1,provincias,deporte){
             //armado de la url
-            const baseUrl = this.url;
-            const path = '/api/dashboard/credentials_athlete';
+            const baseUrl = this.url_env;
+            const path = 'api/dashboard/credentials_athlete';
             const url = new URL(path,baseUrl);
             console.log(url);
             const data_enviar ={
                 page: page,
                 provincia_id: provincias,
+                deporte_id: deporte,
             }
             Object.keys(data_enviar).forEach(key=>{
                 if(data_enviar[key] === null || data_enviar[key]=== undefined){
@@ -154,49 +156,32 @@ export const C_print_upload = defineStore('print_upload',{
                 // console.log('la pagina en la que estas es'+ jsonData.current_page);
                 // console.log('la ultima pagina es'+jsonData.last_page);
                 // console.log('desde el inicio'+jsonData.from);
-                console.log(jsonData.atletas)
+                // console.log(jsonData.atletas)
                 this.pagina_actual = jsonData.current_page;
                 this.pagina_inicio = jsonData.from
                 this.pagina_final = jsonData.last_page
                 this.print_unit = jsonData.atletas;
             } catch (error) {
                 console.log(error);
+                return false
             }
-            return true
+            
             //
-            try {
-                const response = await fetch(`${this.url}/api/dashboard/credentials_athlete/?page=${page}`,{
-                    method:'GET',
-                    headers:{
-                        'Content-Type':'application/json',
-                        'Accept': 'application/json',
-                    },
-                    credentials:'include',
-                })
-                console.log(response);
-                const jsonData = await response.json();
-                // console.log('la pagina en la que estas es'+ jsonData.current_page);
-                // console.log('la ultima pagina es'+jsonData.last_page);
-                // console.log('desde el inicio'+jsonData.from);
-                console.log(jsonData.atletas)
-                this.pagina_actual = jsonData.current_page;
-                this.pagina_inicio = jsonData.from
-                this.pagina_final = jsonData.last_page
-                this.print_unit = jsonData.atletas;
-            } catch (error) {
-                
-            }
         },
         //paginar invitador
-        async get_paginate_TiposInvitados(page=1,provincias){
+        async get_paginate_TiposInvitados(page=1,provincias,tipo_invitado){
+            console.log(page);
+            console.log(provincias);
+            console.log(tipo_invitado);
             try {
-                const baseUrl = this.url;
-                const path = '/api/dashboard/credentials_guest';
+                const baseUrl = this.url_env;
+                const path = 'api/dashboard/credentials_guest';
                 const url = new URL(path,baseUrl);
                 console.log(url);
                 const data_enviar ={
                     page: page,
                     provincia_id: provincias,
+                    tipo_invitado_id: tipo_invitado,
                 }
                 Object.keys(data_enviar).forEach(key=>{
                     if(data_enviar[key] === null || data_enviar[key]=== undefined){
@@ -204,6 +189,7 @@ export const C_print_upload = defineStore('print_upload',{
                     }
                     url.searchParams.append(key, data_enviar[key])
                 })
+                console.log(url);
                 const response = await fetch(url,{
                     method:'GET',
                     headers:{
@@ -212,14 +198,14 @@ export const C_print_upload = defineStore('print_upload',{
                     },
                     credentials:'include',
                 })
-                console.log(response);
+                // console.log(response);
                 const jsonData = await response.json();
                 this.pagina_actual = jsonData.current_page;
                 this.pagina_inicio = jsonData.from
                 this.pagina_final = jsonData.last_page
                 this.print_unit = jsonData.invitados;
             } catch (error) {
-                
+                return false
             }
 
         },

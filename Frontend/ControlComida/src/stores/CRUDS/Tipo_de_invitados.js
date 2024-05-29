@@ -7,12 +7,14 @@ export const C_TiposInvitados = defineStore('TiposInvitados',{
             prueba:'hola_1',
             TiposInvitados:[],
             url:'https://specialolimpics--production-jistoria.sierranegra.cloud',
+            url_env:import.meta.env.VITE_API_URL,
+
         }
     ),
     actions:{
         async get_TiposInvitados(){
             try {
-                const response = await fetch (`${this.url}/api/dashboard/get_tg`,{
+                const response = await fetch (`${this.url_env}api/dashboard/get_tg`,{
                     method:'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -28,12 +30,12 @@ export const C_TiposInvitados = defineStore('TiposInvitados',{
             }
         },
         async post_TiposInvitados(formdata){
-            console.log(formdata)
+            // console.log(formdata)
             try {
-                const response = await fetch(`${this.url}/api/dashboard/store_tg`,{
+                const response = await fetch(`${this.url_env}api/dashboard/store_tg`,{
                     method:'POST',
                     headers:{
-                        'X-Requested-With': 'XMLHttpRequest',
+                        // 'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type':'application/json',
                         'Accept': 'application/json',
                     },
@@ -44,7 +46,7 @@ export const C_TiposInvitados = defineStore('TiposInvitados',{
                         }    
                     )
                 })
-                console.log(response);
+                // console.log(response);
                 const jsonData = await response.json();
                 return jsonData
             } catch (error) {
@@ -53,7 +55,7 @@ export const C_TiposInvitados = defineStore('TiposInvitados',{
         },
         async put_TiposInvitados(formdata, id){
             try {
-                const response = await fetch(`${this.url}/api/dashboard/update_tg/${id}`,{
+                const response = await fetch(`${this.url_env}api/dashboard/update_tg/${id}`,{
                     method:'PUT',
                     headers:{
                         'X-Requested-With': 'XMLHttpRequest',
@@ -71,7 +73,7 @@ export const C_TiposInvitados = defineStore('TiposInvitados',{
         },
         async dismiss_TiposInvitados(id){
             try {
-                const response = await fetch (`${this.url}/api/dashboard/delete_tg/${id}`,{
+                const response = await fetch (`${this.url_env}api/dashboard/delete_tg/${id}`,{
                     method:'DELETE',
                     headers:{
                         'Content-Type':'application/json',

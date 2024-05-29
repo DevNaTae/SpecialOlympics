@@ -91,7 +91,7 @@ const scanQRCode = () => {
         const closeLoadingAlert = ShowLoading();
         const data = await C_scan.get_qr(code.data);
         //prueba_img.value = C_scan.deportista.deportista.url_imagen;
-        console.log(data.message);
+        //console.log(data.message);
         if(data=== true){
           toggleCamera();
           router.push(

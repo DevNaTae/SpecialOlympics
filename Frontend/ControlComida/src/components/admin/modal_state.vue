@@ -25,7 +25,7 @@ onMounted( async()=>{
   }  
   });
   const primerObjeto = Object.values(tiposInvitados.value)[0];
-  first_id (primerObjeto.tipo_id)
+  first_id ()
 })
 
 const prueba = ()=>{
@@ -34,14 +34,15 @@ const prueba = ()=>{
 }
 
 const emit = defineEmits(['tipoSeleccionado']);
-const first_id= async(id)=>{
-  tiposInvitados.value[id].selected = true;
+const first_id= async()=>{
+  const id = '';
+  //tiposInvitados.value[id].selected = true;
   emit('tipoSeleccionado', id);
 
 }
 
 const seleted_type = async(data)=>{
-  console.log(data);
+  // console.log(data);
   for (const key in tiposInvitados.value) {
     tiposInvitados.value[key].selected = false;
   }

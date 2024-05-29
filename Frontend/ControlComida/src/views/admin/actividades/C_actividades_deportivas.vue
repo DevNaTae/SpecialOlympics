@@ -71,6 +71,8 @@ const submitForm = async () => {
     return;
   }else{
     const closeLoadingAlert = ShowLoading();
+    console.log(idActividad2.value);
+    console.log(nombreActividad2.value)
     const message = await storeAD.post_ActividadesD({
       actividad: nombreActividad2.value,
       descripcion: descripcionActividad2.value,

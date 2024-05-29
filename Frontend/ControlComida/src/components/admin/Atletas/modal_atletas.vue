@@ -20,7 +20,7 @@ onMounted(async()=>{
     }  
     });
     const primerObjeto = Object.values(tiposDeportes.value)[0];
-    console.log(primerObjeto.deporte_id)
+    // console.log(primerObjeto.deporte_id)
     first_id (primerObjeto.deporte_id)
 })
 
@@ -32,7 +32,7 @@ const first_id= async(id)=>{
 }
 
 const seleted_type = async(data)=>{
-  console.log(data);
+  // console.log(data);
   for (const key in tiposDeportes.value) {
     tiposDeportes.value[key].selected = false;
   }

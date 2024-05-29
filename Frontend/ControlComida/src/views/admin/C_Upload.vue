@@ -57,7 +57,7 @@ onMounted( async ()=>{
   provincias.value = P_print_upload.provincias;
 })
 const provincia_sett = ()=>{
-  console.log('Valor seleccionado:', provincia_seleccionada.value);
+  console.log(provincia_seleccionada.value);
 } 
 
 
@@ -89,6 +89,7 @@ const subir_doc = async()=>{
   ShowLoading()
   const data = await P_print_upload.upload_xls(formData)
   //console.log(data.response)
+  borrar_data();
   if(data.response){
     if(data.response.status == 422){
       const row = data.response.data.message[0].row;
@@ -113,7 +114,7 @@ const selectedFileNames = ref([]);
 
 const handleFileChange = (event) => {
   const files = event.target.files;
-  console.log(files[0].name)
+  // console.log(files[0].name)
   for (let i = 0; i < files.length; i++) {
 
     const fileName = files[i].name;
@@ -141,14 +142,14 @@ const upload_img = async()=>{
     formData.append('images[]', file);
   });
   try {
-    const response = await axios.post(`https://specialolimpics--production-jistoria.sierranegra.cloud/api/dashboard/deportista_images/${provincia_seleccionada.value}`, formData, {
+    const response = await axios.post(`${P_print_upload.url_env}api/dashboard/deportista_images/${provincia_seleccionada.value}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data' // Establecer el tipo de contenido como FormData
       },
       withCredentials: true,
     });
-    console.log(response.data.success);
-    console.log(response.data.message);
+    // console.log(response.data.success);
+    // console.log(response.data.message);
     if(response.data.success == true){
       Swal.fire({
         icon: "success",
