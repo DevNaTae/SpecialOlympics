@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, model } from 'mongoose';
 import { Province } from './province.interface';
+import { addAwardDto } from './addaward.interface';
 
 @Injectable()
 export class ProvinceService {
@@ -74,5 +75,14 @@ export class ProvinceService {
         },
       })
       .exec();
+  }
+
+  async addAward(
+    entityId: string,
+    addAwardDto: addAwardDto,
+  ): Promise<Province> {
+    const entity = await this.ProvinceModel.findById(entityId);
+    entity.award.push(addAwardDto.award);
+    return entity.save();
   }
 }

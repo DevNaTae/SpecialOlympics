@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ProvinceService } from './province.service';
 import { Province } from './province.interface';
+import { addAwardDto } from './addaward.interface';
 
 @Controller('province')
 export class ProvinceController {
@@ -14,5 +15,13 @@ export class ProvinceController {
   @Post()
   crearCancion(@Body() athleteDto: Province) {
     return this.provinceService.create(athleteDto);
+  }
+
+  @Patch(':id')
+  async addAward(
+    @Param('id') id: string,
+    @Body() addAwardDto: addAwardDto,
+  ): Promise<Province> {
+    return this.provinceService.addAward(id, addAwardDto);
   }
 }

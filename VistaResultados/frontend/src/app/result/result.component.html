@@ -16,16 +16,15 @@
   <div class="row">
     <div class="col-md-12 col-lg-12">
       <div id="tracking-pre"></div>
-      <div id="tracking">
-        @for (result of results; track $index) {
-        <div
-          class="text-center"
-          *ngIf="result.calendar?.date === '1 de Junio'"
-        ></div>
-        <div
-          class="tracking-list mb-3"
-          *ngIf="result.calendar?.date === '1 de Junio'"
-        >
+      @for (result of results; track $index) {
+      <div id="tracking" *ngIf="result.calendar?.date === '1 de Junio'">
+        <div class="text-center">
+          <h6>
+            {{ result.calendar?.activity?.type }} -
+            {{ result.calendar?.activity?.SportCategory?.sport?.name }}
+          </h6>
+        </div>
+        <div class="tracking-list mb-3">
           <div class="tracking-item">
             <div class="tracking-icon status-intransit">
               <img
@@ -36,24 +35,38 @@
                 alt=""
               />
             </div>
-            <div class="tracking-date">
+            <div
+              class="tracking-date"
+              *ngIf="
+                result.calendar?.activity?.SportCategory?.sport?.name ===
+                'Levantamiento de potencia'
+              "
+            >
+              Lugar:<span>{{ result.place }}</span> &nbsp; Peso:<span>{{
+                result.time
+              }}</span>
+            </div>
+            <div
+              class="tracking-date"
+              *ngIf="
+                result.calendar?.activity?.SportCategory?.sport?.name !==
+                'Levantamiento de potencia'
+              "
+            >
               Lugar:<span>{{ result.place }}</span> &nbsp; Tiempo:<span>{{
                 result.time
               }}</span>
             </div>
             <div class="tracking-content">
-              {{ result.athlete?.name
-              }}<span>{{
-                result.calendar?.activity?.SportCategory?.sport?.name
-              }}</span>
+              {{ result.athlete?.name }}
               <span>{{
                 result.calendar?.activity?.SportCategory?.description
               }}</span>
             </div>
           </div>
         </div>
-        }
       </div>
+      }
     </div>
   </div>
 
@@ -61,17 +74,15 @@
   <div class="row">
     <div class="col-md-12 col-lg-12">
       <div id="tracking-pre"></div>
-      <div id="tracking">
-        @for (result of results; track $index) {
-        <div class="text-center" *ngIf="result.calendar?.date === '2 de Junio'">
-          <h5 class="text-tight">
-            {{ result.calendar?.activity?.SportCategory?.name }}
-          </h5>
+      @for (result of results; track $index) {
+      <div id="tracking" *ngIf="result.calendar?.date === '2 de Junio'">
+        <div class="text-center">
+          <h6>
+            {{ result.calendar?.activity?.type }} -
+            {{ result.calendar?.activity?.SportCategory?.sport?.name }}
+          </h6>
         </div>
-        <div
-          class="tracking-list mb-3"
-          *ngIf="result.calendar?.date === '2 de Junio'"
-        >
+        <div class="tracking-list mb-3">
           <div class="tracking-item">
             <div class="tracking-icon status-intransit">
               <img
@@ -82,38 +93,53 @@
                 alt=""
               />
             </div>
-            <div class="tracking-date">
+            <div
+              class="tracking-date"
+              *ngIf="
+                result.calendar?.activity?.SportCategory?.sport?.name ===
+                'Levantamiento de potencia'
+              "
+            >
+              Lugar:<span>{{ result.place }}</span> &nbsp; Peso:<span>{{
+                result.time
+              }}</span>
+            </div>
+            <div
+              class="tracking-date"
+              *ngIf="
+                result.calendar?.activity?.SportCategory?.sport?.name !==
+                'Levantamiento de potencia'
+              "
+            >
               Lugar:<span>{{ result.place }}</span> &nbsp; Tiempo:<span>{{
                 result.time
               }}</span>
             </div>
             <div class="tracking-content">
-              {{ result.athlete?.name
-              }}<span>{{
-                result.calendar?.activity?.SportCategory?.name
+              {{ result.athlete?.name }}
+              <span>{{
+                result.calendar?.activity?.SportCategory?.description
               }}</span>
             </div>
           </div>
         </div>
-        }
       </div>
+      }
     </div>
   </div>
   <h2>3 de Junio</h2>
   <div class="row">
     <div class="col-md-12 col-lg-12">
       <div id="tracking-pre"></div>
-      <div id="tracking">
-        @for (result of results; track $index) {
-        <div class="text-center" *ngIf="result.calendar?.date === '3 de Junio'">
-          <h5 class="text-tight">
-            {{ result.calendar?.activity?.SportCategory?.name }}
-          </h5>
+      @for (result of results; track $index) {
+      <div id="tracking" *ngIf="result.calendar?.date === '3 de Junio'">
+        <div class="text-center">
+          <h6>
+            {{ result.calendar?.activity?.type }} -
+            {{ result.calendar?.activity?.SportCategory?.sport?.name }}
+          </h6>
         </div>
-        <div
-          class="tracking-list mb-3"
-          *ngIf="result.calendar?.date === '3 de Junio'"
-        >
+        <div class="tracking-list mb-3">
           <div class="tracking-item">
             <div class="tracking-icon status-intransit">
               <img
@@ -124,38 +150,53 @@
                 alt=""
               />
             </div>
-            <div class="tracking-date">
+            <div
+              class="tracking-date"
+              *ngIf="
+                result.calendar?.activity?.SportCategory?.sport?.name ===
+                'Levantamiento de potencia'
+              "
+            >
+              Lugar:<span>{{ result.place }}</span> &nbsp; Peso:<span>{{
+                result.time
+              }}</span>
+            </div>
+            <div
+              class="tracking-date"
+              *ngIf="
+                result.calendar?.activity?.SportCategory?.sport?.name !==
+                'Levantamiento de potencia'
+              "
+            >
               Lugar:<span>{{ result.place }}</span> &nbsp; Tiempo:<span>{{
                 result.time
               }}</span>
             </div>
             <div class="tracking-content">
-              {{ result.athlete?.name
-              }}<span>{{
-                result.calendar?.activity?.SportCategory?.name
+              {{ result.athlete?.name }}
+              <span>{{
+                result.calendar?.activity?.SportCategory?.description
               }}</span>
             </div>
           </div>
         </div>
-        }
       </div>
+      }
     </div>
   </div>
   <h2>4 de Junio</h2>
   <div class="row">
     <div class="col-md-12 col-lg-12">
       <div id="tracking-pre"></div>
-      <div id="tracking">
-        @for (result of results; track $index) {
-        <div class="text-center" *ngIf="result.calendar?.date === '4 de Junio'">
-          <h5 class="text-tight">
+      @for (result of results; track $index) {
+      <div id="tracking" *ngIf="result.calendar?.date === '4 de Junio'">
+        <div class="text-center">
+          <h6>
+            {{ result.calendar?.activity?.type }} -
             {{ result.calendar?.activity?.SportCategory?.sport?.name }}
-          </h5>
+          </h6>
         </div>
-        <div
-          class="tracking-list mb-3"
-          *ngIf="result.calendar?.date === '4 de Junio'"
-        >
+        <div class="tracking-list mb-3">
           <div class="tracking-item">
             <div class="tracking-icon status-intransit">
               <img
@@ -166,21 +207,38 @@
                 alt=""
               />
             </div>
-            <div class="tracking-date">
+            <div
+              class="tracking-date"
+              *ngIf="
+                result.calendar?.activity?.SportCategory?.sport?.name ===
+                'Levantamiento de potencia'
+              "
+            >
+              Lugar:<span>{{ result.place }}</span> &nbsp; Peso:<span>{{
+                result.time
+              }}</span>
+            </div>
+            <div
+              class="tracking-date"
+              *ngIf="
+                result.calendar?.activity?.SportCategory?.sport?.name !==
+                'Levantamiento de potencia'
+              "
+            >
               Lugar:<span>{{ result.place }}</span> &nbsp; Tiempo:<span>{{
                 result.time
               }}</span>
             </div>
             <div class="tracking-content">
-              {{ result.athlete?.name
-              }}<span>{{
-                result.calendar?.activity?.SportCategory?.name
+              {{ result.athlete?.name }}
+              <span>{{
+                result.calendar?.activity?.SportCategory?.description
               }}</span>
             </div>
           </div>
         </div>
-        }
       </div>
+      }
     </div>
   </div>
 </div>

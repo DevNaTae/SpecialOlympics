@@ -20,7 +20,6 @@ export class SportComponent {
 
   ngOnInit() {
     this.fetchsports();
-    console.log(this.sports);
     this.titleService.setTitle('OE Deportes');
   }
 

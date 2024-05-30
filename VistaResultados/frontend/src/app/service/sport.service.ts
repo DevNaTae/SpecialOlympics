@@ -10,7 +10,8 @@ import { SportCategory } from '../model/sport-category';
 export class SportService {
   constructor(private readonly http: HttpClient) {}
 
-  private url = 'http://localhost:4100';
+  private url =
+    'https://olimpiadasespecialesmanta2024.uleam.edu.ec/apiresultados';
 
   getSport(): Observable<Sport[]> {
     return this.http.get<Sport[]>(`${this.url}/sport`);

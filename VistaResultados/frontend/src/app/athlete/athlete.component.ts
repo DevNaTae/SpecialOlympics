@@ -26,7 +26,6 @@ export class AthleteComponent implements OnInit {
 
   ngOnInit() {
     this.fetchAthletes();
-    console.log(this.athletes);
     this.titleService.setTitle('OE Atletas');
   }
 
@@ -46,10 +45,23 @@ export class AthleteComponent implements OnInit {
   filterAthletes() {
     let filteredAthletes = this.athletes;
     if (this.searchText.trim() !== '') {
-      this.p = 1;
-      return this.athletes.filter((athlete) =>
-        athlete.name!.toLowerCase().includes(this.searchText.toLowerCase())
-      );
+      if (this.query === 'atleta') {
+        return this.athletes.filter((athlete) =>
+          athlete.name!.toLowerCase().includes(this.searchText.toLowerCase())
+        );
+      } else if (this.query === 'provincia') {
+        return this.athletes.filter((athlete) =>
+          athlete.address!.toLowerCase().includes(this.searchText.toLowerCase())
+        );
+      } else if (this.query === 'deporte') {
+        return this.athletes.filter((athlete) =>
+          athlete.SportCategory!.some((category) =>
+            category
+              .sport!.name!.toLowerCase()
+              .includes(this.searchText.toLowerCase())
+          )
+        );
+      }
     }
     return filteredAthletes;
   }
@@ -102,8 +114,6 @@ export class AthleteComponent implements OnInit {
   getImage(nameA: string) {
     const [name, lname] = nameA.split(' ');
     const fname = name + '_' + lname.toLowerCase();
-    console.log(fname);
-
     return fname;
   }
 

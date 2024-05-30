@@ -9,7 +9,7 @@ import { Gallery } from '../model/gallery';
 export class GalleryService {
   constructor(private readonly http: HttpClient) {}
 
-  private url = 'http://localhost:4100';
+  private url = 'https://olimpiadasespecialesmanta2024.uleam.edu.ec/apiresultados';
 
   get(): Observable<Gallery[]> {
     return this.http.get<Gallery[]>(`${this.url}/gallery`);

@@ -6,9 +6,6 @@ export type AwardDocument = HydratedDocument<Award>;
 
 @Schema({ collection: 'award' })
 export class Award {
-  @Prop()
-  province: string;
-
   @Prop({ type: moongose.Schema.Types.ObjectId, ref: 'Result' })
   result: Result;
 

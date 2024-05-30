@@ -26,6 +26,7 @@
       [placeholder]="'Buscar ' + query"
       aria-label="Search"
       [(ngModel)]="searchText"
+      (ngModelChange)="p = 1"
     />
   </div>
   <div
@@ -136,7 +137,7 @@
           <tr>
             <td>
               <img
-                onerror="this.src='/assets/iconH.webp'"
+                onerror="this.src='https://firebasestorage.googleapis.com/v0/b/imgspecialolympics.appspot.com/o/icons%2F0587496e-6e1f-4e5b-a60f-19c3cf931a3d-ai.webp?alt=media&token=009b4ff2-5f4b-48dd-8f4d-c37009fed5ec'"
                 src="https://firebasestorage.googleapis.com/v0/b/imgspecialolympics.appspot.com/o/athletes%2F{{
                   getImage(athlete.name!)
                 }}.jpg?alt=media&token=98c861fd-a7f2-4d93-a899-7fa7036c8e62"

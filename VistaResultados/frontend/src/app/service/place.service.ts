@@ -9,7 +9,7 @@ import { Place } from '../model/place';
 export class PlaceService {
   constructor(private readonly http: HttpClient) {}
 
-  private url = 'http://localhost:4100';
+  private url = 'https://olimpiadasespecialesmanta2024.uleam.edu.ec/apiresultados';
 
   get(): Observable<Place[]> {
     return this.http.get<Place[]>(`${this.url}/place`);

@@ -9,7 +9,7 @@ import { Calendar } from '../model/calendar';
 export class CalendarService {
   constructor(private readonly http: HttpClient) {}
 
-  private url = 'http://localhost:4100';
+  private url = 'https://olimpiadasespecialesmanta2024.uleam.edu.ec/apiresultados';
 
   get(): Observable<Calendar[]> {
     return this.http.get<Calendar[]>(`${this.url}/calendar`);

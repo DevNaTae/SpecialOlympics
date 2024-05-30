@@ -9,7 +9,7 @@ import { Result } from '../model/result';
 export class ResultService {
   constructor(private readonly http: HttpClient) {}
 
-  private url = 'http://localhost:4100';
+  private url = 'https://olimpiadasespecialesmanta2024.uleam.edu.ec/apiresultados';
 
   get(): Observable<Result[]> {
     return this.http.get<Result[]>(`${this.url}/result`);
