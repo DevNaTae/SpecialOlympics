@@ -135,10 +135,10 @@ const ShowLoading = () => {
   // Devolvemos la función CloseLoading para que pueda ser utilizada fuera de la función ShowLoading.
   return CloseLoading;
 };
-const Atleta_update = ()=>{
+const Atleta_update = async()=>{
     
     const closeLoadingAlert = ShowLoading();
-    const data = P_Atletas.put_atleta(Atleta_credentials,id_atleta.value)
+    const data = await P_Atletas.put_atleta(Atleta_credentials,id_atleta.value)
     if(data.success == "false"){
         await Swal.fire({
             title: 'Error',
