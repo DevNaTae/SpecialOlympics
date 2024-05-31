@@ -1,4 +1,16 @@
-<nav
+<div class="preloader" *ngIf="loading">
+  <div class="loader">
+    <div class="loader-outter"></div>
+    <div class="loader-inner"></div>
+    <div class="loader-extra"></div>
+    <div class="indicator">
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/imgspecialolympics.appspot.com/o/icons%2FiconL.webp?alt=media&token=6a1bf66d-e217-4d47-8d8e-4b310fc78cdf"
+        height="40px"
+      />
+    </div>
+  </div>
+</div><nav
   class="mt-3 ms-4"
   style="--bs-breadcrumb-divider: '>'"
   aria-label="breadcrumb"

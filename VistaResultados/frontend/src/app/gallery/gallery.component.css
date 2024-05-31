@@ -1,14 +1,14 @@
 .banner {
   background: -webkit-linear-gradient(
-    to right,
-    var(--color-brillant-rose),
+    to top,
     var(--color-celestial-blue),
+    var(--color-brillant-rose),
     var(--color-amber)
   );
   background: linear-gradient(
-    to right,
-    var(--color-brillant-rose),
+    to top,
     var(--color-celestial-blue),
+    var(--color-brillant-rose),
     var(--color-amber)
   );
 }

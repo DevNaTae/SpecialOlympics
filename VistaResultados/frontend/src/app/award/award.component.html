@@ -1,3 +1,16 @@
+<div class="preloader" *ngIf="loading">
+  <div class="loader">
+    <div class="loader-outter"></div>
+    <div class="loader-inner"></div>
+    <div class="loader-extra"></div>
+    <div class="indicator">
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/imgspecialolympics.appspot.com/o/icons%2FiconL.webp?alt=media&token=6a1bf66d-e217-4d47-8d8e-4b310fc78cdf"
+        height="40px"
+      />
+    </div>
+  </div>
+</div>
 <nav
   id="top"
   class="mt-3 ms-4"
@@ -11,9 +24,9 @@
     <li class="breadcrumb-item active" aria-current="page">Medallero</li>
   </ol>
 </nav>
-<div class="container mt-4 px-4 pb-5 mb-sm-1">
-  <div class="row">
-    <div class="col-md-3 col-sm-6 mb-3" *ngFor="let province of awards">
+<div class="container mt-4 px-2 px-md-4 pb-5 mb-sm-1">
+  <div class="row px-0">
+    <div class="col-md-3 col-sm-6 mb-3 col-6" *ngFor="let province of awards">
       <div class="card border-0 mb-grid-gutter shadow-sm">
         <a class="card-img-tiles">
           <div class="main-img">
@@ -24,18 +37,21 @@
             />
           </div>
         </a>
-        <div class="card-body border mt-n1 py-4 text-center rounded-3">
+        <div class="card-body border py-2 text-center rounded-3">
           <h2 class="h5 mb-3 letra">
             {{ province.name }}
           </h2>
 
-          <span class="d-block mb-3 font-size-xs letraA">
+          <span class="d-block mb-1 font-size-xs letraA">
+            <i class="fa-solid fa-award" style="color: #ffbf00"></i>
             Oro: {{ countOro(province.award) }}
           </span>
-          <span class="d-block mb-3 font-size-xs letraA">
+          <span class="d-block mb-1 font-size-xs letraA">
+            <i class="fa-solid fa-award" style="color: #e3e4e5"></i>
             Plata: {{ countPlata(province.award) }}
           </span>
-          <span class="d-block mb-3 font-size-xs letraA">
+          <span class="d-block mb-1 font-size-xs letraA">
+            <i class="fa-solid fa-award" style="color: #cd7f32"></i>
             Bronce: {{ countBronce(province.award) }}
           </span>
           <strong class="d-block mb-3 font-size-xs letraA">

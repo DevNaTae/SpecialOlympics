@@ -19,9 +19,6 @@ export class GalleryComponent implements OnInit {
   ngOnInit() {
     this.fetchgallerys();
     this.titleService.setTitle('OE Galería');
-    setTimeout(() => {
-      this.loading = false;
-    }, 2000);
   }
 
   private fetchgallerys() {
