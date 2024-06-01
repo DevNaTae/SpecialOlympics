@@ -9,9 +9,14 @@ import { Calendar } from '../model/calendar';
 export class CalendarService {
   constructor(private readonly http: HttpClient) {}
 
-  private url = 'http://localhost:4100';
+  private url =
+    'http://localhost:4100';
 
   get(): Observable<Calendar[]> {
     return this.http.get<Calendar[]>(`${this.url}/calendar`);
+  }
+
+  create(calendar: any): Observable<Calendar> {
+    return this.http.post<Calendar>(`${this.url}/calendar`, calendar);
   }
 }

@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Calendar } from '../model/calendar';
+import { Gallery } from '../model/gallery';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CalendarService {
+export class GalleryService {
   constructor(private readonly http: HttpClient) {}
 
   private url = 'http://localhost:4100';
 
-  get(): Observable<Calendar[]> {
-    return this.http.get<Calendar[]>(`${this.url}/calendar`);
+  get(): Observable<Gallery[]> {
+    return this.http.get<Gallery[]>(`${this.url}/gallery`);
   }
 }

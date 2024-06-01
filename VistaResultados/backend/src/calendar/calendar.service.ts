@@ -10,21 +10,7 @@ export class CalendarService {
     private readonly calendarModel: Model<CalendarDocument>,
   ) {}
   async findAll(): Promise<Calendar[]> {
-    return this.calendarModel
-      .find()
-      .populate('place')
-      .populate({
-        path: 'activity',
-        populate: {
-          path: 'SportCategory',
-          model: 'SportCategory',
-          populate: {
-            path: 'sport',
-            model: 'Sport',
-          },
-        },
-      })
-      .exec();
+    return this.calendarModel.find().populate('place').populate('sport').exec();
   }
 
   async create(calendarDto: Calendar): Promise<Calendar> {

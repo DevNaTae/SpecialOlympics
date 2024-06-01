@@ -41,7 +41,11 @@
           <h2 class="h5 mb-3 letra">
             {{ province.name }}
           </h2>
-
+          <span
+            class="d-block mb-1 font-size-xs letraA"
+            *ngIf="province.sponsor"
+            >Colegio Padrino: {{ province.sponsor }}
+          </span>
           <span class="d-block mb-1 font-size-xs letraA">
             <i class="fa-solid fa-award" style="color: #ffbf00"></i>
             Oro: {{ countOro(province.award) }}

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import moongose, { HydratedDocument } from 'mongoose';
-import { Activity } from 'src/activity/activity.interface';
 import { Place } from 'src/place/place.interface';
+import { Sport } from 'src/sport/sport.interface';
 
 export type CalendarDocument = HydratedDocument<Calendar>;
 
@@ -16,8 +16,8 @@ export class Calendar {
   @Prop({ type: moongose.Schema.Types.ObjectId, ref: 'Place' })
   place: Place;
 
-  @Prop({ type: moongose.Schema.Types.ObjectId, ref: 'Activity' })
-  activity: Activity;
+  @Prop({ type: moongose.Schema.Types.ObjectId, ref: 'Sport' })
+  sport: Sport;
 
   @Prop({ default: true })
   state: boolean;

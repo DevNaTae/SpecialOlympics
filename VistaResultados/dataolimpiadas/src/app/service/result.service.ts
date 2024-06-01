@@ -14,4 +14,8 @@ export class ResultService {
   get(): Observable<Result[]> {
     return this.http.get<Result[]>(`${this.url}/result`);
   }
+
+  create(result: any): Observable<Result> {
+    return this.http.post<Result>(`${this.url}/result`, result);
+  }
 }

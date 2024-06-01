@@ -1,0 +1,230 @@
+<div class="container-fluid p-5 d-flex justify-content-center">
+  <div class="accordion" id="accordionExample" style="width: 60%">
+    <!-- <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseOne"
+          aria-expanded="false"
+          aria-controls="collapseOne"
+        >
+          Atletas
+        </button>
+      </h2>
+      <div
+        id="collapseOne"
+        class="accordion-collapse collapse"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <form class="">
+            <h1 style="font-size: 20px; margin-bottom: 15px">
+              <i
+                class="icon-user"
+                style="color: #00baff; padding-right: 15px"
+              ></i
+              >Atletas
+            </h1>
+            <input
+              class="border rounded-0 form-control"
+              type="text"
+              style="width: 300px; margin-bottom: 15px"
+              placeholder="name"
+            />
+            <input
+              class="border rounded-0 form-control"
+              type="text"
+              style="width: 300px; margin-bottom: 15px"
+              placeholder="name"
+            />
+
+            <button
+              class="btn btn-primary"
+              type="button"
+              style="
+                width: 100px;
+                margin-right: 0px;
+                margin-left: 0px;
+                background-color: #00baff;
+              "
+            >
+              Save
+            </button>
+          </form>
+          <div class="table-responsive">
+            <table class="table d-block">
+              <thead>
+                <tr>
+                  <th scope="col">_id</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Edad</th>
+                  <th scope="col">Fecha</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let activity of athletes">
+                  <th scope="row">{{ activity._id }}</th>
+                  <td>{{ activity.name }}</td>
+                  <td>{{ activity.age }}</td>
+                  <td>{{ activity.birthday }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseTwo"
+          aria-expanded="false"
+          aria-controls="collapseTwo"
+        >
+          Resultados
+        </button>
+      </h2>
+      <div
+        id="collapseTwo"
+        class="accordion-collapse collapse"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <form [formGroup]="ResultForm" (ngSubmit)="createResult()">
+            <h1 style="font-size: 20px; margin-bottom: 15px">
+              <i
+                class="icon-user"
+                style="color: #00baff; padding-right: 15px"
+              ></i
+              >Resultados
+            </h1>
+
+            <label>Tiempo, Peso ó puntuación</label
+            ><input
+              class="border rounded-0 form-control"
+              type="text"
+              style="width: 300px; margin-bottom: 15px"
+              placeholder="00:15.5 ó 50Kg ó 3-2"
+              formControlName="value"
+            />
+            <label>Atleta</label>
+            <input
+              class="border rounded-0 form-control"
+              type="text"
+              placeholder="ARROYO, Juan"
+              style="width: 300px; margin-bottom: 15px"
+              formControlName="athlete"
+            />
+            <label>Categoría de deporte</label
+            ><select
+              class="form-select"
+              aria-label="Default select example"
+              style="width: 300px; margin-bottom: 15px"
+              formControlName="SportCategory"
+            >
+              <option
+                *ngFor="let sportCategory of sportCategorys"
+                [value]="sportCategory._id"
+              >
+                {{ sportCategory.name }}
+              </option>
+            </select>
+            <label>Tipo</label
+            ><select
+              class="form-select"
+              aria-label="Default select example"
+              style="width: 300px; margin-bottom: 15px"
+              formControlName="type"
+            >
+              <option value="Preliminar">Preliminar</option>
+              <option value="Semifinal">Semifinal</option>
+              <option value="Final">Final</option>
+            </select>
+            <label>Calendario</label>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              style="width: 300px; margin-bottom: 15px"
+              formControlName="calendar"
+            >
+              <option value="" disabled>SportCategory</option>
+              <option *ngFor="let calendar of calendars" [value]="calendar._id">
+                {{ calendar.date }} - {{ calendar.sport?.name }} -
+                {{ calendar.time }}
+              </option>
+            </select>
+            <input
+              value="Guardar"
+              class="btn btn-primary"
+              type="submit"
+              style="
+                width: 100px;
+                margin-right: 0px;
+                margin-left: 0px;
+                background-color: #00baff;
+              "
+            />
+          </form>
+          <div class="table-responsive">
+            <table class="table d-block">
+              <thead>
+                <tr>
+                  <th scope="col">_id</th>
+                  <th scope="col">Valor</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Atleta</th>
+                  <th scope="col">SportCategory</th>
+                  <th scope="col">Calendario</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let result of results">
+                  <th scope="row">{{ result._id }}</th>
+                  <td>{{ result.value }}</td>
+                  <td>{{ result.type }}</td>
+                  <td>{{ result.athlete }}</td>
+                  <td>{{ result.SportCategory?.name }}</td>
+                  <td>
+                    {{ result.calendar?.date }} -
+                    {{ result.calendar?.sport?.name }} -
+                    {{ result.calendar?.time }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseFour"
+          aria-expanded="false"
+          aria-controls="collapseThree"
+        >
+          Accordion Item #3
+        </button>
+      </h2>
+      <div
+        id="collapseFour"
+        class="accordion-collapse collapse"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body"></div>
+      </div>
+    </div>
+  </div>
+  --></div>
+</div>

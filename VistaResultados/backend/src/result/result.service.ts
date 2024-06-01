@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Result } from './result.interface';
-import { Model } from 'mongoose';
+import { Model, model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
@@ -18,28 +18,17 @@ export class ResultService {
     return this.resultModel
       .find()
       .populate({
-        path: 'athlete',
+        path: 'calendar',
         populate: {
-          path: 'SportCategory',
-          model: 'SportCategory',
-          populate: {
-            path: 'sport',
-            model: 'Sport',
-          },
+          path: 'sport',
+          model: 'Sport',
         },
       })
       .populate({
-        path: 'calendar',
+        path: 'SportCategory',
         populate: {
-          path: 'activity',
-          populate: {
-            path: 'SportCategory',
-            model: 'SportCategory',
-            populate: {
-              path: 'sport',
-              model: 'Sport',
-            },
-          },
+          path: 'sport',
+          model: 'Sport',
         },
       })
       .populate({
